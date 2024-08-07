@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Netcode.unity
     guid: 34538ab9d46ff7849809f3b579141fc1
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Photon.unity
     guid: 77dbd712af86c5541a2d7aa001207f72
   - enabled: 1
