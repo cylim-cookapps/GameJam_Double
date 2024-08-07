@@ -17,15 +17,14 @@ namespace Pxp.Data
         THIEF = 4,
     }
 
-    /// 아이템 타입
-    public enum Enum_ItemCategory
+    /// 아이템
+    public enum Enum_ItemType
     {
         None = 0,
-        Coin = 1,
-        Chip = 2,
-        Gem = 3,
-        Gold = 4,
-        Ticket_NormalChest = 5,
+        Gem = 1,
+        Gold = 2,
+        Energy = 3,
+        Ticket_NormalChest = 4,
     }
 
     /// 아이템 타입

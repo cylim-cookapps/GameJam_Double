@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Pxp.Data;
 using TMPro;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Pxp
 {
@@ -15,6 +12,9 @@ namespace Pxp
         [SerializeField, GetComponentInChildrenName]
         private TextMeshProUGUI _textState;
 
+        [SerializeField]
+        private GameObject _goLoading;
+
         public async void Start()
         {
             AppInitializeProcess().Forget();
@@ -22,21 +22,15 @@ namespace Pxp
 
         private async UniTaskVoid AppInitializeProcess()
         {
-            await UnityServices.InitializeAsync();
-            if (UnityServices.State == ServicesInitializationState.Initialized)
-            {
-                await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
-                if (AuthenticationService.Instance.IsSignedIn)
-                {
-                    Debug.Log(AuthenticationService.Instance.PlayerId);
-                }
-            }
-
             _textState.SetText("테이블 로드중");
             await SpecDataManager.Inst.LoadSpecData();
             _textState.SetText("로그인 중");
+            await UserManager.Inst.OnInitialize();
+            _goLoading.SetActive(true);
+            await SceneManager.LoadSceneAsync(1,LoadSceneMode.Additive);
+            await UniTask.Delay(TimeSpan.FromSeconds(1));
 
+            await SceneManager.UnloadSceneAsync(0);
         }
     }
 

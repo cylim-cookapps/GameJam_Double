@@ -18,6 +18,19 @@ namespace Pxp.Data
     }
 
     [GeneratorSpecData]
+    public partial class Currency
+    {
+        [GeneratorId(nameof(id), typeof(int))]
+        public int id;
+        /// 자동 획득 시간(분)
+        public int auto_acquire_time;
+        /// 자동 획득시 최대 한도
+        public double auto_max_count;
+        /// 기본값
+        public double init_count;
+    }
+
+    [GeneratorSpecData]
     public partial class Ingame
     {
         [GeneratorId(nameof(id), typeof(int))]
@@ -35,7 +48,7 @@ namespace Pxp.Data
         /// 침략자 전투 선택
         public int thiefMonsterIndex;
         /// 최종 보상 타입
-        public global::Pxp.Data.Enum_ItemCategory[] rewardType = global::System.Array.Empty<global::Pxp.Data.Enum_ItemCategory>();
+        public global::Pxp.Data.Enum_ItemType[] rewardType = global::System.Array.Empty<global::Pxp.Data.Enum_ItemType>();
         /// 보상 타입별 수량
         public int[] rewardAmount = global::System.Array.Empty<int>();
     }
