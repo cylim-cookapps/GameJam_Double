@@ -1,11 +1,12 @@
 {
   "dependencies": {
     "com.cookapps.code.obfuscator": {
-      "version": "1.0.6",
+      "version": "1.0.7",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.cookapps.package.window": "1.3.5"
+        "com.cookapps.package.window": "1.3.5",
+        "com.unity.nuget.mono-cecil": "1.11.4"
       },
       "url": "http://packages.tech.cookapps.com"
     },
@@ -110,17 +111,17 @@
       "url": "http://packages.tech.cookapps.com"
     },
     "com.cookapps.specdatamanager": {
-      "version": "1.0.21",
+      "version": "1.0.23",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.cookapps.package.window": "1.3.5",
         "com.cookapps.inspector": "1.0.5",
         "com.unity.nuget.newtonsoft-json": "3.0.2",
-        "com.cookapps.obfuscator": "1.1.13",
+        "com.cookapps.obfuscator": "1.1.14",
         "com.cookapps.google.apis.helper": "1.0.0",
         "com.unity.editorcoroutines": "1.0.0",
-        "com.cookapps.code.obfuscator": "1.0.6"
+        "com.cookapps.code.obfuscator": "1.0.7"
       },
       "url": "http://packages.tech.cookapps.com"
     },
@@ -375,8 +376,8 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.nuget.mono-cecil": {
-      "version": "1.10.2",
-      "depth": 0,
+      "version": "1.11.4",
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
