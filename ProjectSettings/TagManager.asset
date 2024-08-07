@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BG
+    uniqueID: 3758277519
+    locked: 0
+  - name: FX_Under
+    uniqueID: 2737633871
+    locked: 0
+  - name: Character
+    uniqueID: 2465597049
+    locked: 0
+  - name: FX_Over
+    uniqueID: 2010504373
+    locked: 0
