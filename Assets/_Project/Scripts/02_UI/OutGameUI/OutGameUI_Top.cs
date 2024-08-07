@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Text;
 using Pxp.Data;
 using TMPro;
 using UnityEngine;
@@ -14,9 +15,12 @@ namespace Pxp
         public void OnInitialize()
         {
             _textNick.SetText(UserManager.Inst.NickName);
-            _textLevel.SetText(UserManager.Inst.Level.ToString());
-            _textEnergy.SetText(UserManager.Inst.Currency.GetCurrency(Enum_ItemType.Energy).Count.ToString());
-        }
+            _textLevel.SetText(UserManager.Inst.Info.Level);
+            var energy = UserManager.Inst.Currency.GetCurrency(Enum_ItemType.Energy);
 
+            _textEnergy.SetTextFormat("{0}/{1}", energy.Count, energy.Spec.auto_max_count);
+            _textGold.SetText(UserManager.Inst.Currency.GetCurrency(Enum_ItemType.Gold).Count);
+            _textGem.SetText(UserManager.Inst.Currency.GetCurrency(Enum_ItemType.Gem).Count);
+        }
     }
 }

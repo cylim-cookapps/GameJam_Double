@@ -3190,7 +3190,7 @@ GameObject:
   - component: {fileID: 7682271467154402123}
   - component: {fileID: 5579322582520732828}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Nick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3954,7 +3954,7 @@ GameObject:
   - component: {fileID: 2940342463277423234}
   - component: {fileID: 6284371306139642736}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Text_Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4371,6 +4371,7 @@ GameObject:
   - component: {fileID: 4149826075693520878}
   - component: {fileID: 6468860842899374198}
   - component: {fileID: 4810598016044871737}
+  - component: {fileID: 853768922299396174}
   m_Layer: 5
   m_Name: OutGame
   m_TagString: Untagged
@@ -4443,6 +4444,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &853768922299396174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4067892798619170768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b71c3fc20fb27946b0364e5272bd043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _top: {fileID: 5344859408105323511}
 --- !u!1 &4259337177487794685
 GameObject:
   m_ObjectHideFlags: 0
@@ -5055,7 +5069,7 @@ GameObject:
   - component: {fileID: 2386978233331768504}
   - component: {fileID: 6055962063484667997}
   m_Layer: 5
-  m_Name: Jewel
+  m_Name: Gem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5473,7 +5487,7 @@ GameObject:
   - component: {fileID: 5580775711506038048}
   - component: {fileID: 2899086632315725747}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Text_Gold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5955,7 +5969,7 @@ GameObject:
   - component: {fileID: 3288032864265675464}
   - component: {fileID: 7722768777800924891}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Text_Gem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7063,6 +7077,7 @@ GameObject:
   m_Component:
   - component: {fileID: 632855168199211729}
   - component: {fileID: 8063718023767972555}
+  - component: {fileID: 5344859408105323511}
   m_Layer: 5
   m_Name: Top_Area
   m_TagString: Untagged
@@ -7099,6 +7114,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7310911860954499358}
   m_CullTransparentMesh: 1
+--- !u!114 &5344859408105323511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7310911860954499358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 856412f9fd8e69a4ca34eaffc557a2cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textNick: {fileID: 5579322582520732828}
+  _textEnergy: {fileID: 6284371306139642736}
+  _textGold: {fileID: 2899086632315725747}
+  _textGem: {fileID: 7722768777800924891}
+  _textLevel: {fileID: 2440936731309570604}
 --- !u!1 &7333354938113453214
 GameObject:
   m_ObjectHideFlags: 0
@@ -8674,7 +8706,7 @@ GameObject:
   - component: {fileID: 579556048251432500}
   - component: {fileID: 2440936731309570604}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

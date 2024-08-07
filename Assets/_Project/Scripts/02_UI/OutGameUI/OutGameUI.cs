@@ -5,9 +5,19 @@ using UnityEngine;
 
 namespace Pxp
 {
-    public class OutGameUI : MonoBehaviour
+    public class OutGameUI : UIBoard
     {
-        [SerializeField, GetComponentInChildrenName]
-        private TextMeshProUGUI _textNick, _textEnergy, _textGold, _textGem, _textLevel;
+        [SerializeField, GetComponentInChildrenOnly]
+        private OutGameUI_Top _top;
+
+        public override void OnInitialize()
+        {
+            _top.OnInitialize();
+        }
+
+        #region Event
+
+
+        #endregion
     }
 }
