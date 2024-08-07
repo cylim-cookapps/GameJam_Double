@@ -6,7 +6,7 @@
 
 using CookApps.SpecData.Generator;
 
-namespace PxP.Data
+namespace Pxp.Data
 {
     [GeneratorSpecDataManager(EnumSpecDataManagerType.JSON_UNITY)]
     public partial class SpecDataManager

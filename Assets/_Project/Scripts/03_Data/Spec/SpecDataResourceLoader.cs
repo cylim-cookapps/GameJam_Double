@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using CookApps.SpecData.Generator;
 
-namespace PxP.Data
+namespace Pxp.Data
 {
     [GeneratorSpecDataResource]
     public static partial class SpecDataResourceLoader

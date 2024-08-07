@@ -4,7 +4,7 @@
 // 이진호(jhlee8@cookapps.com)
 // </auto-generated>
 
-namespace PxP.Data
+namespace Pxp.Data
 {
 
     /// 몬스터 타입

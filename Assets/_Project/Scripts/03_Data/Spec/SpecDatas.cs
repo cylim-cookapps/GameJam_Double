@@ -6,7 +6,7 @@
 
 using CookApps.SpecData.Generator;
 
-namespace PxP.Data
+namespace Pxp.Data
 {
 
     [GeneratorSpecData]
@@ -35,7 +35,7 @@ namespace PxP.Data
         /// 침략자 전투 선택
         public int thiefMonsterIndex;
         /// 최종 보상 타입
-        public global::PxP.Data.Enum_ItemCategory[] rewardType = global::System.Array.Empty<global::PxP.Data.Enum_ItemCategory>();
+        public global::Pxp.Data.Enum_ItemCategory[] rewardType = global::System.Array.Empty<global::Pxp.Data.Enum_ItemCategory>();
         /// 보상 타입별 수량
         public int[] rewardAmount = global::System.Array.Empty<int>();
     }
@@ -46,7 +46,7 @@ namespace PxP.Data
         /// 몬스터 index
         [GeneratorId(nameof(monsterIndex), typeof(int))]
         public int monsterIndex;
-        public global::PxP.Data.Enum_monsterType monsterType;
+        public global::Pxp.Data.Enum_monsterType monsterType;
         public int hp;
         public float moveSpeed;
         /// 몹 처치 제한 시간(초)
@@ -86,7 +86,7 @@ namespace PxP.Data
         [GeneratorId(nameof(id), typeof(int))]
         public int id;
         /// 희귀도
-        public global::PxP.Data.Enum_TierType tier;
+        public global::Pxp.Data.Enum_TierType tier;
         public int attack;
         public float attackSpeed;
         /// 공격 범위 반지름

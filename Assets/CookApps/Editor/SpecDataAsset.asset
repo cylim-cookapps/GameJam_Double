@@ -15,8 +15,8 @@ MonoBehaviour:
   FilterTitle: DoubleOrNothing
   SheetId: 1-Mswfp0X_oVSjryWzX-kIntD2u8aYXgSvFf_4uyZ4Os
   SheetName: '[Dev] DoubleOrNothing'
-  SourceNamespace: PxP.Data
-  SourceEnumNamespace: PxP.Data
+  SourceNamespace: Pxp.Data
+  SourceEnumNamespace: Pxp.Data
   SourceFolder: Assets/_Project/Scripts/03_Data/Spec
   OriginalJsonFolder: Assets
   Obfuscator: 0
