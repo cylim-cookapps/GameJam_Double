@@ -28,6 +28,21 @@ namespace Pxp.Data
         public double auto_max_count;
         /// 기본값
         public double init_count;
+        /// 아이콘 키
+        public string icon_key;
+    }
+
+    [GeneratorSpecData]
+    public partial class Content
+    {
+        [GeneratorId(nameof(id), typeof(int))]
+        public int id;
+        /// 자동 획득 시간(분)
+        public int auto_acquire_time;
+        /// 자동 획득시 최대 한도
+        public double auto_max_count;
+        /// 기본값
+        public double init_count;
     }
 
     [GeneratorSpecData]
@@ -94,12 +109,17 @@ namespace Pxp.Data
     }
 
     [GeneratorSpecData]
-    public partial class Hero_List
+    public partial class Hero
     {
         [GeneratorId(nameof(id), typeof(int))]
         public int id;
+        /// 초기 영웅 설정
+        public bool hero_unlock;
+        public string hero_name;
         /// 희귀도
         public global::Pxp.Data.Enum_TierType tier;
+        /// 일러스트
+        public string icon_key;
         public int attack;
         public float attackSpeed;
         /// 공격 범위 반지름

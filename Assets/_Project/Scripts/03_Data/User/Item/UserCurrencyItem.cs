@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using CookApps.Obfuscator;
 using Newtonsoft.Json;
 using Pxp.Data;
+using Sigtrap.Relays;
 
 namespace Pxp
 {
@@ -18,6 +19,8 @@ namespace Pxp
 
         public Currency Spec { get; private set; }
         public Enum_ItemType Type => (Enum_ItemType) Id.Value;
+
+        public Relay<double> EventUpdate { get; } = new();
 
         public UserCurrencyItem(int id)
         {
@@ -38,6 +41,20 @@ namespace Pxp
         private void UpdateSpec()
         {
             Spec = SpecDataManager.Inst.Currency.Get(Id);
+        }
+
+        public void Increase(double value)
+        {
+            Count += value;
+            EventUpdate.Dispatch(Count.Value);
+            UserManager.Inst.SaveCheck(Enum_UserData.Currency);
+        }
+
+        public void Decrease(double value)
+        {
+            Count -= value;
+            EventUpdate.Dispatch(Count.Value);
+            UserManager.Inst.SaveCheck(Enum_UserData.Currency);
         }
     }
 }

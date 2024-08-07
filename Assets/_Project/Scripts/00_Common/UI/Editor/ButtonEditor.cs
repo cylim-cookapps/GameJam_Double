@@ -106,13 +106,13 @@ namespace Pxp
 
             //ViewPropertyField("IsOn","Interactable");
             ViewPropertyField("isAnimation", "애니메이션 설정");
-            EditorGUILayout.LabelField("[효과음]", EditorStyles.boldLabel);
-            ViewPropertyField("isSound", "효과음 설정");
-
-            if (_btn.isSound)
-            {
-                ViewPropertyField("sfxType", "효과음");
-            }
+            // EditorGUILayout.LabelField("[효과음]", EditorStyles.boldLabel);
+            // ViewPropertyField("isSound", "효과음 설정");
+            //
+            // if (_btn.isSound)
+            // {
+            //     ViewPropertyField("sfxType", "효과음");
+            // }
 
             EditorScriptor.EditorBeginDisabledGroup();
 
@@ -221,10 +221,11 @@ namespace Pxp
             _btn = target as Button;
             _btn.transition = Selectable.Transition.None;
 
+
             GUI.changed = false;
             AnimationSetting();
-            ViewPropertyField("isAlwaysClickEvent", "isOn 상관없이 버튼 이벤트 호출 ");
             ViewPropertyField("onClick");
+            ViewPropertyField("onClickInteractable");
 
             if (GUI.changed)
             {

@@ -1,25 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Pxp
 {
-    public interface IUserData
+    public abstract class UserData
     {
         /// <summary>
         /// 카테고리
         /// </summary>
-        Enum_UserData Category { get; }
+        public abstract Enum_UserData Category { get; }
 
         /// <summary>
         /// 데이터 체크
         /// </summary>
-        void CheckAndCreate();
+        public abstract void CheckAndCreate();
 
         /// <summary>
         /// 다음날 체크
         /// </summary>
-        void NextDay(bool isNextWeek);
+        public virtual void NextDay(bool isNextWeek)
+        {
+        }
     }
 
     public interface IData<out TSpec>

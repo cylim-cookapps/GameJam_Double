@@ -47,13 +47,18 @@ namespace Pxp
 
     public abstract class Popup : BaseUI
     {
-        [GetComponent] public Canvas canvas;
+        [GetComponent]
+        public Canvas canvas;
     }
 
     public abstract class BaseUI : CachingMono
     {
-        [SerializeField] [GetComponentInChildrenName]
+        [SerializeField]
+        [GetComponentInChildrenName]
         private RectTransform dim;
+
+        [SerializeField]
+        private POPUP_ANIMATION_TYPE _popupAnimationType = POPUP_ANIMATION_TYPE.SlideUpDown;
 
         public bool isAnimation = false;
 
@@ -61,7 +66,7 @@ namespace Pxp
 
         protected bool isInit = false;
 
-        protected virtual void Initialize()
+        public virtual void Initialize()
         {
             isInit = true;
             if (closeButtons != null)
@@ -87,5 +92,14 @@ namespace Pxp
         {
             PopupManager.Inst.PopUI(this);
         }
+    }
+
+    [Flags]
+    public enum POPUP_ANIMATION_TYPE
+    {
+        NONE = 0,
+        Scale = 1 << 0,
+        Fade = 1 << 1,
+        SlideUpDown = 1 << 2,
     }
 }

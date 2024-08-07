@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cysharp.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public static partial class ExtendMethod
@@ -42,6 +43,16 @@ public static partial class ExtendMethod
             color.a = graphic.color.a;
             graphic.color = color;
         }
+    }
+
+    internal static void AddListener(this Pxp.Button btn, UnityAction action)
+    {
+        if (btn == null)
+            return;
+
+        //이벤트 중복 방지
+        btn.onClick.RemoveListener(action);
+        btn.onClick.AddListener(action);
     }
 
     #endregion

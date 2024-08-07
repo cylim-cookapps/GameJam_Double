@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Pxp
 {
-    public class MainUI : MonoBehaviour
+    public class MainUI : MonoSingleton<MainUI>
     {
         [SerializeField, GetComponentInChildrenOnly]
         private InGameUI _inGameUI;

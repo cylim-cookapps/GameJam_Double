@@ -9,6 +9,9 @@ namespace Pxp
     {
         #region public
 
+        [SerializeField, GetComponentInChildrenOnly]
+        private Canvas _canvas;
+
         public bool IsEscapeEnabled { get; set; } = true;
         public int PopupCount => popupStack.Count;
 
@@ -21,6 +24,7 @@ namespace Pxp
             }
 
             prefab = CreateInstance<T>();
+            prefab.Initialize();
             _dicPopup.Add(typeof(T).Name, prefab);
             return (T) prefab;
         }
@@ -106,25 +110,10 @@ namespace Pxp
 
         private Dictionary<string, Popup> _dicPopup = new();
         private List<BaseUI> popupStack = new();
-        private Canvas _mainCanvas = null;
-
-        private void SetMainCanvas()
-        {
-            var obj = GameObject.FindGameObjectWithTag("MainCanvas");
-            if (obj != null)
-            {
-                obj.TryGetComponent(out _mainCanvas);
-            }
-        }
 
         private T CreateInstance<T>() where T : Popup
         {
-            if (_mainCanvas == null)
-            {
-                SetMainCanvas();
-            }
-
-            var prefab = Instantiate(Resources.Load<T>(ZString.Format("Popup/{0}.prefab", typeof(T).Name)), _mainCanvas.transform);
+            var prefab = Instantiate(Resources.Load<T>(ZString.Format("Popup/{0}", typeof(T).Name)), _canvas.transform);
             prefab.SetActive(false);
             return prefab;
         }
@@ -142,7 +131,6 @@ namespace Pxp
             }
 
             _dicPopup.Clear();
-            SetMainCanvas();
         }
 
         private void SetEscape()
@@ -168,15 +156,6 @@ namespace Pxp
         #endregion
 
         #region lifecycle
-
-        private void Start()
-        {
-            SetMainCanvas();
-        }
-
-        private void OnDestroy()
-        {
-        }
 
         private void Update()
         {

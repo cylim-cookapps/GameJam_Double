@@ -24,6 +24,7 @@ namespace Pxp
 
         private UserInfo _info;
         private UserCurrency _currency;
+        private UserHero _hero;
 
         #endregion
 
@@ -31,7 +32,9 @@ namespace Pxp
 
         public UserInfo Info => _info;
         public UserCurrency Currency => _currency;
-        private Dictionary<Enum_UserData, IUserData> _userDataList = new();
+        public UserHero Hero => _hero;
+        private Dictionary<Enum_UserData, UserData> _userDataList = new();
+        private Dictionary<Enum_UserData, bool> _userDataSaveCheck = new();
 
         #endregion
 
@@ -53,6 +56,7 @@ namespace Pxp
 
             Load(ref _info, userData, Enum_UserData.Info);
             Load(ref _currency, userData, Enum_UserData.Currency);
+            Load(ref _hero, userData, Enum_UserData.Hero);
 
             if (IsNewUser)
             {
@@ -66,11 +70,11 @@ namespace Pxp
                     NickName = item.Value.GetAsString();
             }
 
-            await Save();
+            await Save(true);
         }
 
         private T Load<T>(ref T data, Dictionary<string, Item> userDatas, Enum_UserData category)
-            where T : class, IUserData, new()
+            where T : UserData, new()
         {
             if (userDatas != null && userDatas.TryGetValue(category.ToString(), out var item))
             {
@@ -91,13 +95,22 @@ namespace Pxp
             return data;
         }
 
-        private async UniTask Save()
+        public void SaveCheck(Enum_UserData category)
+        {
+            _userDataSaveCheck[category] = true;
+        }
+
+        public async UniTask Save(bool isAll = false)
         {
             using PooledObject<Dictionary<string, object>> _ =
                 DictionaryPool<string, object>.Get(out var dic);
             foreach (var data in _userDataList)
             {
+                if (!isAll && !_userDataSaveCheck[data.Key])
+                    continue;
+
                 dic.Add(data.Key.ToString(), data.Value);
+                _userDataSaveCheck[data.Key] = false;
             }
 
             await CloudSaveService.Instance.Data.Player.SaveAsync(dic);
@@ -108,5 +121,6 @@ namespace Pxp
     {
         Info,
         Currency,
+        Hero,
     }
 }

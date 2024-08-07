@@ -36,4 +36,10 @@ namespace Pxp.Data
         Epic = 3,
         Legend = 4,
     }
+
+    /// 컨텐츠 타입
+    public enum Enum_Content
+    {
+        None = 0,
+    }
 }

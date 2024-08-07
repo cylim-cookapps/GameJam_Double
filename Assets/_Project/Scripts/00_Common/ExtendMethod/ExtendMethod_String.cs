@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -88,5 +89,10 @@ public static partial class ExtendMethod
 
         var value = num / Math.Pow(1000, baseLog);
         return ZString.Format("{0:N2}{1}", value, result);
+    }
+
+    internal static string ToDoubleString(this double value)
+    {
+        return value.ToString("N0", CultureInfo.InvariantCulture);
     }
 }

@@ -22,7 +22,9 @@ namespace Pxp
 
         public bool isRepetition = false;
         public bool isAnimation;
+
         public bool isSound = true;
+
         //public eSfx sfxType = eSfx.SFX_Click;
         public bool isUniformCurve = true;
         public Vector3 fromScale = Vector3.one;
@@ -33,7 +35,7 @@ namespace Pxp
 
         public List<ButtonHelper> buttonExHelpers = new();
         public ButtonClickedEvent onClick = new();
-        public bool isAlwaysClickEvent = false;
+        public ButtonClickedEvent onClickInteractable = new();
 
         private Sequence _sequence;
         private bool isHolding = false;
@@ -102,11 +104,11 @@ namespace Pxp
                 return;
             }
 
-            if (isAlwaysClickEvent || IsOn)
-            {
+            if (IsOn)
                 onClick?.Invoke();
-                SetSound();
-            }
+            else
+                onClickInteractable?.Invoke();
+            SetSound();
         }
 
         #endregion
