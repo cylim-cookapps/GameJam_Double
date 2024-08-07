@@ -20,7 +20,7 @@ namespace Pxp
         private Enum_ItemType itemType;
 
         [SerializeField]
-        private bool _isAnimation = false;
+        private bool _isAnimation = true;
 
         private ObfuscatorDouble _lastValue;
         private Tween _tween;

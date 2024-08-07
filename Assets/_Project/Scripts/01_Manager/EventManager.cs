@@ -20,5 +20,8 @@ namespace Pxp
         public void OnEventUnlockHero() => EventUnlockHero.Dispatch();
 
         public readonly Relay EventUnlockHero = new();
+
+        public void OnEventToast(string value) => EventToast.Dispatch(value);
+        public readonly Relay<string> EventToast = new();
     }
 }

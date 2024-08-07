@@ -1393,6 +1393,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5673343879641246035}
     m_Modifications:
+    - target: {fileID: 903315184483954548, guid: f0477dfc15c95a745a4c5008e8e38287, type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 7807891754436549034}
     - target: {fileID: 5059258201376170469, guid: f0477dfc15c95a745a4c5008e8e38287, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -1527,3 +1531,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7801733489693594309, guid: f0477dfc15c95a745a4c5008e8e38287, type: 3}
   m_PrefabInstance: {fileID: 6073761357409342565}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7807891754436549034 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4040117994033286607, guid: f0477dfc15c95a745a4c5008e8e38287, type: 3}
+  m_PrefabInstance: {fileID: 6073761357409342565}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

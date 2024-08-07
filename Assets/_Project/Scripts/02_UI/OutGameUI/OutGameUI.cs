@@ -10,32 +10,32 @@ namespace Pxp
     public class OutGameUI : UIBoard
     {
         [SerializeField, GetComponentInChildrenOnly]
-        private OutGameUI_Top _top;
+        private ShopUI _shopUI;
 
         [SerializeField, GetComponentInChildrenOnly]
         private HeroUI _heroUI;
 
-        [SerializeField]
-        private List<UIHeroItem> _equippedHeroes;
+        [SerializeField, GetComponentInChildrenOnly]
+        private HomeUI _homeUI;
 
         [SerializeField]
         private List<Toggle> _togglesTab;
 
+        public ShopUI ShopUI => _shopUI;
         public HeroUI HeroUI => _heroUI;
+        public HomeUI HomeUI => _homeUI;
 
         public override void OnInitialize()
         {
-            _top.OnInitialize();
+            _shopUI.OnInitialize(this);
             _heroUI.OnInitialize(this);
+            _homeUI.OnInitialize(this);
 
             for (int i = 0; i < _togglesTab.Count; i++)
             {
                 var index = i;
                 _togglesTab[i].onValueChanged.AddListener(isOn => OnValueChangedTab(isOn, (Enum_OutGameTab) index));
             }
-
-            EventManager.Inst.EventEquippedHero.AddListener(OnEventEquippedHero);
-            OnEventEquippedHero();
         }
 
         #region Event
@@ -47,9 +47,13 @@ namespace Pxp
                 switch (tab)
                 {
                     case Enum_OutGameTab.Shop:
+                        _shopUI.Show();
                         break;
                     case Enum_OutGameTab.Hero:
                         _heroUI.Show();
+                        break;
+                    case Enum_OutGameTab.Home:
+                        _homeUI.Show();
                         break;
                     case Enum_OutGameTab.Relic:
                         break;
@@ -60,33 +64,16 @@ namespace Pxp
                 switch (tab)
                 {
                     case Enum_OutGameTab.Shop:
+                        _shopUI.Hide();
                         break;
                     case Enum_OutGameTab.Hero:
                         _heroUI.Hide();
                         break;
+                    case Enum_OutGameTab.Home:
+                        _homeUI.Hide();
+                        break;
                     case Enum_OutGameTab.Relic:
                         break;
-                }
-            }
-        }
-
-        #endregion
-
-        #region EventHandler
-
-        private void OnEventEquippedHero()
-        {
-            for (int i = 0; i < UserManager.Inst.Hero.EquipHeroes.Count; i++)
-            {
-                UserHeroItem hero = UserManager.Inst.Hero.GetEquippedHero(i);
-                if (hero != null)
-                {
-                    _equippedHeroes[i].SetHero(hero);
-                    _equippedHeroes[i].SetActive(true);
-                }
-                else
-                {
-                    _equippedHeroes[i].SetActive(false);
                 }
             }
         }

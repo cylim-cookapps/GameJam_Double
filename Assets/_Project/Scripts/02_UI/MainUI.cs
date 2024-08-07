@@ -13,6 +13,9 @@ namespace Pxp
         [SerializeField, GetComponentInChildrenOnly]
         private OutGameUI _outGameUI;
 
+        [SerializeField, GetComponentInChildrenOnly]
+        private ToastUI _toastUI;
+
         public InGameUI InGameUI => _inGameUI;
         public OutGameUI OutGameUI => _outGameUI;
 
@@ -20,6 +23,7 @@ namespace Pxp
         {
             _inGameUI.OnInitialize();
             _outGameUI.OnInitialize();
+            _toastUI.OnInitialize();
         }
     }
 }

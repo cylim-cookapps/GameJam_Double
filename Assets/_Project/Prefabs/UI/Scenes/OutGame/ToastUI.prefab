@@ -239,9 +239,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 307544368802152460}
-  - component: {fileID: 2791782764871863748}
+  - component: {fileID: 4249945789983134430}
+  - component: {fileID: 5083244795229272136}
   m_Layer: 5
-  m_Name: Popup_Toast
+  m_Name: ToastUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -268,14 +269,43 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2791782764871863748
-CanvasRenderer:
+--- !u!114 &4249945789983134430
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4483893287086024367}
-  m_CullTransparentMesh: 1
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94e03f9f04da6de45861db272c32d38a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textToast: {fileID: 8127370076602821184}
+  _goToast: {fileID: 4856425055463741399}
+--- !u!223 &5083244795229272136
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4483893287086024367}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 100
+  m_TargetDisplay: 0
 --- !u!1 &4856425055463741399
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +315,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3957434094150032462}
-  - component: {fileID: 3728470644459048516}
   m_Layer: 5
   m_Name: Toast_Basic
   m_TagString: Untagged
@@ -314,14 +343,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 520}
   m_SizeDelta: {x: 20, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &3728470644459048516
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4856425055463741399}
-  m_CullTransparentMesh: 1
 --- !u!1 &6291264432973705090
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,7 +434,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1591846943772737245
 RectTransform:
   m_ObjectHideFlags: 0
