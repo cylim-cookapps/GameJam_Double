@@ -1,0 +1,549 @@
+fileFormatVersion: 2
+guid: 153613235f27529408313464946c728e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4309997016295442621
+    second: FTX_Cupid_bloom_0
+  - first:
+      213: 1740857169136381104
+    second: FTX_Cupid_bloom_1
+  - first:
+      213: -8999728137986686200
+    second: FTX_Cupid_bloom_2
+  - first:
+      213: 7984460864179805186
+    second: FTX_Cupid_bloom_3
+  - first:
+      213: -2374221519126497279
+    second: FTX_Cupid_bloom_4
+  - first:
+      213: -4311304371075144685
+    second: FTX_Cupid_bloom_5
+  - first:
+      213: 9202994633682032927
+    second: FTX_Cupid_bloom_6
+  - first:
+      213: -1700135061176632954
+    second: FTX_Cupid_bloom_7
+  - first:
+      213: 3767543183554959142
+    second: FTX_Cupid_bloom_8
+  - first:
+      213: 5576712106157025130
+    second: FTX_Cupid_bloom_9
+  - first:
+      213: -853350921818241908
+    second: FTX_Cupid_bloom_10
+  - first:
+      213: -8739853667285113764
+    second: FTX_Cupid_bloom_11
+  - first:
+      213: 2267380570656408691
+    second: FTX_Cupid_bloom_12
+  - first:
+      213: -3656528140634834577
+    second: FTX_Cupid_bloom_13
+  - first:
+      213: -8899766463979920924
+    second: FTX_Cupid_bloom_14
+  - first:
+      213: -4400317986899235671
+    second: FTX_Cupid_bloom_15
+  - first:
+      213: -4316179712316835652
+    second: FTX_Cupid_bloom_16
+  - first:
+      213: -3386942768047151225
+    second: FTX_Cupid_bloom_17
+  - first:
+      213: 5556000961576127249
+    second: FTX_Cupid_bloom_18
+  - first:
+      213: 8295457259030481359
+    second: FTX_Cupid_bloom_19
+  - first:
+      213: 6461539774028656179
+    second: FTX_Cupid_bloom_20
+  - first:
+      213: -883360713637678761
+    second: FTX_Cupid_bloom_21
+  - first:
+      213: 5487102049581480524
+    second: FTX_Cupid_bloom_22
+  - first:
+      213: 7854867729443519581
+    second: FTX_Cupid_bloom_23
+  - first:
+      213: -2001997594758172336
+    second: FTX_Cupid_bloom_24
+  - first:
+      213: 7739691813512080418
+    second: FTX_Cupid_bloom_25
+  - first:
+      213: 4560733921305007977
+    second: FTX_Cupid_bloom_26
+  - first:
+      213: -7224178778116098839
+    second: FTX_Cupid_bloom_27
+  - first:
+      213: -992952803163618130
+    second: FTX_Cupid_bloom_28
+  - first:
+      213: 3916898456716624250
+    second: FTX_Cupid_bloom_29
+  - first:
+      213: -1447021721265878172
+    second: FTX_Cupid_bloom_30
+  - first:
+      213: -3313274766506305648
+    second: FTX_Cupid_bloom_31
+  - first:
+      213: 6471731128246302187
+    second: FTX_Cupid_bloom_32
+  - first:
+      213: -7806496524825987830
+    second: FTX_Cupid_bloom_33
+  - first:
+      213: -742389200842897724
+    second: FTX_Cupid_bloom_34
+  - first:
+      213: 9068683324472268322
+    second: FTX_Cupid_bloom_35
+  - first:
+      213: -2747999746840437686
+    second: FTX_Cupid_bloom_36
+  - first:
+      213: 1526262413830920045
+    second: FTX_Cupid_bloom_37
+  - first:
+      213: -6763768159315092780
+    second: FTX_Cupid_bloom_38
+  - first:
+      213: 3749728378882542787
+    second: FTX_Cupid_bloom_39
+  - first:
+      213: -3169512883107044997
+    second: FTX_Cupid_bloom_40
+  - first:
+      213: 5317145337649307992
+    second: FTX_Cupid_bloom_41
+  - first:
+      213: 6293311419876886501
+    second: FTX_Cupid_bloom_42
+  - first:
+      213: -4174303082331401935
+    second: FTX_Cupid_bloom_43
+  - first:
+      213: 3649551596454627
+    second: FTX_Cupid_bloom_44
+  - first:
+      213: 2397793041995573020
+    second: FTX_Cupid_bloom_45
+  - first:
+      213: -681372412738425978
+    second: FTX_Cupid_bloom_46
+  - first:
+      213: 2889240375088885049
+    second: FTX_Cupid_bloom_47
+  - first:
+      213: -8464475168119287195
+    second: FTX_Cupid_bloom_48
+  - first:
+      213: -6570633452051654097
+    second: FTX_Cupid_bloom_49
+  - first:
+      213: 1160583539419687702
+    second: FTX_Cupid_bloom_50
+  - first:
+      213: 616552462368773854
+    second: FTX_Cupid_bloom_51
+  - first:
+      213: -2352351316308987782
+    second: FTX_Cupid_bloom_52
+  - first:
+      213: -1193955936448036553
+    second: FTX_Cupid_bloom_0
+  - first:
+      213: -960268596483387244
+    second: FTX_Cupid_bloom_1
+  - first:
+      213: -1750985329005425108
+    second: FTX_Cupid_bloom_2
+  - first:
+      213: -2852056020947815090
+    second: FTX_Cupid_bloom_3
+  - first:
+      213: 4115483458377428902
+    second: FTX_Cupid_bloom_4
+  - first:
+      213: 8976609492059205650
+    second: FTX_Cupid_bloom_5
+  - first:
+      213: -2799934338142403636
+    second: FTX_Cupid_bloom_6
+  - first:
+      213: -9134296430363649236
+    second: FTX_Cupid_bloom_7
+  - first:
+      213: 2692679112336679262
+    second: FTX_Cupid_bloom_8
+  - first:
+      213: 5029006358037584624
+    second: FTX_Cupid_bloom_9
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FTX_Cupid_bloom_0
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 264
+        width: 236
+        height: 248
+      alignment: 9
+      pivot: {x: 0.35582703, y: 0.47550067}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 731cb82d6673e6fe0800000000000000
+      internalID: 4309997016295442621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FTX_Cupid_bloom_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 436
+        width: 88
+        height: 76
+      alignment: 9
+      pivot: {x: 0.7485577, y: 0.56395644}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 49015a99cc07ca2f0800000000000000
+      internalID: 1740857169136381104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FTX_Cupid_bloom_2
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 420
+        width: 116
+        height: 92
+      alignment: 9
+      pivot: {x: 0.22763404, y: 0.22262374}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2e06b1de1043b7e0800000000000000
+      internalID: -8999728137986686200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FTX_Cupid_bloom_3
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 320
+        width: 128
+        height: 100
+      alignment: 9
+      pivot: {x: 0.20095372, y: 0.32380006}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4534e7e8267b68d0800000000000000
+      internalID: 7984460864179805186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FTX_Cupid_bloom_4
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 268
+        width: 84
+        height: 120
+      alignment: 9
+      pivot: {x: 0.6446635, y: 0.19620718}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6af259f86622d1930800000000000000
+      internalID: -2374221519126497279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FTX_Cupid_bloom_6
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 108
+        width: 148
+        height: 204
+      alignment: 9
+      pivot: {x: 0.988532, y: 0.49404332}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc38a9cdd82a429d0800000000000000
+      internalID: 9202994633682032927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FTX_Cupid_bloom_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 104
+        height: 68
+      alignment: 9
+      pivot: {x: 0.8271617, y: 0.38384405}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2b5e0bcac57c3180800000000000000
+      internalID: -1700135061176632954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FTX_Cupid_bloom_8
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 108
+        width: 104
+        height: 76
+      alignment: 9
+      pivot: {x: 0.16699614, y: 0.24417426}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5121f0e2615e5520800000000000000
+      internalID: 3767543183554959142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FTX_Cupid_bloom_9
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 4
+        width: 84
+        height: 124
+      alignment: 9
+      pivot: {x: 0.62296385, y: 0.808693}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fad20843ae9ac540800000000000000
+      internalID: 5576712106157025130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FTX_Cupid_bloom_10
+      rect:
+        serializedVersion: 2
+        x: 304
+        y: 4
+        width: 192
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c84854c9bd94824f0800000000000000
+      internalID: -853350921818241908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      FTX_Cupid_bloom_0: 4309997016295442621
+      FTX_Cupid_bloom_1: 1740857169136381104
+      FTX_Cupid_bloom_10: -853350921818241908
+      FTX_Cupid_bloom_2: -8999728137986686200
+      FTX_Cupid_bloom_3: 7984460864179805186
+      FTX_Cupid_bloom_4: -2374221519126497279
+      FTX_Cupid_bloom_6: 9202994633682032927
+      FTX_Cupid_bloom_7: -1700135061176632954
+      FTX_Cupid_bloom_8: 3767543183554959142
+      FTX_Cupid_bloom_9: 5576712106157025130
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
