@@ -23,5 +23,6 @@ namespace Pxp
 
         public void OnEventToast(string value) => EventToast.Dispatch(value);
         public readonly Relay<string> EventToast = new();
+
     }
 }

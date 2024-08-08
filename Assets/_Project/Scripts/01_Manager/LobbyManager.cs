@@ -96,7 +96,7 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
         if (PhotonNetwork.IsMasterClient)
         {
             SetStatus("Loading Game Scene...");
-            PhotonNetwork.LoadLevel("Battle");
+            PhotonNetwork.LoadLevel("Game");
         }
     }
 

@@ -46,7 +46,7 @@ namespace Pxp.Data
     }
 
     [GeneratorSpecData]
-    public partial class Ingame
+    public partial class Wave
     {
         [GeneratorId(nameof(id), typeof(int))]
         public int id;
@@ -55,6 +55,7 @@ namespace Pxp.Data
         /// 웨이브
         public int wave;
         /// 등장 몬스터
+        [GeneratorIdToData(nameof(monsterIndex), typeof(Monster))]
         public int monsterIndex;
         /// 등장 몬스터 수
         public int monsterCount;
@@ -85,6 +86,8 @@ namespace Pxp.Data
         public int chipAmount;
         /// 획득 effect
         public int effectId;
+        /// 프리팹
+        public string prefab_key;
     }
 
     [GeneratorSpecData]
@@ -116,6 +119,8 @@ namespace Pxp.Data
         /// 초기 영웅 설정
         public bool hero_unlock;
         public string hero_name;
+        /// 프리팹
+        public string prefab_key;
         /// 희귀도
         public global::Pxp.Data.Enum_TierType tier;
         /// 일러스트
