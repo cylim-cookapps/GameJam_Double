@@ -60,7 +60,7 @@ namespace Pxp
         {
             if (_isEquip)
             {
-                MainUI.Inst.OutGameUI.HeroUI.SetEquip(_index);
+                MainUI.Inst.HeroUI.SetEquip(_index);
             }
             else
             {

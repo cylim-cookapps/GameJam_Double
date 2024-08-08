@@ -1,128 +1,187 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
+using Photon.Pun;
+using Photon.Realtime;
+using System.Collections.Generic;
+using ExitGames.Client.Photon;
+using Pxp;
+using UnityEngine.SceneManagement;
+using Debug = UnityEngine.Debug;
 
-public class GameManager : NetworkBehaviour
+public partial class GameManager : MonoBehaviourPunCallbacks
 {
-    public GameObject PlayerPrefab;
-    public GameObject EnemyPrefab;
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
 
-    // 플레이어 세션 정보를 저장할 딕셔너리
-    private Dictionary<ulong, PlayerSession> playerSessions = new Dictionary<ulong, PlayerSession>();
-    private const float SESSION_TIMEOUT = 300f; // 5분
+    [SerializeField]
+    private GameObject monsterPrefab;
+
+    [SerializeField]
+    private Transform[] spawnPoints;
+
+    [SerializeField]
+    private float spawnInterval = 5f;
+
+    private float nextSpawnTime;
+    private List<GameObject> spawnedMonsters = new List<GameObject>();
+    private bool _isGameStarted = false;
+    private const byte PLAYER_LOADED_LEVEL = 0;
+    private const byte PLAYER_DATA_EVENT = 1;
+
+    private Dictionary<string, InGameUserData> playerDataDict = new();
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
 
-    public override void OnNetworkSpawn()
+    private void Start()
     {
-        if (IsServer)
-        {
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
-        }
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    private void OnClientConnected(ulong clientId)
+    private void OnDestroy()
     {
-        if (playerSessions.TryGetValue(clientId, out PlayerSession session))
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (!PhotonNetwork.IsMessageQueueRunning)
         {
-            // 기존 세션 복원
-            Debug.Log($"Restoring session for client {clientId}");
-            RestorePlayerSession(clientId, session);
+            PhotonNetwork.IsMessageQueueRunning = true;
         }
-        else
+
+        if (PhotonNetwork.InRoom)
         {
-            // 새 세션 생성
-            Debug.Log($"Creating new session for client {clientId}");
-            CreateNewPlayerSession(clientId);
+            SendPlayerLoadedLevel();
         }
     }
 
-    private void OnClientDisconnected(ulong clientId)
+    private void SendPlayerLoadedLevel()
     {
-        if (playerSessions.TryGetValue(clientId, out PlayerSession session))
+        if (!PhotonNetwork.IsMessageQueueRunning)
         {
-            Debug.Log($"Client {clientId} disconnected. Starting timeout coroutine.");
-            StartCoroutine(SessionTimeoutCoroutine(clientId));
+            return;
         }
+
+        PhotonNetwork.RaiseEvent(PLAYER_LOADED_LEVEL, true, new RaiseEventOptions {Receivers = ReceiverGroup.All}, SendOptions.SendReliable);
     }
 
-    private void CreateNewPlayerSession(ulong clientId)
+    private void OnEvent(EventData photonEvent)
     {
-        PlayerSession newSession = new PlayerSession
+        Debug.Log("EventData" + photonEvent.Code);
+        if (photonEvent.Code == PLAYER_LOADED_LEVEL)
         {
-            ClientId = clientId,
-            // 여기에 필요한 추가 플레이어 정보 설정
-        };
-        playerSessions[clientId] = newSession;
+            int playersInGame = PhotonNetwork.PlayerList.Length;
+            int playersLoaded = 0;
+            foreach (var player in PhotonNetwork.CurrentRoom.Players)
+            {
+                if (player.Value.CustomProperties.ContainsKey("PlayerLoadedLevel"))
+                    playersLoaded++;
+            }
 
-        // 새 플레이어 생성 로직
-        SpawnPlayerForClient(clientId);
-    }
-
-    private void RestorePlayerSession(ulong clientId, PlayerSession session)
-    {
-        // 기존 세션 정보를 사용하여 플레이어 상태 복원
-        SpawnPlayerForClient(clientId, session.Position);
-        // 추가적인 상태 복원 로직
-    }
-
-    private void SpawnPlayerForClient(ulong clientId, Vector3? position = null)
-    {
-        // 플레이어 스폰 로직
-        GameObject playerPrefab = PlayerPrefab;
-        Vector3 spawnPos = position ?? Vector3.zero;
-        NetworkObject playerInstance = Instantiate(playerPrefab, spawnPos, Quaternion.identity).GetComponent<NetworkObject>();
-        playerInstance.Spawn();
-        SpawnEnemy();
+            if (playersLoaded == playersInGame)
+            {
+                StartGame();
+            }
+        }
+        else if (photonEvent.Code == PLAYER_DATA_EVENT)
+        {
+            Hashtable playerDataHash = (Hashtable) photonEvent.CustomData;
+            InGameUserData userData = InGameUserData.FromHashtable(playerDataHash);
+            playerDataDict[userData.Name] = userData;
+            Debug.Log(userData);
+            if (playerDataDict.Count == 2)
+            {
+                EventManager.Inst.OnEventEquippedHero();
+            }
+        }
     }
 
     private void Update()
     {
-        if (IsServer)
+        if (_isGameStarted && PhotonNetwork.IsMasterClient && Time.time >= nextSpawnTime)
         {
-
+            SpawnMonster();
+            nextSpawnTime = Time.time + spawnInterval;
         }
     }
 
-    private void SpawnEnemy()
+    private void StartGame()
     {
-        GameObject playerPrefab = EnemyPrefab;
-        Vector3 spawnPos = Vector3.zero;
-        NetworkObject playerInstance = Instantiate(playerPrefab, spawnPos, Quaternion.identity).GetComponent<NetworkObject>();
-        playerInstance.Spawn(true);
+        _isGameStarted = true;
+        nextSpawnTime = Time.time + spawnInterval;
+        SendPlayerData();
     }
 
-    private IEnumerator SessionTimeoutCoroutine(ulong clientId)
+    private void SendPlayerData()
     {
-        yield return new WaitForSeconds(SESSION_TIMEOUT);
+        List<InGameHeroData> myHeroes = new List<InGameHeroData>();
 
-        if (!NetworkManager.Singleton.ConnectedClients.ContainsKey(clientId))
+        foreach (var heroId in UserManager.Inst.Hero.EquipHeroes)
         {
-            Debug.Log($"Session for client {clientId} has timed out. Removing session.");
-            playerSessions.Remove(clientId);
+            var heroData = UserManager.Inst.Hero.GetEquippedHero(heroId);
+            myHeroes.Add(new InGameHeroData(heroData.Id, heroData.Level, heroData.Star));
+        }
+
+        InGameUserData myData = new InGameUserData(
+            UserManager.Inst.PlayerId,
+            UserManager.Inst.Info.Level,
+            myHeroes
+        );
+
+        Hashtable playerDataHash = myData.ToHashtable();
+        playerDataHash.Add("ActorNumber", PhotonNetwork.LocalPlayer.ActorNumber);
+
+        PhotonNetwork.RaiseEvent(PLAYER_DATA_EVENT, playerDataHash, new RaiseEventOptions {Receivers = ReceiverGroup.MasterClient}, SendOptions.SendReliable);
+    }
+
+    [PunRPC]
+    private void NotifyGameStarted()
+    {
+        Debug.Log("Game has started!");
+        // 여기에 게임 시작 시 필요한 추가 로직을 구현할 수 있습니다.
+    }
+
+    private void SpawnMonster()
+    {
+        if (spawnPoints.Length == 0)
+        {
+            Debug.LogError("No spawn points assigned!");
+            return;
+        }
+
+        int randomSpawnIndex = Random.Range(0, spawnPoints.Length);
+        Vector3 spawnPosition = spawnPoints[randomSpawnIndex].position;
+
+        GameObject monster = PhotonNetwork.Instantiate(monsterPrefab.name, spawnPosition, Quaternion.identity);
+        spawnedMonsters.Add(monster);
+
+        photonView.RPC("NotifyMonsterSpawned", RpcTarget.All, monster.GetComponent<PhotonView>().ViewID);
+    }
+
+    [PunRPC]
+    private void NotifyMonsterSpawned(int viewId)
+    {
+        Debug.Log($"Monster spawned with ViewID: {viewId}");
+        // 여기에 몬스터 생성 시 필요한 추가 로직을 구현할 수 있습니다.
+    }
+
+    public void DestroyMonster(GameObject monster)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            spawnedMonsters.Remove(monster);
+            PhotonNetwork.Destroy(monster);
         }
     }
-}
 
-// 플레이어 세션 정보를 저장할 클래스
-public class PlayerSession
-{
-    public ulong ClientId;
-    public Vector3 Position;
-    // 추가적인 플레이어 상태 정보
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            nextSpawnTime = Time.time + spawnInterval;
+        }
+    }
 }

@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Text;
+using Cysharp.Threading.Tasks;
 using Pxp.Data;
 using TMPro;
 using UnityEngine;
 
 namespace Pxp
 {
-    public class HomeUI : BoardBase<OutGameUI>
+    public class HomeUI : BoardBase<MainUI>
     {
         [SerializeField, GetComponentInChildrenName]
         private TextMeshProUGUI _textNick, _textEnergy, _textLevel;
@@ -16,11 +17,14 @@ namespace Pxp
         private List<UIHeroItem> _equippedHeroes;
 
         [SerializeField, GetComponentInChildrenName]
+        private Button _btnStart;
+
+        [SerializeField, GetComponentInChildrenName]
         private Button _btnPass, _btnPack, _btnVip, _btnBoxOpen, _btnQuest, _btnAttendance, _btnRanking;
 
-        public override OutGameUI Parent { get; protected set; }
+        public override MainUI Parent { get; protected set; }
 
-        public override void OnInitialize(OutGameUI parent)
+        public override void OnInitialize(MainUI parent)
         {
             base.OnInitialize(parent);
 
@@ -31,6 +35,8 @@ namespace Pxp
             _btnQuest.AddListener(OnClickQuest);
             _btnAttendance.AddListener(OnClickAttendance);
             _btnRanking.AddListener(OnClickRanking);
+
+            _btnStart.AddListener(OnClickGameStart);
 
             _textNick.SetText(UserManager.Inst.NickName);
             _textLevel.SetText(UserManager.Inst.Info.Level);
@@ -52,6 +58,11 @@ namespace Pxp
         }
 
         #region Event
+
+        private void OnClickGameStart()
+        {
+            LobbyManager.Inst.QuickMatch().Forget();
+        }
 
         private void OnClickPass()
         {
