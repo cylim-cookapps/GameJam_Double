@@ -961,7 +961,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7957618958182527130}
+  - {fileID: 5376687058186985652}
   - {fileID: 4462899177861316627}
   - {fileID: 3292613701481075135}
   - {fileID: 8127179295024312022}
@@ -2307,6 +2307,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 6582809882232117333, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 8304033202950799949}
     - target: {fileID: 6871606364886624294, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
       propertyPath: m_Name
       value: UIItemQuestList (2)
@@ -2341,6 +2345,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 42029961676489572, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
   m_PrefabInstance: {fileID: 3252976277262144219}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8304033202950799949 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6780519450573869206, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
+  m_PrefabInstance: {fileID: 3252976277262144219}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4429911660046058359
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2517,6 +2532,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 6582809882232117333, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 7161580669561017313}
     - target: {fileID: 6871606364886624294, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
       propertyPath: m_Name
       value: UIItemQuestList (1)
@@ -2551,6 +2570,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 42029961676489572, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
   m_PrefabInstance: {fileID: 4429911660046058359}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7161580669561017313 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6780519450573869206, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
+  m_PrefabInstance: {fileID: 4429911660046058359}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4532373416392413932
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2829,6 +2859,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 6582809882232117333, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 1446140229724369734}
     - target: {fileID: 6871606364886624294, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
       propertyPath: m_Name
       value: UIItemQuestList
@@ -2858,7 +2892,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
---- !u!224 &7957618958182527130 stripped
+--- !u!114 &1446140229724369734 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6780519450573869206, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
+  m_PrefabInstance: {fileID: 5334661520461292496}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &5376687058186985652 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 42029961676489572, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
   m_PrefabInstance: {fileID: 5334661520461292496}
@@ -3447,6 +3492,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 6582809882232117333, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 3334324015306571044}
     - target: {fileID: 6871606364886624294, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
       propertyPath: m_Name
       value: UIItemQuestList (3)
@@ -3476,6 +3525,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
+--- !u!114 &3334324015306571044 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6780519450573869206, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}
+  m_PrefabInstance: {fileID: 8096584297432214962}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8127179295024312022 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 42029961676489572, guid: dda83a847c83e3044a3d05d273ae5dea, type: 3}

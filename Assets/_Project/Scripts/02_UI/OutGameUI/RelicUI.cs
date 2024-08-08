@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Pxp
 {
-    public class Relic : BoardBase<OutGameUI>
+    public class Relic : BoardBase<MainUI>
     {
-        public override OutGameUI Parent { get; protected set; }
+        public override MainUI Parent { get; protected set; }
 
         public override void Show()
         {

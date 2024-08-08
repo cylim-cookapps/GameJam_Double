@@ -15,7 +15,7 @@ namespace Pxp
         [SerializeField]
         private GameObject _goToast;
 
-        public void OnInitialize()
+        private void Awake()
         {
             _goToast.SetActive(false);
             EventManager.Inst.EventToast.AddListener(OnEventToast);

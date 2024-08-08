@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Pxp
 {
-    public class HeroUI : BoardBase<OutGameUI>
+    public class HeroUI : BoardBase<MainUI>
     {
         [SerializeField, GetComponentInChildrenOnly]
         private List<UIEquipHeroItem> _uiEquipHeroItems;
@@ -18,12 +18,12 @@ namespace Pxp
         [SerializeField]
         private Transform _trOwnedList, _trLockedList;
 
-        public override OutGameUI Parent { get; protected set; }
+        public override MainUI Parent { get; protected set; }
         private List<UIUserHeroItem> _uiUserHeroItems = new();
 
         private UserHeroItem _selectedHero;
 
-        public override void OnInitialize(OutGameUI parent)
+        public override void OnInitialize(MainUI parent)
         {
             base.OnInitialize(parent);
 

@@ -44,7 +44,7 @@ namespace Pxp
 
         private void OnClickEquip()
         {
-            MainUI.Inst.OutGameUI.HeroUI.SetEquipMode(_data);
+            MainUI.Inst.HeroUI.SetEquipMode(_data);
             Hide();
         }
 
