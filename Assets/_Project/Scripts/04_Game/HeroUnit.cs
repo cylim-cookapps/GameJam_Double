@@ -40,6 +40,20 @@ namespace Pxp
             HeroId = (int)instantiationData[0];
             Index = (int)instantiationData[1];
             Owner = (int)instantiationData[2];
+
+            SetInitialRotation();
+        }
+
+        private void SetInitialRotation()
+        {
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 2)  // 플레이어 2의 유닛인 경우
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 180);  // 180도 회전
+            }
+            else
+            {
+                transform.rotation = Quaternion.identity;  // 기본 방향 (오른쪽)
+            }
         }
 
         #region Attack

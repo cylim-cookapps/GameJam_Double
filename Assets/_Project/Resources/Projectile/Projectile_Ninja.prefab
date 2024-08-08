@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  damage: 1
+  damage: 5
   hitEffectTime: 1
   projectile: {fileID: 8721263377140384670}
   effect: {fileID: 1300901175528504190}
