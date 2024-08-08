@@ -164,6 +164,7 @@ namespace Pxp
         {
             if (PhotonNetwork.IsMasterClient)
             {
+                StartCoroutine(GameLoop());
             }
         }
 
@@ -175,7 +176,6 @@ namespace Pxp
                     _waves.Add(wave);
             }
 
-            Wave = 0;
             while (true)
             {
                 if (_waves.Count <= _wave)
@@ -343,14 +343,6 @@ namespace Pxp
             spawnedEnemy.Remove(obj);
             PhotonNetwork.Destroy(obj);
             MonsterCount = spawnedEnemy.Count;
-        }
-
-        [PunRPC]
-        public void UnitSync(int actor, int index, int heroId, int grade, int needCoin)
-        {
-            playerDataDict[actor].Units[index].HeroId = heroId;
-            playerDataDict[actor].Units[index].Grade = grade;
-            playerDataDict[actor].Coin -= needCoin;
         }
 
         [PunRPC]
