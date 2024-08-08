@@ -6,9 +6,20 @@ using UnityEngine.Serialization;
 
 namespace Pxp
 {
-    public class EnemyUnit : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
+    public class EnemyUnit : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback, IPunObservable
     {
-        public int Hp { get; private set; }
+        [SerializeField]
+        private int _hp;
+
+        public int Hp
+        {
+            get => _hp;
+            private set
+            {
+                _hp = value;
+            }
+        }
+
         public int MaxHp { get; private set; }
 
         public int Coin { get; private set; }
@@ -17,6 +28,7 @@ namespace Pxp
 
         public Monster MonsterData { get; private set; }
         private List<Vector2> _waypoints;
+        private bool _isDead;
 
         [SerializeField]
         private int currentWaypointIndex = 0;
@@ -26,15 +38,13 @@ namespace Pxp
             if (PhotonNetwork.IsMasterClient)
             {
                 MoveToNextWaypoint();
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    ReceiveAttack(1);
-                }
             }
         }
 
         private void MoveToNextWaypoint()
         {
+            if (_waypoints == null || _waypoints.Count == 0) return;
+
             Vector2 targetPosition = _waypoints[currentWaypointIndex];
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, 1 * Time.deltaTime);
 
@@ -60,7 +70,7 @@ namespace Pxp
             Chip = (int) instantiationData[2];
             MonsterType = MonsterData.monsterType;
             _waypoints = new List<Vector2>((Vector2[]) instantiationData[3]);
-
+            _isDead = false;
             Hp = MaxHp = MonsterData.hp;
 
             if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
@@ -72,12 +82,16 @@ namespace Pxp
         [PunRPC]
         public void TakeDamage(int damage)
         {
+            if (!PhotonNetwork.IsMasterClient) return;
+            if (_isDead) return;
+
             Hp -= damage;
             if (Hp < 0) Hp = 0;
 
             if (Hp <= 0)
             {
                 DestroyEnemy();
+                _isDead = true;
             }
         }
 
@@ -97,7 +111,21 @@ namespace Pxp
 
         public void ReceiveAttack(int damage)
         {
-            photonView.RPC(nameof(TakeDamage), RpcTarget.All, damage);
+            photonView.RPC(nameof(TakeDamage), RpcTarget.MasterClient, damage);
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // 데이터 쓰기 (마스터 클라이언트에서 실행)
+                stream.SendNext(Hp);
+            }
+            else
+            {
+                // 데이터 읽기 (다른 클라이언트에서 실행)
+                Hp = (int) stream.ReceiveNext();
+            }
         }
     }
 }

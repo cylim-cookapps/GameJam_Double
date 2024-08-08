@@ -88,6 +88,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projectilePrefab: {fileID: 0}
+  attackRange: 5
+  attackCooldown: 1
 --- !u!210 &-4141314246000289464
 SortingGroup:
   m_ObjectHideFlags: 0

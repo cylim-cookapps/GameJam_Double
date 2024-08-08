@@ -91,6 +91,11 @@ namespace Pxp
         private float SpawnInterval = 0.3f;
         private int DeathCount = 100;
         private int WaveInterval = 20;
+        private int Summon_Default = 50;
+        private int Summon_Increase = 10;
+        private int LevelUp_Default = 50;
+        private int LevelUp_Increase = 100;
+
         private List<Wave> _waves = new();
 
         private List<Vector2> WayPoint0 = new List<Vector2>();
@@ -106,6 +111,10 @@ namespace Pxp
             SpawnInterval = SpecDataManager.Inst.Option.Get("SpawnInterval")!.value;
             DeathCount = (int) SpecDataManager.Inst.Option.Get("DeathCount")!.value;
             WaveInterval = (int) SpecDataManager.Inst.Option.Get("WaveInterval")!.value;
+            Summon_Default = (int) SpecDataManager.Inst.Option.Get("Summon_Default")!.value;
+            Summon_Increase = (int) SpecDataManager.Inst.Option.Get("Summon_Increase")!.value;
+            LevelUp_Default = (int) SpecDataManager.Inst.Option.Get("LevelUp_Default")!.value;
+            LevelUp_Increase = (int) SpecDataManager.Inst.Option.Get("LevelUp_Increase")!.value;
 
             foreach (var waypoint in _waypoints0)
             {
@@ -155,6 +164,7 @@ namespace Pxp
         {
             if (PhotonNetwork.IsMasterClient)
             {
+                StartCoroutine(GameLoop());
             }
         }
 
@@ -166,7 +176,6 @@ namespace Pxp
                     _waves.Add(wave);
             }
 
-            Wave = 0;
             while (true)
             {
                 if (_waves.Count <= _wave)
@@ -203,6 +212,11 @@ namespace Pxp
 
         public void SpawnHero()
         {
+            var needCoin = Summon_Default + (Summon_Increase * MyInGameUserData.Summon);
+
+            if (MyInGameUserData.Coin < needCoin)
+                return;
+
             var playerData = playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber];
 
             var indexList = new List<int>();
@@ -210,27 +224,48 @@ namespace Pxp
             {
                 if (playerData.Units[i].HeroId == 0)
                 {
-                    int index = i;
-                    indexList.Add(index);
+                    indexList.Add(i);
                 }
             }
 
             if (indexList.Count == 0)
                 return;
 
-            var batchIndex = indexList.RandomElement();
-            var list = playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber].Heroes;
-            var heroData = list.RandomElement();
+            var batchIndex = indexList[Random.Range(0, indexList.Count)];
+            var heroData = playerData.Heroes[Random.Range(0, playerData.Heroes.Count)];
 
-            var heroSpec = SpecDataManager.Inst.Hero.Get(heroData.HeroId);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                SpawnHeroInternal(heroData.HeroId, batchIndex, PhotonNetwork.LocalPlayer.ActorNumber, needCoin);
+            }
+            else
+            {
+                // MasterClient에게 영웅 소환 요청
+                photonView.RPC(nameof(RequestSpawnHero), RpcTarget.MasterClient, heroData.HeroId, batchIndex, PhotonNetwork.LocalPlayer.ActorNumber, needCoin);
+            }
+        }
+
+        [PunRPC]
+        private void RequestSpawnHero(int heroId, int batchIndex, int actorNumber, int needCoin)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                SpawnHeroInternal(heroId, batchIndex, actorNumber, needCoin);
+            }
+        }
+
+        private void SpawnHeroInternal(int heroId, int batchIndex, int actorNumber, int needCoin)
+        {
+            var heroSpec = SpecDataManager.Inst.Hero.Get(heroId);
 
             object[] instantiationData = new object[]
             {
-                heroData.HeroId,
+                heroId,
                 batchIndex,
+                actorNumber,
             };
 
-            var pos = PhotonNetwork.LocalPlayer.ActorNumber == 1 ? Batch0[batchIndex] : Batch1[batchIndex];
+            var pos = actorNumber == 1 ? Batch0[batchIndex] : Batch1[batchIndex];
 
             GameObject heroUnit = PhotonNetwork.InstantiateRoomObject(
                 ZString.Format("Hero/{0}", heroSpec.prefab_key),
@@ -241,10 +276,26 @@ namespace Pxp
             );
 
             spawnedHeroes.Add(heroUnit);
-            photonView.RPC(nameof(UnitSync), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, batchIndex, heroData.HeroId, 0);
+
+            // 생성 후 모든 클라이언트에 동기화
+            photonView.RPC(nameof(SyncHeroSpawn), RpcTarget.All, actorNumber, batchIndex, heroId, needCoin);
         }
 
-        public void UpgradeHero()
+        [PunRPC]
+        private void SyncHeroSpawn(int actorNumber, int batchIndex, int heroId, int needCoin)
+        {
+            playerDataDict[actorNumber].Summon++;
+            playerDataDict[actorNumber].Coin -= needCoin;
+            playerDataDict[actorNumber].Units[batchIndex].HeroId = heroId;
+            playerDataDict[actorNumber].Units[batchIndex].Grade = 0;
+
+            if (actorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                EventManager.Inst.OnEventGameCoin(MyInGameUserData.Coin);
+            }
+        }
+
+        public void UpgradeHero(int heroId)
         {
         }
 
@@ -292,13 +343,6 @@ namespace Pxp
             spawnedEnemy.Remove(obj);
             PhotonNetwork.Destroy(obj);
             MonsterCount = spawnedEnemy.Count;
-        }
-
-        [PunRPC]
-        public void UnitSync(int actor, int index, int heroId, int grade)
-        {
-            playerDataDict[actor].Units[index].HeroId = heroId;
-            playerDataDict[actor].Units[index].Grade = grade;
         }
 
         [PunRPC]

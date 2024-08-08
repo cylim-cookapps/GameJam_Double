@@ -26,15 +26,22 @@ namespace Pxp
                 InGameUserData userData = InGameUserData.FromHashtable(playerDataHash);
                 playerDataDict[userData.Index] = userData;
 
-                if (PhotonNetwork.IsMasterClient && playerDataDict.Count == LobbyManager.Inst.MaxPlayersPerRoom)
+                if (playerDataDict.Count == LobbyManager.Inst.MaxPlayersPerRoom)
                 {
-                    SendGameLoop();
+                    if (PhotonNetwork.IsMasterClient && _isGameStarted == false)
+                    {
+                        Debug.Log("GameLoop");
+                        StartCoroutine(GameLoop());
+                    }
+
+                    _isGameStarted = true;
                 }
             }
             else if (photonEvent.Code == EVENT_START)
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
+                    Debug.Log(PhotonNetwork.IsMasterClient);
                     StartCoroutine(GameLoop());
                 }
             }
@@ -75,6 +82,7 @@ namespace Pxp
                 UserManager.Inst.Info.Level,
                 startCoin,
                 0,
+                0,
                 myHeroes, myUnits
             );
 
@@ -83,8 +91,6 @@ namespace Pxp
 
         private void SendGameLoop()
         {
-            _isGameStarted = true;
-            PhotonNetwork.RaiseEvent(EVENT_START, null, new RaiseEventOptions {Receivers = ReceiverGroup.MasterClient}, SendOptions.SendReliable);
         }
 
         private void SendGameEnd()
