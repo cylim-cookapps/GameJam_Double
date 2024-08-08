@@ -41,6 +41,13 @@ MonoBehaviour:
   - RespawnSpaceship
   - NotifyGameStarted
   - NotifyMonsterSpawned
+  - UpdateWaypointIndex
+  - SyncHp
+  - TakeDamage
+  - TimeSync
+  - SetSecondRpc
+  - SetWaveRpc
+  - WaveSync
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

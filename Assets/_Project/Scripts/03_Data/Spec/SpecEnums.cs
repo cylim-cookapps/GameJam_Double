@@ -42,4 +42,16 @@ namespace Pxp.Data
     {
         None = 0,
     }
+
+    /// 컨텐츠 타입
+    public enum Enum_GambleReward
+    {
+        None = 0,
+        Gold = 1,
+        Hero_Slot_1 = 2,
+        Hero_Slot_2 = 3,
+        Hero_Slot_3 = 4,
+        Hero_Slot_4 = 5,
+        Hero_Slot_5 = 6,
+    }
 }
