@@ -10,12 +10,14 @@ namespace Pxp
         public int HeroId;
         public int Level;
         public int Star;
+        public int Upgrade;
 
-        public InGameHeroData(int heroId, int level, int star)
+        public InGameHeroData(int heroId, int level, int star, int upgrade)
         {
             HeroId = heroId;
             Level = level;
             Star = star;
+            Upgrade = upgrade;
         }
 
         // HeroData를 Hashtable로 변환 (Photon 네트워크 전송용)
@@ -26,6 +28,7 @@ namespace Pxp
                 {"HeroId", HeroId},
                 {"Level", Level},
                 {"Star", Star},
+                {"Upgrade", Upgrade}
             };
         }
 
@@ -35,7 +38,8 @@ namespace Pxp
             return new InGameHeroData(
                 (int) hash["HeroId"],
                 (int) hash["Level"],
-                (int) hash["Star"]
+                (int) hash["Star"],
+                (int) hash["Upgrade"]
             );
         }
     }

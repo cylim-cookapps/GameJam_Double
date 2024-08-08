@@ -30,5 +30,16 @@ namespace Pxp
 
         public void OnEventGameTimer(int sec) => EventGameTimer.Dispatch(sec);
         public readonly Relay<int> EventGameTimer = new();
+
+        public void OnEventMonsterCount(int count) => EventMonsterCount.Dispatch(count);
+        public readonly Relay<int> EventMonsterCount = new();
+
+        public void OnEventGameCoin(int coin) => EventGameCoin.Dispatch(coin);
+        public readonly Relay<int> EventGameCoin = new();
+
+        public void OnEventGameChip(int chip) => EventGameChip.Dispatch(chip);
+        public readonly Relay<int> EventGameChip = new();
+
+
     }
 }

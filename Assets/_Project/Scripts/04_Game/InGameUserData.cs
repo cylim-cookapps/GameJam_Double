@@ -12,15 +12,21 @@ namespace Pxp
         public string Id;
         public string Name;
         public int Level;
+        public int Coin;
+        public int Chip;
         public List<InGameHeroData> Heroes;
+        public List<InGameUnitData> Units;
 
-        public InGameUserData(int index, string id, string name, int level, List<InGameHeroData> heroes)
+        public InGameUserData(int index, string id, string name, int level, int coin, int chip, List<InGameHeroData> heroes, List<InGameUnitData> units)
         {
             Index = index;
             Id = id;
             Name = name;
             Level = level;
+            Coin = coin;
+            Chip = chip;
             Heroes = heroes;
+            Units = units;
         }
 
         // PlayerData를 Hashtable로 변환 (Photon 네트워크 전송용)
@@ -31,7 +37,9 @@ namespace Pxp
                 {"Index", Index},
                 {"Id", Id},
                 {"Name", Name},
-                {"Level", Level}
+                {"Level", Level},
+                {"Coin", Coin},
+                {"Chip", Chip}
             };
 
             if (Heroes != null && Heroes.Count > 0)
@@ -43,6 +51,17 @@ namespace Pxp
                 }
 
                 playerHash.Add("Heroes", heroesArray);
+            }
+
+            if (Units != null && Units.Count > 0)
+            {
+                object[] unitsArray = new object[Units.Count];
+                for (int i = 0; i < Units.Count; i++)
+                {
+                    unitsArray[i] = Units[i].ToHashtable();
+                }
+
+                playerHash.Add("Units", unitsArray);
             }
 
             return playerHash;
@@ -64,12 +83,28 @@ namespace Pxp
                 }
             }
 
+            List<InGameUnitData> units = new List<InGameUnitData>();
+            if (hash.ContainsKey("Units"))
+            {
+                object[] unitsArray = (object[]) hash["Units"];
+                foreach (object unitObj in unitsArray)
+                {
+                    if (unitObj is Hashtable unitHash)
+                    {
+                        units.Add(InGameUnitData.FromHashtable(unitHash));
+                    }
+                }
+            }
+
             return new InGameUserData(
                 (int) hash["Index"],
                 (string) hash["Id"],
                 (string) hash["Name"],
                 (int) hash["Level"],
-                heroes
+                (int) hash["Coin"],
+                (int) hash["Chip"],
+                heroes,
+                units
             );
         }
     }

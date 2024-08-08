@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using Pxp.Data;
 using UnityEngine;
 
 namespace Pxp
@@ -10,7 +11,8 @@ namespace Pxp
     {
         private const byte PLAYER_LOADED_LEVEL = 0;
         private const byte PLAYER_DATA_EVENT = 1;
-        private const byte START_WAVE = 2;
+        private const byte EVENT_START = 2;
+        private const byte EVENT_END = 3;
 
         private void OnEvent(EventData photonEvent)
         {
@@ -29,12 +31,22 @@ namespace Pxp
                     SendGameLoop();
                 }
             }
-            else if (photonEvent.Code == START_WAVE)
+            else if (photonEvent.Code == EVENT_START)
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
                     StartCoroutine(GameLoop());
                 }
+            }
+            else if (photonEvent.Code == EVENT_END)
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    StopAllCoroutines();
+                    _isGameStarted = false;
+                }
+
+                GameEnd();
             }
         }
 
@@ -45,17 +57,25 @@ namespace Pxp
             for (int i = 0; i < 5; i++)
             {
                 var heroData = UserManager.Inst.Hero.GetEquippedHero(i);
-                myHeroes.Add(new InGameHeroData(heroData.Id, heroData.Level, heroData.Star));
+                myHeroes.Add(new InGameHeroData(heroData.Id, heroData.Level, heroData.Star, 0));
             }
 
-            Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber);
+            List<InGameUnitData> myUnits = new List<InGameUnitData>();
+            for (int i = 0; i < 15; i++)
+            {
+                myUnits.Add(new InGameUnitData(0, 0));
+            }
+
+            var startCoin = (int) SpecDataManager.Inst.Option.Get("StartCoin").value;
 
             InGameUserData myData = new InGameUserData(
                 PhotonNetwork.LocalPlayer.ActorNumber,
                 UserManager.Inst.NickName,
                 UserManager.Inst.PlayerId,
                 UserManager.Inst.Info.Level,
-                myHeroes
+                startCoin,
+                0,
+                myHeroes, myUnits
             );
 
             PhotonNetwork.RaiseEvent(PLAYER_DATA_EVENT, myData.ToHashtable(), new RaiseEventOptions {Receivers = ReceiverGroup.All}, SendOptions.SendReliable);
@@ -64,7 +84,12 @@ namespace Pxp
         private void SendGameLoop()
         {
             _isGameStarted = true;
-            PhotonNetwork.RaiseEvent(START_WAVE, null, new RaiseEventOptions {Receivers = ReceiverGroup.MasterClient}, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent(EVENT_START, null, new RaiseEventOptions {Receivers = ReceiverGroup.MasterClient}, SendOptions.SendReliable);
+        }
+
+        private void SendGameEnd()
+        {
+            PhotonNetwork.RaiseEvent(EVENT_END, null, new RaiseEventOptions {Receivers = ReceiverGroup.All}, SendOptions.SendReliable);
         }
     }
 }

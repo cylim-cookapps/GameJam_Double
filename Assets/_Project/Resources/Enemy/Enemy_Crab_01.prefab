@@ -695,6 +695,7 @@ GameObject:
   - component: {fileID: 5386216190578291155}
   - component: {fileID: 6275447532296318559}
   - component: {fileID: 2193098490429630338}
+  - component: {fileID: 8934467729999576213}
   m_Layer: 0
   m_Name: Enemy_Crab_01
   m_TagString: Untagged
@@ -750,7 +751,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 5386216190578291155}
   - {fileID: 2193098490429630338}
   sceneViewId: 0
   InstantiationId: 0
@@ -771,6 +771,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!210 &8934467729999576213
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4919738787461954281}
+  m_Enabled: 1
+  m_SortingLayerID: -1829370247
+  m_SortingLayer: 3
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &6028482965691571194
 GameObject:
   m_ObjectHideFlags: 0

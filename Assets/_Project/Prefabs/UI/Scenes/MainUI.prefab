@@ -2631,6 +2631,46 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2208680722217188902, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2208680722217188902, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2208680722217188902, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2208680722217188902, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2208680722217188902, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829030155435009896, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829030155435009896, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829030155435009896, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829030155435009896, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829030155435009896, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5145687241272845300, guid: 63b6f895137182844aa1405a86f916c9, type: 3}
       propertyPath: m_Name
       value: HomeUI

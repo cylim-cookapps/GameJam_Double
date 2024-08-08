@@ -1,8 +1,11 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
 {
@@ -35,6 +38,14 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
     {
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LeaveLobby();
+    }
+
+    public async UniTaskVoid EndGame()
+    {
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LeaveLobby();
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
+        SceneManager.LoadScene("Lobby");
     }
 
     public void CreatePrivateRoom()

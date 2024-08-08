@@ -17,7 +17,7 @@ namespace Pxp
         private List<UIHeroItem> _equippedHeroes;
 
         [SerializeField, GetComponentInChildrenName]
-        private Button _btnStart;
+        private Button _btnStart, _btnHell;
 
         [SerializeField, GetComponentInChildrenName]
         private Button _btnPass, _btnPack, _btnVip, _btnBoxOpen, _btnQuest, _btnAttendance, _btnRanking;
@@ -36,6 +36,7 @@ namespace Pxp
             _btnAttendance.AddListener(OnClickAttendance);
             _btnRanking.AddListener(OnClickRanking);
 
+            _btnHell.AddListener(OnClickHellMode);
             _btnStart.AddListener(OnClickGameStart);
 
             _textNick.SetText(UserManager.Inst.NickName);
@@ -60,6 +61,11 @@ namespace Pxp
         #region Event
 
         private void OnClickGameStart()
+        {
+            LobbyManager.Inst.QuickMatch(false).Forget();
+        }
+
+        private void OnClickHellMode()
         {
             LobbyManager.Inst.QuickMatch(true).Forget();
         }

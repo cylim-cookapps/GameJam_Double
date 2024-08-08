@@ -2,16 +2,21 @@ using System.Collections.Generic;
 using Photon.Pun;
 using Pxp.Data;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Pxp
 {
-    internal class Enemy : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
+    public class EnemyUnit : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
     {
         public int Hp { get; private set; }
         public int MaxHp { get; private set; }
 
-        private Monster _data;
-        private List<Transform> _waypoints;
+        public int Coin { get; private set; }
+        public int Chip { get; private set; }
+        public Enum_monsterType MonsterType { get; private set; }
+
+        public Monster MonsterData { get; private set; }
+        private List<Vector2> _waypoints;
 
         [SerializeField]
         private int currentWaypointIndex = 0;
@@ -30,7 +35,7 @@ namespace Pxp
 
         private void MoveToNextWaypoint()
         {
-            Vector2 targetPosition = _waypoints[currentWaypointIndex].position;
+            Vector2 targetPosition = _waypoints[currentWaypointIndex];
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, 1 * Time.deltaTime);
 
             if ((Vector2) transform.position == targetPosition)
@@ -49,10 +54,15 @@ namespace Pxp
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             object[] instantiationData = info.photonView.InstantiationData;
-            var id = (int) instantiationData[0];
-            _data = SpecDataManager.Inst.Monster.Get(id);
-            Hp = MaxHp = _data.hp;
-            _waypoints = GameManager.Inst.Waypoints;
+
+            MonsterData = SpecDataManager.Inst.Monster.Get((int) instantiationData[0]);
+            Coin = (int) instantiationData[1];
+            Chip = (int) instantiationData[2];
+            MonsterType = MonsterData.monsterType;
+            _waypoints = new List<Vector2>((Vector2[]) instantiationData[3]);
+
+            Hp = MaxHp = MonsterData.hp;
+
             if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
             {
                 transform.rotation = Quaternion.Euler(0, 0, -180);
@@ -75,7 +85,7 @@ namespace Pxp
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                PhotonNetwork.Destroy(photonView);
+                GameManager.Inst.DeadEnemy(this);
                 OnEnemyDestroyed();
             }
         }
