@@ -731,6 +731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a617a4080332b64ea51d62f3c834f2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hp: 0
   currentWaypointIndex: 0
 --- !u!114 &6275447532296318559
 MonoBehaviour:
@@ -751,6 +752,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
+  - {fileID: 5386216190578291155}
   - {fileID: 2193098490429630338}
   sceneViewId: 0
   InstantiationId: 0

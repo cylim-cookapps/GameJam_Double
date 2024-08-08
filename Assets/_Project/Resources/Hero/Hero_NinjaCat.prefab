@@ -87,7 +87,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 154ebcbb4ddbed943ac082f39c8c8ab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectilePrefab: {fileID: 0}
+  _projectilePrefab: {fileID: 8604741183345454186, guid: c1db5281d7ca34e408b14d95deff3f3f, type: 3}
+  attackRange: 5
+  attackCooldown: 1
 --- !u!210 &-8082494114757338306
 SortingGroup:
   m_ObjectHideFlags: 0

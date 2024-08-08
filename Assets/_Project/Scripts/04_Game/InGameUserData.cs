@@ -14,10 +14,11 @@ namespace Pxp
         public int Level;
         public int Coin;
         public int Chip;
+        public int Summon;
         public List<InGameHeroData> Heroes;
         public List<InGameUnitData> Units;
 
-        public InGameUserData(int index, string id, string name, int level, int coin, int chip, List<InGameHeroData> heroes, List<InGameUnitData> units)
+        public InGameUserData(int index, string id, string name, int level, int coin, int chip, int summon, List<InGameHeroData> heroes, List<InGameUnitData> units)
         {
             Index = index;
             Id = id;
@@ -25,6 +26,7 @@ namespace Pxp
             Level = level;
             Coin = coin;
             Chip = chip;
+            Summon = summon;
             Heroes = heroes;
             Units = units;
         }
@@ -39,7 +41,8 @@ namespace Pxp
                 {"Name", Name},
                 {"Level", Level},
                 {"Coin", Coin},
-                {"Chip", Chip}
+                {"Chip", Chip},
+                {"Summon", Summon}
             };
 
             if (Heroes != null && Heroes.Count > 0)
@@ -103,6 +106,7 @@ namespace Pxp
                 (int) hash["Level"],
                 (int) hash["Coin"],
                 (int) hash["Chip"],
+                (int) hash["Summon"],
                 heroes,
                 units
             );

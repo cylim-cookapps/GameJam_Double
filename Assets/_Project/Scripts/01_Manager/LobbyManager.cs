@@ -19,6 +19,9 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
 
     public async UniTask Connect()
     {
+        PhotonNetwork.SendRate = 30; // 초당 30회 상태 업데이트 전송
+        PhotonNetwork.SerializationRate = 30; // 초당 30회 OnPhotonSerializeView 호출
+
         if (PhotonNetwork.IsConnected)
             PhotonNetwork.JoinLobby();
         else
