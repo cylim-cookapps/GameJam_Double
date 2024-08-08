@@ -38,7 +38,7 @@ namespace Pxp
 
             if (EquipHeroes == null)
             {
-                EquipHeroes = new List<int>() {0, 0, 0, 0, 0};
+                EquipHeroes = new List<int>() {1, 2, 3, 4, 5};
             }
 
             foreach (var hero in Heroes)
@@ -87,6 +87,17 @@ namespace Pxp
         public UserHeroItem GetEquippedHero(int index)
         {
             return GetHero(EquipHeroes[index]);
+        }
+
+        public bool EnterBattle()
+        {
+            foreach (var hero in EquipHeroes)
+            {
+                if (hero == 0)
+                    return false;
+            }
+
+            return true;
         }
 
         #region Editor

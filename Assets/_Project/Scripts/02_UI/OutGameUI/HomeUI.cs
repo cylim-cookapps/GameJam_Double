@@ -62,11 +62,17 @@ namespace Pxp
 
         private void OnClickGameStart()
         {
+            if (UserManager.Inst.Hero.EnterBattle() == false)
+                return;
+
             LobbyManager.Inst.QuickMatch(false).Forget();
         }
 
         private void OnClickHellMode()
         {
+            if (UserManager.Inst.Hero.EnterBattle() == false)
+                return;
+
             LobbyManager.Inst.QuickMatch(true).Forget();
         }
 
