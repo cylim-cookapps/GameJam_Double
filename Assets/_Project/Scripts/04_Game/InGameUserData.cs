@@ -8,12 +8,16 @@ namespace Pxp
     [Serializable]
     public class InGameUserData
     {
+        public int Index;
+        public string Id;
         public string Name;
         public int Level;
         public List<InGameHeroData> Heroes;
 
-        public InGameUserData(string name, int level, List<InGameHeroData> heroes)
+        public InGameUserData(int index, string id, string name, int level, List<InGameHeroData> heroes)
         {
+            Index = index;
+            Id = id;
             Name = name;
             Level = level;
             Heroes = heroes;
@@ -24,8 +28,10 @@ namespace Pxp
         {
             Hashtable playerHash = new Hashtable()
             {
-                {"PlayerName", Name},
-                {"PlayerLevel", Level},
+                {"Index", Index},
+                {"Id", Id},
+                {"Name", Name},
+                {"Level", Level}
             };
 
             if (Heroes != null && Heroes.Count > 0)
@@ -59,8 +65,10 @@ namespace Pxp
             }
 
             return new InGameUserData(
-                (string) hash["PlayerName"],
-                (int) hash["PlayerLevel"],
+                (int) hash["Index"],
+                (string) hash["Id"],
+                (string) hash["Name"],
+                (int) hash["Level"],
                 heroes
             );
         }

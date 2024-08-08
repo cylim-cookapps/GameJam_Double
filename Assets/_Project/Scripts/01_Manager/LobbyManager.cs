@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
 {
-    private const int MaxPlayersPerRoom = 2;
+    public int MaxPlayersPerRoom => _isSingleMode ? 1 : 2;
+    private bool _isSingleMode = false;
 
     private void Start()
     {
@@ -23,8 +24,9 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
         await UniTask.WaitUntil(() => PhotonNetwork.InLobby);
     }
 
-    public async UniTaskVoid QuickMatch()
+    public async UniTaskVoid QuickMatch(bool isSingleMode)
     {
+        _isSingleMode = isSingleMode;
         await Connect();
         PhotonNetwork.JoinRandomRoom();
     }
@@ -41,7 +43,7 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
 
         RoomOptions roomOptions = new RoomOptions
         {
-            MaxPlayers = 2,
+            MaxPlayers = MaxPlayersPerRoom,
             IsVisible = true,
             IsOpen = true
         };
@@ -56,34 +58,34 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
 
     public override void OnConnectedToMaster()
     {
-        SetStatus("Connected to Master");
+        Debug.Log("Connected to Master");
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnJoinedLobby()
     {
-        SetStatus("Joined Lobby");
+        Debug.Log("Joined Lobby");
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        SetStatus("Failed to join random room. Creating a new one...");
+        Debug.Log("Failed to join random room. Creating a new one...");
         CreatePrivateRoom();
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        SetStatus("Failed to create room: " + message);
+        Debug.Log("Failed to create room: " + message);
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        SetStatus("Failed to join room: " + message);
+        Debug.Log("Failed to join room: " + message);
     }
 
     public override void OnJoinedRoom()
     {
-        SetStatus("Joined Room: " + PhotonNetwork.CurrentRoom.Name);
+        Debug.Log("Joined Room: " + PhotonNetwork.CurrentRoom.Name);
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == MaxPlayersPerRoom)
         {
@@ -95,8 +97,8 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            SetStatus("Loading Game Scene...");
-            PhotonNetwork.LoadLevel("Battle");
+            Debug.Log("Loading Game Scene...");
+            PhotonNetwork.LoadLevel("Game");
         }
     }
 
@@ -112,16 +114,11 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
     {
         if (PhotonNetwork.InRoom)
         {
-            SetStatus("Current Room Name: " + PhotonNetwork.CurrentRoom.Name);
+            Debug.Log("Current Room Name: " + PhotonNetwork.CurrentRoom.Name);
         }
         else
         {
-            SetStatus("Not in a room");
+            Debug.Log("Not in a room");
         }
-    }
-
-    private void SetStatus(string message)
-    {
-        Debug.Log(message);
     }
 }

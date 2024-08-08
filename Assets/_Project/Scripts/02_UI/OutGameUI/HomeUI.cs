@@ -61,7 +61,7 @@ namespace Pxp
 
         private void OnClickGameStart()
         {
-            LobbyManager.Inst.QuickMatch().Forget();
+            LobbyManager.Inst.QuickMatch(true).Forget();
         }
 
         private void OnClickPass()

@@ -46,7 +46,7 @@ namespace Pxp.Data
     }
 
     [GeneratorSpecData]
-    public partial class Ingame
+    public partial class Wave
     {
         [GeneratorId(nameof(id), typeof(int))]
         public int id;
@@ -55,6 +55,7 @@ namespace Pxp.Data
         /// 웨이브
         public int wave;
         /// 등장 몬스터
+        [GeneratorIdToData(nameof(monsterIndex), typeof(Monster))]
         public int monsterIndex;
         /// 등장 몬스터 수
         public int monsterCount;
@@ -85,6 +86,8 @@ namespace Pxp.Data
         public int chipAmount;
         /// 획득 effect
         public int effectId;
+        /// 프리팹
+        public string prefab_key;
     }
 
     [GeneratorSpecData]
@@ -100,10 +103,13 @@ namespace Pxp.Data
     }
 
     [GeneratorSpecData]
-    public partial class Effect
+    public partial class relic
     {
         [GeneratorId(nameof(id), typeof(int))]
         public int id;
+        public string relicName;
+        /// 수치 값은 동적으로 안받아오고 깡 text로 쓸게요
+        public string relicDescription;
         public float value_default;
         public float value_increase;
     }
@@ -116,6 +122,8 @@ namespace Pxp.Data
         /// 초기 영웅 설정
         public bool hero_unlock;
         public string hero_name;
+        /// 프리팹
+        public string prefab_key;
         /// 희귀도
         public global::Pxp.Data.Enum_TierType tier;
         /// 일러스트
@@ -130,6 +138,8 @@ namespace Pxp.Data
         public int attack_levelUp;
         /// 영웅의 기본 기능과 관련된 스킬 아이디 호출
         public int skill_default;
+        /// 성급up에 필요한 영웅 개수. 가장 첫번째는 해금에 필요한 개수
+        public int[] starValue = global::System.Array.Empty<int>();
         /// 성급에 따라 획득하는 effect
         public int skill_star_1;
         public int skill_star_2;
@@ -143,12 +153,13 @@ namespace Pxp.Data
     {
         [GeneratorId(nameof(id), typeof(int))]
         public int id;
+        /// 영웅의 기본 공격 패턴 및 성급에 따라 해금되는 스킬의 디스크립션. (구현은 대역대 90XX ,  9101  , 9301   만 합니다) / 수치 값은 동적으로 안받아오고 깡 text로 쓸게요
+        public string heroSkillDescription;
         /// << 기믹 관련 값들 >> 주사위 마다 다르게 적용됨
         public float skillValue_1;
         public float skillValue_2;
         public float skillValue_3;
         public float skillValue_4;
         public float skillValue_5;
-        public string descriptionKey;
     }
 }
