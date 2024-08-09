@@ -24,6 +24,9 @@ namespace Pxp
         public void OnEventToast(string value) => EventToast.Dispatch(value);
         public readonly Relay<string> EventToast = new();
 
+        public void OnEventMatch() => EventMatch.Dispatch();
+        public readonly Relay EventMatch = new();
+
 
         public void OnEventWave(int wave) => EventWave.Dispatch(wave);
         public readonly Relay<int> EventWave = new();

@@ -2,9 +2,10 @@ using System;
 using Cysharp.Threading.Tasks;
 using Photon.Pun;
 using Photon.Realtime;
-using UnityEngine;
+using Pxp;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
 public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
@@ -32,6 +33,7 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
 
     public async UniTaskVoid QuickMatch(bool isSingleMode)
     {
+        MainUI.Inst.SetIndicator(true);
         _isSingleMode = isSingleMode;
         await Connect();
         PhotonNetwork.JoinRandomRoom();
@@ -100,6 +102,8 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
     public override void OnJoinedRoom()
     {
         Debug.Log("Joined Room: " + PhotonNetwork.CurrentRoom.Name);
+        MainUI.Inst.SetIndicator(false);
+        PopupManager.Inst.GetPopup<Popup_Wait>().Show();
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == MaxPlayersPerRoom)
         {
@@ -111,7 +115,7 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("Loading Game Scene...");
+            EventManager.Inst.OnEventMatch();
             PhotonNetwork.LoadLevel("Game");
         }
     }
