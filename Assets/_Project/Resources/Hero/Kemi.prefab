@@ -119,6 +119,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kemi
       objectReference: {fileID: 0}
+    - target: {fileID: 2577440794172809551, guid: d083cd0855b6be94e827c3dbadd4c9e0, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[0].Name
+      value: Attack
+      objectReference: {fileID: 0}
     - target: {fileID: 7122353945544406666, guid: d083cd0855b6be94e827c3dbadd4c9e0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -162,7 +166,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3445960031655203825, guid: d083cd0855b6be94e827c3dbadd4c9e0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8693173199776491797}
   m_SourcePrefab: {fileID: 100100000, guid: d083cd0855b6be94e827c3dbadd4c9e0, type: 3}
 --- !u!95 &2035841006420051717 stripped
 Animator:
@@ -174,12 +181,30 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2577440794172809551, guid: d083cd0855b6be94e827c3dbadd4c9e0, type: 3}
   m_PrefabInstance: {fileID: 34681875198518280}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 3434474787959388153}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3434474787959388153 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3445960031655203825, guid: d083cd0855b6be94e827c3dbadd4c9e0, type: 3}
+  m_PrefabInstance: {fileID: 34681875198518280}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8693173199776491797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3434474787959388153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5796a24f813cb4343878c5d03143f50a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heroUnit: {fileID: 1143500042669073720}
 --- !u!4 &7110227056844903042 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7122353945544406666, guid: d083cd0855b6be94e827c3dbadd4c9e0, type: 3}

@@ -87,12 +87,14 @@ namespace Pxp
 
             if (Time.time - lastAttackTime >= _attackCooldown)
             {
-                TryAttack();
+                lastAttackTime = Time.time;
             }
         }
 
-        private void TryAttack()
+        public void TryAttack()
         {
+            if (!PhotonNetwork.IsMasterClient) return;
+
             EnemyUnit nearestMonster = FindNearestMonster();
             if (nearestMonster != null && Vector3.Distance(transform.position, nearestMonster.transform.position) <= _attackRange)
             {
@@ -101,13 +103,13 @@ namespace Pxp
                     ShootProjectile(nearestMonster);
                 else
                     MeleeAttack(nearestMonster);
-
-                lastAttackTime = Time.time;
             }
         }
 
         private void MeleeAttack(EnemyUnit target)
         {
+            if (!PhotonNetwork.IsMasterClient) return;
+
             _hitPrefab.gameObject.SetActive(false);
             _hitPrefab.gameObject.SetActive(true);
             target.TakeDamage(_attack);

@@ -25,10 +25,11 @@ namespace Pxp
 
         private async UniTaskVoid AppInitializeProcess()
         {
-            _textState.SetText("테이블 로드중");
+            _textState.SetText("테이블 로드 중..");
             await SpecDataManager.Inst.LoadSpecData();
-            _textState.SetText("로그인 중");
+            _textState.SetText("로그인 중..");
             await UserManager.Inst.OnInitialize();
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
             _goLoading.SetActive(true);
             await SceneManager.LoadSceneAsync(1,LoadSceneMode.Additive);
             await UniTask.Delay(TimeSpan.FromSeconds(1));

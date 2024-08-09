@@ -92,6 +92,9 @@ MonoBehaviour:
   _anim: {fileID: 8829928592846152091}
   _hitPrefab: {fileID: 0}
   attackType: 0
+  _attack: 0
+  _attackRange: 5
+  _attackCooldown: 1
 --- !u!210 &2911260260241986243
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -112,6 +115,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9060881049704451178}
     m_Modifications:
+    - target: {fileID: 1180863895262779853, guid: efc80a99c7be67946b96dda114c32bcd, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1180863895262779853, guid: efc80a99c7be67946b96dda114c32bcd, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[0].Name
+      value: Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 1180863895262779853, guid: efc80a99c7be67946b96dda114c32bcd, type: 3}
+      propertyPath: m_SynchronizeParameters.Array.data[0].Type
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 2368609219548804899, guid: efc80a99c7be67946b96dda114c32bcd, type: 3}
       propertyPath: m_Name
       value: Lunabelle
@@ -159,14 +174,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8941845471751804949, guid: efc80a99c7be67946b96dda114c32bcd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4748723333699541302}
   m_SourcePrefab: {fileID: 100100000, guid: efc80a99c7be67946b96dda114c32bcd, type: 3}
 --- !u!114 &1724597262708741360 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1180863895262779853, guid: efc80a99c7be67946b96dda114c32bcd, type: 3}
   m_PrefabInstance: {fileID: 543885961363541309}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 8906875908914599208}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
@@ -182,3 +200,21 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 9009011403546012838, guid: efc80a99c7be67946b96dda114c32bcd, type: 3}
   m_PrefabInstance: {fileID: 543885961363541309}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8906875908914599208 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8941845471751804949, guid: efc80a99c7be67946b96dda114c32bcd, type: 3}
+  m_PrefabInstance: {fileID: 543885961363541309}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4748723333699541302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906875908914599208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5796a24f813cb4343878c5d03143f50a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heroUnit: {fileID: 7598117177757013136}
