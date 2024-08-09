@@ -29,6 +29,7 @@ namespace Pxp
             await SpecDataManager.Inst.LoadSpecData();
             _textState.SetText("로그인 중");
             await UserManager.Inst.OnInitialize();
+            await UniTask.Delay(TimeSpan.FromSeconds(3));
             _goLoading.SetActive(true);
             await SceneManager.LoadSceneAsync(1,LoadSceneMode.Additive);
             await UniTask.Delay(TimeSpan.FromSeconds(1));

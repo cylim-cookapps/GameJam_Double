@@ -87,12 +87,15 @@ namespace Pxp
 
             if (Time.time - lastAttackTime >= _attackCooldown)
             {
-                TryAttack();
+                _anim.SetTrigger("Attack");
+                lastAttackTime = Time.time;
             }
         }
 
-        private void TryAttack()
+        public void TryAttack()
         {
+            if (!PhotonNetwork.IsMasterClient) return;
+
             EnemyUnit nearestMonster = FindNearestMonster();
             if (nearestMonster != null && Vector3.Distance(transform.position, nearestMonster.transform.position) <= _attackRange)
             {
@@ -101,8 +104,6 @@ namespace Pxp
                     ShootProjectile(nearestMonster);
                 else
                     MeleeAttack(nearestMonster);
-
-                lastAttackTime = Time.time;
             }
         }
 
