@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 9060881049704451178}
   - component: {fileID: 6275447532296318559}
   - component: {fileID: 2193098490429630338}
-  - component: {fileID: -8704795140864670241}
   - component: {fileID: 6493328340707584037}
+  - component: {fileID: 3891112198357235144}
   m_Layer: 0
   m_Name: R3VI
   m_TagString: Untagged
@@ -76,25 +76,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &-8704795140864670241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4919738787461954281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 154ebcbb4ddbed943ac082f39c8c8ab4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _projectilePrefab: {fileID: 0}
-  _anim: {fileID: 218329311736410721}
-  _hitPrefab: {fileID: 0}
-  attackType: 0
-  _attack: 0
-  _attackRange: 5
-  _attackCooldown: 1
 --- !u!210 &6493328340707584037
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -107,6 +88,26 @@ SortingGroup:
   m_SortingLayer: 3
   m_SortingOrder: 1
   m_SortAtRoot: 0
+--- !u!114 &3891112198357235144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4919738787461954281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8831fc46cc74e4f46b7594520d7173cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectilePrefab: {fileID: 7580988035724252425, guid: fc79efcb69c84ac4ba9eececdd3fcc13, type: 3}
+  _anim: {fileID: 218329311736410721}
+  _hitPrefab: {fileID: 0}
+  attackType: 0
+  _attack: 0
+  _attackRange: 5
+  _attackCooldown: 1
+  _projectilePrefab2: {fileID: 8199953636537726125, guid: 53db88da22f5f594598cf06958d2e496, type: 3}
 --- !u!1001 &5528260704222967704
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -204,7 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5796a24f813cb4343878c5d03143f50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _heroUnit: {fileID: -8704795140864670241}
+  _heroUnit: {fileID: 3891112198357235144}
 --- !u!4 &6235059238033732580 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1891285917754279036, guid: de7a5813d9257c34991468bb513203fd, type: 3}

@@ -63,7 +63,7 @@ namespace Pxp
         #region Attack
 
         [SerializeField]
-        private GameObject _projectilePrefab;
+        protected GameObject _projectilePrefab;
 
         [SerializeField, GetComponentInChildrenName]
         private Animator _anim;
@@ -82,12 +82,15 @@ namespace Pxp
         private void Update()
         {
             if (!PhotonNetwork.IsMasterClient) return;
-            if (_projectilePrefab == null)
-                return;
 
             if (Time.time - lastAttackTime >= _attackCooldown)
             {
                 lastAttackTime = Time.time;
+                EnemyUnit nearestMonster = FindNearestMonster();
+                if (nearestMonster != null && Vector3.Distance(transform.position, nearestMonster.transform.position) <= _attackRange)
+                {
+                    _anim.SetTrigger("Attack");
+                }
             }
         }
 
@@ -98,7 +101,6 @@ namespace Pxp
             EnemyUnit nearestMonster = FindNearestMonster();
             if (nearestMonster != null && Vector3.Distance(transform.position, nearestMonster.transform.position) <= _attackRange)
             {
-                _anim.SetTrigger("Attack");
                 if (attackType == Enum_AttackType.Projectile)
                     ShootProjectile(nearestMonster);
                 else
@@ -106,18 +108,22 @@ namespace Pxp
             }
         }
 
-        private void MeleeAttack(EnemyUnit target)
+        protected virtual void MeleeAttack(EnemyUnit target)
         {
             if (!PhotonNetwork.IsMasterClient) return;
-
-            _hitPrefab.gameObject.SetActive(false);
-            _hitPrefab.gameObject.SetActive(true);
-            target.TakeDamage(_attack);
+            if (target != null)
+            {
+                _hitPrefab.transform.position = target.transform.position;
+                _hitPrefab.gameObject.SetActive(false);
+                _hitPrefab.gameObject.SetActive(true);
+                target.TakeDamage(_attack);
+            }
         }
 
-        private void ShootProjectile(EnemyUnit target)
+        protected virtual void ShootProjectile(EnemyUnit target)
         {
             if (!PhotonNetwork.IsMasterClient) return;
+            if (_projectilePrefab == null) return;
 
             Vector3 spawnPosition = transform.position;
             object[] instantiationData = new object[]
@@ -135,24 +141,6 @@ namespace Pxp
                 0,
                 instantiationData
             );
-
-            photonView.RPC("OnProjectileCreated", RpcTarget.All, projectileObj.GetComponent<PhotonView>().ViewID, target.photonView.ViewID);
-        }
-
-        [PunRPC]
-        private void OnProjectileCreated(int projectileViewID, int targetViewID)
-        {
-            PhotonView projectileView = PhotonView.Find(projectileViewID);
-            PhotonView targetView = PhotonView.Find(targetViewID);
-
-            if (projectileView != null && targetView != null)
-            {
-                Projectile projectile = projectileView.GetComponent<Projectile>();
-                if (projectile != null)
-                {
-                    projectile.SetTarget(targetView.gameObject);
-                }
-            }
         }
 
         private EnemyUnit FindNearestMonster()
