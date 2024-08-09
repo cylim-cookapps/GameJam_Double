@@ -19,7 +19,7 @@ namespace Pxp
         {
             AppInitializeProcess().Forget();
 
-            AudioController.PlayMusic("BGM_Title");
+            //AudioController.PlayMusic("BGM_Title");
             AudioController.Play("VOX_Title");
         }
 
