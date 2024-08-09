@@ -17,7 +17,8 @@ namespace Pxp
             object[] instantiationData = new object[]
             {
                 target.photonView.ViewID,
-                _attack
+                _attack,
+                Owner
             };
 
             PhotonNetwork.InstantiateRoomObject(

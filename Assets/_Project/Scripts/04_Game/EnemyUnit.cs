@@ -101,6 +101,7 @@ namespace Pxp
             if (PhotonNetwork.IsMasterClient)
             {
                 GameManager.Inst.DeadEnemy(this);
+                AudioController.Play("SFX_DestroyEnemy");
                 OnEnemyDestroyed();
             }
         }

@@ -54,6 +54,7 @@ MonoBehaviour:
   hitEffectTime: 1.4
   projectile: {fileID: 283608846517976249}
   effect: {fileID: 9159606784888316538}
+  isFollow: 0
 --- !u!114 &-1831493589263351210
 MonoBehaviour:
   m_ObjectHideFlags: 0

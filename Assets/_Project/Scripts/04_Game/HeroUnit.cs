@@ -11,6 +11,9 @@ namespace Pxp
 {
     public class HeroUnit : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
     {
+        [SerializeField, GetComponentInChildrenOnly]
+        private PhotonAnimatorView _photonAnimatorView;
+
         public int HeroId { get; private set; }
         public int Index { get; private set; }
         public int Owner { get; private set; }
@@ -46,6 +49,7 @@ namespace Pxp
             _attack = heroData.attack;
 
             SetInitialRotation();
+            SetupPhotonAnimatorView();
         }
 
         private void SetInitialRotation()
@@ -58,6 +62,13 @@ namespace Pxp
             {
                 transform.rotation = Quaternion.identity; // 기본 방향 (오른쪽)
             }
+        }
+
+        private void SetupPhotonAnimatorView()
+        {
+            // 동기화할 애니메이션 파라미터 설정
+            _photonAnimatorView.SetLayerSynchronized(0, PhotonAnimatorView.SynchronizeType.Continuous);
+            _photonAnimatorView.SetParameterSynchronized("Attack", PhotonAnimatorView.ParameterType.Trigger, PhotonAnimatorView.SynchronizeType.Discrete);
         }
 
         #region Attack
@@ -130,7 +141,8 @@ namespace Pxp
             object[] instantiationData = new object[]
             {
                 target.photonView.ViewID,
-                _attack
+                _attack,
+                Owner
             };
             Vector3 directionToTarget = (target.transform.position - spawnPosition).normalized;
             Quaternion rotationToTarget = Quaternion.LookRotation(Vector3.forward, directionToTarget);
