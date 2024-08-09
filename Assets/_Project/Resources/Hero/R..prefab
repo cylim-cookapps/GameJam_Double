@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -143876214728035958}
   - component: {fileID: -5490329708089565703}
   m_Layer: 0
-  m_Name: Egg
+  m_Name: R.
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,6 +56,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 2193098490429630338}
+  - {fileID: 7525335920672525015}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -152,13 +153,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2079611015697266849, guid: 8c8b97da846d3194ba4959d09e1fc6f3, type: 3}
       propertyPath: m_Name
-      value: Egg
+      value: R.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c8b97da846d3194ba4959d09e1fc6f3, type: 3}
+--- !u!114 &7525335920672525015 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 200058526902644014, guid: 8c8b97da846d3194ba4959d09e1fc6f3, type: 3}
+  m_PrefabInstance: {fileID: 7685846920551311353}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7668940453894300408 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 55188592649274625, guid: 8c8b97da846d3194ba4959d09e1fc6f3, type: 3}

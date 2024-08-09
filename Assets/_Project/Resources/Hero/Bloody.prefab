@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 9060881049704451178}
   - component: {fileID: 6275447532296318559}
   - component: {fileID: 2193098490429630338}
-  - component: {fileID: -2928300875839503089}
-  - component: {fileID: -2704542172060740954}
+  - component: {fileID: -8704795140864670241}
+  - component: {fileID: 6493328340707584037}
   m_Layer: 0
-  m_Name: Meteor
+  m_Name: Bloody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 226024862198592902}
+  - {fileID: 249443057620755003}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6275447532296318559
@@ -56,6 +56,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 2193098490429630338}
+  - {fileID: 260515674278529462}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -75,7 +76,7 @@ MonoBehaviour:
   m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &-2928300875839503089
+--- !u!114 &-8704795140864670241
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,7 +89,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projectilePrefab: {fileID: 0}
---- !u!210 &-2704542172060740954
+  attackRange: 5
+  attackCooldown: 1
+--- !u!210 &6493328340707584037
 SortingGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,7 +103,7 @@ SortingGroup:
   m_SortingLayer: 3
   m_SortingOrder: 1
   m_SortAtRoot: 0
---- !u!1001 &4093079284669897529
+--- !u!1001 &1037683036634950307
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -108,57 +111,68 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9060881049704451178}
     m_Modifications:
-    - target: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4947306377666971639, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+    - target: {fileID: 2392868253225183480, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
       propertyPath: m_Name
-      value: Meteor
+      value: Bloody
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
---- !u!4 &226024862198592902 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
+--- !u!4 &249443057620755003 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4318540302479699647, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
-  m_PrefabInstance: {fileID: 4093079284669897529}
+  m_CorrespondingSourceObject: {fileID: 941432757945305240, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
+  m_PrefabInstance: {fileID: 1037683036634950307}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &260515674278529462 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1007432585398723349, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
+  m_PrefabInstance: {fileID: 1037683036634950307}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
