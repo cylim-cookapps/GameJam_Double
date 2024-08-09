@@ -87,7 +87,6 @@ namespace Pxp
 
             if (Time.time - lastAttackTime >= _attackCooldown)
             {
-                _anim.SetTrigger("Attack");
                 lastAttackTime = Time.time;
             }
         }
@@ -109,6 +108,8 @@ namespace Pxp
 
         private void MeleeAttack(EnemyUnit target)
         {
+            if (!PhotonNetwork.IsMasterClient) return;
+
             _hitPrefab.gameObject.SetActive(false);
             _hitPrefab.gameObject.SetActive(true);
             target.TakeDamage(_attack);
