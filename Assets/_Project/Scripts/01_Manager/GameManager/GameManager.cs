@@ -280,7 +280,7 @@ namespace Pxp
             );
 
             spawnedHeroes.Add(heroUnit);
-
+            AudioController.Play("SFX_Spawn_Hero");
             // 생성 후 모든 클라이언트에 동기화
             photonView.RPC(nameof(SyncHeroSpawn), RpcTarget.All, actorNumber, batchIndex, heroId, needCoin);
         }
