@@ -38,10 +38,17 @@ namespace Pxp
             }
         }
 
+        private void Start()
+        {
+            AudioController.PlayMusic("BGM_Lobby");
+        }
+
         #region Event
 
         private void OnValueChangedTab(bool isOn, Enum_OutGameTab tab)
         {
+            AudioController.Play("SFX_Click");
+
             if (isOn)
             {
                 switch (tab)

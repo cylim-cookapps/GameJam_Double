@@ -45,6 +45,11 @@ namespace Pxp
             EventManager.Inst.EventGameChip.RemoveListener(OnEventGameChip);
         }
 
+        private void Start()
+        {
+            AudioController.PlayMusic("BGM_Game");
+        }
+
         #region Event
 
         private void OnClickSummon()

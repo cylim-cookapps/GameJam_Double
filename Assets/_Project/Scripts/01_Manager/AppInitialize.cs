@@ -18,6 +18,9 @@ namespace Pxp
         public async void Start()
         {
             AppInitializeProcess().Forget();
+
+            AudioController.PlayMusic("BGM_Title");
+            AudioController.Play("VOX_Title");
         }
 
         private async UniTaskVoid AppInitializeProcess()
