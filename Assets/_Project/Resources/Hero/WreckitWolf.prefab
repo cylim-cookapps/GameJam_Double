@@ -89,8 +89,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projectilePrefab: {fileID: 0}
-  attackRange: 5
-  attackCooldown: 1
+  _anim: {fileID: 6128342761336780391}
+  _hitPrefab: {fileID: 0}
+  attackType: 0
 --- !u!210 &3270001264603882141
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -174,5 +175,10 @@ MonoBehaviour:
 --- !u!4 &5147736598082074420 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5331777032012744186, guid: 77b646ad6da63bd468d1f4a29712056c, type: 3}
+  m_PrefabInstance: {fileID: 1048821802375148238}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6128342761336780391 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6593857659199407273, guid: 77b646ad6da63bd468d1f4a29712056c, type: 3}
   m_PrefabInstance: {fileID: 1048821802375148238}
   m_PrefabAsset: {fileID: 0}

@@ -89,8 +89,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projectilePrefab: {fileID: 0}
-  attackRange: 5
-  attackCooldown: 1
+  _anim: {fileID: 9008026457978672444}
+  _hitPrefab: {fileID: 0}
+  attackType: 0
 --- !u!210 &6493328340707584037
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -176,3 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &9008026457978672444 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8314884538860879775, guid: 0c69a73267b5c354ca5385b6d8cd710b, type: 3}
+  m_PrefabInstance: {fileID: 1037683036634950307}
+  m_PrefabAsset: {fileID: 0}

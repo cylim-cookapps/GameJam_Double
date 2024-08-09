@@ -23,6 +23,7 @@ namespace Pxp
                 if (PhotonNetwork.IsMasterClient)
                 {
                     int targetViewID = (int) instantiationData[0];
+                    damage = (int) instantiationData[1];
                     PhotonView targetView = PhotonView.Find(targetViewID);
                     if (targetView != null)
                     {

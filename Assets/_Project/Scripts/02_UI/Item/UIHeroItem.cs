@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Pxp
 {
@@ -10,6 +11,9 @@ namespace Pxp
     {
         [SerializeField, GetComponentInChildrenName]
         private TextMeshProUGUI _textLevel;
+
+        [SerializeField, GetComponentInChildrenName]
+        private Image _imgIcon;
 
         [SerializeField]
         private List<GameObject> _goTier;
@@ -35,6 +39,7 @@ namespace Pxp
                 _goTier[i].SetActive(i == data.Tier - 1);
             }
 
+            _imgIcon.SetSprite(_heroData.Spec.icon_key);
             Refresh();
         }
 

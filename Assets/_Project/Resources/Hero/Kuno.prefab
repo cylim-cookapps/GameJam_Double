@@ -89,8 +89,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _projectilePrefab: {fileID: 8604741183345454186, guid: c1db5281d7ca34e408b14d95deff3f3f, type: 3}
-  attackRange: 5
-  attackCooldown: 1
+  _anim: {fileID: 2165910189213675577}
+  _hitPrefab: {fileID: 0}
+  attackType: 0
+  _attack: 0
+  _attackRange: 5
+  _attackCooldown: 1
 --- !u!210 &-8082494114757338306
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -160,6 +164,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2229fef82c7aa2340a104303483f2d61, type: 3}
+--- !u!95 &2165910189213675577 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7481526049976121393, guid: 2229fef82c7aa2340a104303483f2d61, type: 3}
+  m_PrefabInstance: {fileID: 8781284364904466440}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4781374760787925257 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4289600140904943873, guid: 2229fef82c7aa2340a104303483f2d61, type: 3}

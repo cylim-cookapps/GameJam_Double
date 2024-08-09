@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using CookApps.Inspector;
 using Cysharp.Text;
 using Photon.Pun;
 using Pxp.Data;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Pxp
 {
@@ -31,15 +33,17 @@ namespace Pxp
             _grade = grade;
         }
 
-        [SerializeField]
-        private GameObject _projectilePrefab;
-
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             object[] instantiationData = info.photonView.InstantiationData;
             HeroId = (int) instantiationData[0];
             Index = (int) instantiationData[1];
             Owner = (int) instantiationData[2];
+
+            var heroData = SpecDataManager.Inst.Hero.Get(HeroId);
+            _attackRange = heroData.attackRange;
+            _attackCooldown = heroData.attackSpeed;
+            _attack = heroData.attack;
 
             SetInitialRotation();
         }
@@ -58,8 +62,20 @@ namespace Pxp
 
         #region Attack
 
-        public float attackRange = 5f;
-        public float attackCooldown = 1f;
+        [SerializeField]
+        private GameObject _projectilePrefab;
+
+        [SerializeField, GetComponentInChildrenName]
+        private Animator _anim;
+
+        [SerializeField]
+        private GameObject _hitPrefab;
+
+        public Enum_AttackType attackType = Enum_AttackType.Projectile;
+
+        public int _attack;
+        public float _attackRange = 5f;
+        public float _attackCooldown = 1f;
 
         private float lastAttackTime;
 
@@ -69,7 +85,7 @@ namespace Pxp
             if (_projectilePrefab == null)
                 return;
 
-            if (Time.time - lastAttackTime >= attackCooldown)
+            if (Time.time - lastAttackTime >= _attackCooldown)
             {
                 TryAttack();
             }
@@ -78,11 +94,23 @@ namespace Pxp
         private void TryAttack()
         {
             EnemyUnit nearestMonster = FindNearestMonster();
-            if (nearestMonster != null && Vector3.Distance(transform.position, nearestMonster.transform.position) <= attackRange)
+            if (nearestMonster != null && Vector3.Distance(transform.position, nearestMonster.transform.position) <= _attackRange)
             {
-                ShootProjectile(nearestMonster);
+                _anim.SetTrigger("Attack");
+                if (attackType == Enum_AttackType.Projectile)
+                    ShootProjectile(nearestMonster);
+                else
+                    MeleeAttack(nearestMonster);
+
                 lastAttackTime = Time.time;
             }
+        }
+
+        private void MeleeAttack(EnemyUnit target)
+        {
+            _hitPrefab.gameObject.SetActive(false);
+            _hitPrefab.gameObject.SetActive(true);
+            target.TakeDamage(_attack);
         }
 
         private void ShootProjectile(EnemyUnit target)
@@ -90,7 +118,11 @@ namespace Pxp
             if (!PhotonNetwork.IsMasterClient) return;
 
             Vector3 spawnPosition = transform.position;
-            object[] instantiationData = new object[] {target.photonView.ViewID};
+            object[] instantiationData = new object[]
+            {
+                target.photonView.ViewID,
+                _attack
+            };
             Vector3 directionToTarget = (target.transform.position - spawnPosition).normalized;
             Quaternion rotationToTarget = Quaternion.LookRotation(Vector3.forward, directionToTarget);
 
@@ -141,5 +173,11 @@ namespace Pxp
         }
 
         #endregion
+    }
+
+    public enum Enum_AttackType
+    {
+        Projectile,
+        Melee
     }
 }

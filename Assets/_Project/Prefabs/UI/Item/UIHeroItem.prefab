@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textLevel: {fileID: 5603675992979135018}
+  _imgIcon: {fileID: 3605880762719040536}
   _goTier:
   - {fileID: 3242192864612843144}
   - {fileID: 8926264802921515419}
@@ -1445,7 +1446,7 @@ GameObject:
   - component: {fileID: 6831823689375368420}
   - component: {fileID: 3605880762719040536}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Img_Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

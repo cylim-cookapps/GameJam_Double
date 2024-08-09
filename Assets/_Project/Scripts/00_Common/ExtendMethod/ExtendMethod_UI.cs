@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Text;
+using Pxp;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,7 +15,14 @@ public static partial class ExtendMethod
     public static void SetSprite(this Image image, Sprite sprite)
     {
         if (image == null) return;
+
         image.sprite = sprite;
+    }
+    public static void SetSprite(this Image image, string sprite)
+    {
+        if (image == null) return;
+
+        image.sprite = SpriteManager.Inst.GetSprite(sprite);
     }
 
     public static void SetColor(this Graphic graphic, Color color, bool isAlpha = true)
