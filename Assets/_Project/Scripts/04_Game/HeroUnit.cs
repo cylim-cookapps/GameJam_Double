@@ -112,6 +112,7 @@ namespace Pxp
             EnemyUnit nearestMonster = FindNearestMonster();
             if (nearestMonster != null && Vector3.Distance(transform.position, nearestMonster.transform.position) <= _attackRange)
             {
+                AudioController.Play("SFX_Hero_Attack");
                 if (attackType == Enum_AttackType.Projectile)
                     ShootProjectile(nearestMonster);
                 else
