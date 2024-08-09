@@ -19,6 +19,9 @@ namespace Pxp
         private HomeUI _homeUI;
 
         [SerializeField]
+        private GameObject _objIndicator;
+
+        [SerializeField]
         private List<Toggle> _togglesTab;
 
         public ShopUI ShopUI => _shopUI;
@@ -36,6 +39,11 @@ namespace Pxp
                 var index = i;
                 _togglesTab[i].onValueChanged.AddListener(isOn => OnValueChangedTab(isOn, (Enum_OutGameTab) index));
             }
+        }
+
+        public void SetIndicator(bool isOn)
+        {
+            _objIndicator.SetActive(isOn);
         }
 
         private void Start()
