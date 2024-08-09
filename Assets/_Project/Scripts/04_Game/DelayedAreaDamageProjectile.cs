@@ -53,10 +53,7 @@ namespace Pxp
                 EnemyUnit enemy = hitCollider.GetComponent<EnemyUnit>();
                 if (enemy != null)
                 {
-                    float distance = Vector2.Distance(transform.position, enemy.transform.position);
-                    float damageFactor = 1 - (distance / hitRange);
-                    int adjustedDamage = Mathf.RoundToInt(_damage * damageFactor);
-                    enemy.ReceiveAttack(adjustedDamage);
+                    enemy.ReceiveAttack(_damage);
                 }
             }
         }
