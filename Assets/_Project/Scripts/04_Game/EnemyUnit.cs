@@ -86,6 +86,7 @@ namespace Pxp
             if (_isDead) return;
 
             Hp -= damage;
+            AudioController.Play("SFX_TakeDamage");
             if (Hp < 0) Hp = 0;
 
             if (Hp <= 0)
