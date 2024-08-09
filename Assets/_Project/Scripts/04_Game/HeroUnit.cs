@@ -37,22 +37,22 @@ namespace Pxp
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             object[] instantiationData = info.photonView.InstantiationData;
-            HeroId = (int)instantiationData[0];
-            Index = (int)instantiationData[1];
-            Owner = (int)instantiationData[2];
+            HeroId = (int) instantiationData[0];
+            Index = (int) instantiationData[1];
+            Owner = (int) instantiationData[2];
 
             SetInitialRotation();
         }
 
         private void SetInitialRotation()
         {
-            if (PhotonNetwork.LocalPlayer.ActorNumber == 2)  // 플레이어 2의 유닛인 경우
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 2) // 플레이어 2의 유닛인 경우
             {
-                transform.rotation = Quaternion.Euler(0, 0, 180);  // 180도 회전
+                transform.rotation = Quaternion.Euler(0, 0, 180); // 180도 회전
             }
             else
             {
-                transform.rotation = Quaternion.identity;  // 기본 방향 (오른쪽)
+                transform.rotation = Quaternion.identity; // 기본 방향 (오른쪽)
             }
         }
 
@@ -80,26 +80,29 @@ namespace Pxp
             EnemyUnit nearestMonster = FindNearestMonster();
             if (nearestMonster != null && Vector3.Distance(transform.position, nearestMonster.transform.position) <= attackRange)
             {
-                ShootProjectile(nearestMonster.photonView.ViewID);
+                ShootProjectile(nearestMonster);
                 lastAttackTime = Time.time;
             }
         }
 
-        private void ShootProjectile(int targetViewID)
+        private void ShootProjectile(EnemyUnit target)
         {
             if (!PhotonNetwork.IsMasterClient) return;
 
-            Vector3 spawnPosition = transform.position + transform.right * 0.5f;  // 유닛의 약간 앞에서 발사
-            object[] instantiationData = new object[] { targetViewID };
+            Vector3 spawnPosition = transform.position;
+            object[] instantiationData = new object[] {target.photonView.ViewID};
+            Vector3 directionToTarget = (target.transform.position - spawnPosition).normalized;
+            Quaternion rotationToTarget = Quaternion.LookRotation(Vector3.forward, directionToTarget);
+
             GameObject projectileObj = PhotonNetwork.InstantiateRoomObject(
                 ZString.Format("Projectile/{0}", _projectilePrefab.name),
                 spawnPosition,
-                transform.rotation,  // 유닛의 현재 회전값 사용
+                rotationToTarget,
                 0,
                 instantiationData
             );
 
-            photonView.RPC("OnProjectileCreated", RpcTarget.All, projectileObj.GetComponent<PhotonView>().ViewID, targetViewID);
+            photonView.RPC("OnProjectileCreated", RpcTarget.All, projectileObj.GetComponent<PhotonView>().ViewID, target.photonView.ViewID);
         }
 
         [PunRPC]
