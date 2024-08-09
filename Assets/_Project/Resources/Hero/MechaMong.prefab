@@ -56,6 +56,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 2193098490429630338}
+  - {fileID: 8916366565422787037}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -87,7 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 154ebcbb4ddbed943ac082f39c8c8ab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectilePrefab: {fileID: 0}
+  _projectilePrefab: {fileID: 7341926373457395543, guid: 97bf5a08f039607429b49fedd8606c1a, type: 3}
   _anim: {fileID: 7560373538979387364}
   _hitPrefab: {fileID: 0}
   attackType: 0
@@ -194,3 +195,14 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5775407206361156829, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
   m_PrefabInstance: {fileID: 4093079284669897529}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8916366565422787037 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4859601469767398116, guid: 45298ec8569c9ab4b8816d9ef3f5f755, type: 3}
+  m_PrefabInstance: {fileID: 4093079284669897529}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6980637666652063380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

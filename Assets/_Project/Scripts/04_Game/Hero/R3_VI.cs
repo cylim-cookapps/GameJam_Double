@@ -23,15 +23,12 @@ namespace Pxp
                 target.photonView.ViewID,
                 _attack
             };
-            Vector3 directionToTarget = (target.transform.position - spawnPosition).normalized;
-            Quaternion rotationToTarget = Quaternion.LookRotation(Vector3.forward, directionToTarget);
-            GameObject projectileObj = null;
             if (count == 5)
             {
-                projectileObj = PhotonNetwork.InstantiateRoomObject(
+                PhotonNetwork.InstantiateRoomObject(
                     ZString.Format("Projectile/{0}", _projectilePrefab2.name),
                     spawnPosition,
-                    rotationToTarget,
+                    Quaternion.identity,
                     0,
                     instantiationData
                 );
@@ -39,10 +36,10 @@ namespace Pxp
             }
             else
             {
-                projectileObj = PhotonNetwork.InstantiateRoomObject(
+                PhotonNetwork.InstantiateRoomObject(
                     ZString.Format("Projectile/{0}", _projectilePrefab.name),
                     spawnPosition,
-                    rotationToTarget,
+                    Quaternion.identity,
                     0,
                     instantiationData
                 );
