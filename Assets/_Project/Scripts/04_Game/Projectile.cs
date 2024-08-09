@@ -11,9 +11,11 @@ namespace Pxp
         public float hitEffectTime = 1f;
         public GameObject projectile;
         public GameObject effect;
+        public bool isFollow;
 
         private GameObject target;
         private bool isDestroyed = false;
+        protected int actor;
 
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
@@ -24,6 +26,7 @@ namespace Pxp
                 {
                     int targetViewID = (int) instantiationData[0];
                     damage = (int) instantiationData[1];
+                    actor = (int) instantiationData[2];
                     PhotonView targetView = PhotonView.Find(targetViewID);
                     if (targetView != null)
                     {
@@ -44,10 +47,21 @@ namespace Pxp
 
         private void Update()
         {
-            if (PhotonNetwork.IsMasterClient == false)
-                return;
-
             if (isDestroyed)
+            {
+                if (isFollow)
+                {
+                    if (target != null)
+                    {
+                        transform.position = target.transform.position;
+                        effect.SetActive(false);
+                    }
+                }
+
+                return;
+            }
+
+            if (PhotonNetwork.IsMasterClient == false)
                 return;
 
             if (target == null)
@@ -85,6 +99,7 @@ namespace Pxp
         [PunRPC]
         private void EffectRPC()
         {
+            isDestroyed = true;
             projectile.SetActive(false);
             effect.SetActive(true);
         }

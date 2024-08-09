@@ -8,6 +8,7 @@ TagManager:
   - InGameProjectile
   - InGameCardAttached
   - Enemy
+  - Hero
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - Water
   - UI
   - Enemy
-  - 
+  - Hero
   - 
   - 
   - 
@@ -56,4 +57,7 @@ TagManager:
     locked: 0
   - name: FX_Over
     uniqueID: 2010504373
+    locked: 0
+  - name: UI
+    uniqueID: 1176188213
     locked: 0

@@ -16,6 +16,7 @@ namespace Pxp
         private bool _isDestroyed = false;
 
         private GameObject target;
+        protected int actor;
 
         IEnumerator CoHit()
         {
@@ -67,10 +68,16 @@ namespace Pxp
                 {
                     int targetViewID = (int) instantiationData[0];
                     _damage = (int) instantiationData[1];
+                    actor = (int) instantiationData[2];
                     PhotonView targetView = PhotonView.Find(targetViewID);
                     if (targetView != null)
                     {
                         SetTarget(targetView.gameObject);
+                    }
+
+                    if (actor == 2)
+                    {
+                        transform.localScale = new Vector3(1, -1, 1);
                     }
 
                     StartCoroutine(CoHit());

@@ -103,11 +103,14 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
     {
         Debug.Log("Joined Room: " + PhotonNetwork.CurrentRoom.Name);
         MainUI.Inst.SetIndicator(false);
-        PopupManager.Inst.GetPopup<Popup_Wait>().Show();
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == MaxPlayersPerRoom)
         {
             LoadGameScene();
+        }
+        else
+        {
+            PopupManager.Inst.GetPopup<Popup_Wait>().Show();
         }
     }
 
