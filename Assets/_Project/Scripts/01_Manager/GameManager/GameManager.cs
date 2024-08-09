@@ -74,6 +74,9 @@ namespace Pxp
         #endregion
 
         [SerializeField]
+        private GameObject _bg;
+
+        [SerializeField]
         private List<Transform> _waypoints0, _waypoints1;
 
         [SerializeField]
@@ -141,6 +144,7 @@ namespace Pxp
         {
             if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
             {
+                _bg.transform.localScale = new Vector3(1, -1, 1);
                 Camera.main.transform.SetPositionAndRotation(new Vector3(0, 0, 10), Quaternion.Euler(180, 0, 0));
             }
 
