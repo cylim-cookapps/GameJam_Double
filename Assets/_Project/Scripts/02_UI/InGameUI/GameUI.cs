@@ -207,6 +207,8 @@ namespace Pxp
 
         private void OnEventGameCoin(int coin)
         {
+            if (GameManager.Inst.CurrGameState == Enum_GameState.Start)
+                _textSummonPrice.SetText(Summon_Default + Summon_Increase * GameManager.Inst.MyInGameUserData.Summon);
             _textCoin.SetText(coin);
         }
 

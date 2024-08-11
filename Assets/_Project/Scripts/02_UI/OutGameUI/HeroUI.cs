@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +36,14 @@ namespace Pxp
 
             EventManager.Inst.EventUnlockHero.AddListener(OnEventUnlockHero);
             EventManager.Inst.EventEquippedHero.AddListener(OnEventEquippedHero);
+            EventManager.Inst.EventHeroLevelUp.AddListener(OnEventHeroLevelUp);
+        }
+
+        private void OnDestroy()
+        {
+            EventManager.Inst.EventUnlockHero.RemoveListener(OnEventUnlockHero);
+            EventManager.Inst.EventEquippedHero.RemoveListener(OnEventEquippedHero);
+            EventManager.Inst.EventHeroLevelUp.RemoveListener(OnEventHeroLevelUp);
         }
 
         public void Refresh()
@@ -111,6 +120,11 @@ namespace Pxp
         {
             Refresh();
             SetEquipMode(null);
+        }
+
+        private void OnEventHeroLevelUp(int heroId)
+        {
+            Refresh();
         }
 
         #endregion"

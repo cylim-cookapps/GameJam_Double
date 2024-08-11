@@ -22,9 +22,24 @@ namespace Pxp
         public int BoardIndex { get; private set; }
         public int Owner { get; private set; }
 
+        public int Star { get; private set; }
+
         public int Grade { get; private set; }
         public InGameHeroData InGameHeroData { get; private set; }
         public Hero HeroData { get; private set; }
+
+        private int originalAtk
+        {
+            get
+            {
+                if (HeroData != null)
+                {
+                    return HeroData.attack + (HeroData.goldLevelup * (InGameHeroData.Level - 1));
+                }
+
+                return 0;
+            }
+        }
 
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
@@ -39,7 +54,7 @@ namespace Pxp
             HeroData = SpecDataManager.Inst.Hero.Get(HeroId);
             _attackRange = HeroData.attackRange;
             _attackCooldown = HeroData.attackSpeed;
-            _attack = HeroData.attack + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
+            _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
 
             SetInitialRotation();
             SetupPhotonAnimatorView();
@@ -49,7 +64,7 @@ namespace Pxp
         public void UpgradeHero()
         {
             Grade++;
-            _attack = HeroData.attack + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
+            _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
             _starUI.SetGrade(Grade);
         }
 
@@ -200,7 +215,7 @@ namespace Pxp
         {
             if (Owner == actor && heroId == HeroId)
             {
-                _attack = HeroData.attack + HeroData.attack_levelUp * InGameHeroData.Upgrade;
+                _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
             }
         }
 
