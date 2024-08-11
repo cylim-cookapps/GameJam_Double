@@ -64,22 +64,23 @@ namespace Pxp
             object[] instantiationData = info.photonView.InstantiationData;
             if (instantiationData != null && instantiationData.Length > 0)
             {
-                if (PhotonNetwork.IsMasterClient)
+                int targetViewID = (int) instantiationData[0];
+                _damage = (int) instantiationData[1];
+                actor = (int) instantiationData[2];
+                PhotonView targetView = PhotonView.Find(targetViewID);
+                if (targetView != null)
                 {
-                    int targetViewID = (int) instantiationData[0];
-                    _damage = (int) instantiationData[1];
-                    actor = (int) instantiationData[2];
-                    PhotonView targetView = PhotonView.Find(targetViewID);
-                    if (targetView != null)
-                    {
-                        SetTarget(targetView.gameObject);
-                    }
+                    SetTarget(targetView.gameObject);
+                }
 
-                    if (actor == 2)
-                    {
-                        transform.localScale = new Vector3(1, -1, 1);
-                    }
+                if (actor == 2)
+                {
+                    transform.localScale = new Vector3(1, -1, 1);
+                }
 
+                if (PhotonNetwork.IsMasterClient)
+
+                {
                     StartCoroutine(CoHit());
                 }
             }

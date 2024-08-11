@@ -17,6 +17,7 @@ namespace Pxp
             private set
             {
                 _hp = value;
+                UpdateHPBar();
             }
         }
 
@@ -32,6 +33,29 @@ namespace Pxp
 
         [SerializeField]
         private int currentWaypointIndex = 0;
+
+        private HPBar hpBar;
+
+        private void RequestHPBar()
+        {
+            if (GameUI.Inst != null)
+            {
+                hpBar = GameUI.Inst.GetHPBar();
+                if (hpBar != null)
+                {
+                    hpBar.SetTarget(transform);
+                    UpdateHPBar();
+                }
+            }
+        }
+
+        private void UpdateHPBar()
+        {
+            if (hpBar != null)
+            {
+                hpBar.UpdateHP((float) Hp / MaxHp);
+            }
+        }
 
         private void Update()
         {
@@ -71,23 +95,26 @@ namespace Pxp
             MonsterType = MonsterData.monsterType;
             _waypoints = new List<Vector2>((Vector2[]) instantiationData[3]);
             _isDead = false;
-            Hp = MaxHp = MonsterData.hp;
+            Hp = MaxHp = MonsterData.hp * 5;
 
             if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
             {
                 transform.rotation = Quaternion.Euler(0, 0, -180);
             }
+
+            RequestHPBar();
         }
 
         [PunRPC]
         public void TakeDamage(int damage)
         {
-            if (!PhotonNetwork.IsMasterClient) return;
             if (_isDead) return;
 
             Hp -= damage;
             AudioController.Play("SFX_TakeDamage");
             if (Hp < 0) Hp = 0;
+
+            GameUI.Inst.ShowDamageText(damage, false, transform);
 
             if (Hp <= 0)
             {
@@ -98,22 +125,23 @@ namespace Pxp
 
         private void DestroyEnemy()
         {
+            if (hpBar != null)
+            {
+                GameUI.Inst.ReturnHPBar(hpBar);
+                hpBar = null;
+            }
+
+            AudioController.Play("SFX_DestroyEnemy");
+
             if (PhotonNetwork.IsMasterClient)
             {
                 GameManager.Inst.DeadEnemy(this);
-                AudioController.Play("SFX_DestroyEnemy");
-                OnEnemyDestroyed();
             }
-        }
-
-        private void OnEnemyDestroyed()
-        {
-            Debug.Log($"Enemy destroyed: {gameObject.name}");
         }
 
         public void ReceiveAttack(int damage)
         {
-            photonView.RPC(nameof(TakeDamage), RpcTarget.MasterClient, damage);
+            photonView.RPC(nameof(TakeDamage), RpcTarget.All, damage);
         }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
