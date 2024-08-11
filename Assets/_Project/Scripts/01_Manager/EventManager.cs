@@ -27,6 +27,8 @@ namespace Pxp
         public void OnEventMatch() => EventMatch.Dispatch();
         public readonly Relay EventMatch = new();
 
+        public void OnEventGameState(Enum_GameState state) => EventGameState.Dispatch(state);
+        public readonly Relay<Enum_GameState> EventGameState = new();
 
         public void OnEventWave(int wave) => EventWave.Dispatch(wave);
         public readonly Relay<int> EventWave = new();
@@ -43,6 +45,7 @@ namespace Pxp
         public void OnEventGameChip(int chip) => EventGameChip.Dispatch(chip);
         public readonly Relay<int> EventGameChip = new();
 
-
+        public void OnEventGameHeroUpgrade(int actor, int heroId) => EventGameHeroUpgrade.Dispatch(actor, heroId);
+        public readonly Relay<int, int> EventGameHeroUpgrade = new();
     }
 }

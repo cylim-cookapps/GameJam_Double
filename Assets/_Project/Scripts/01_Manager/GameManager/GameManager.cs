@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Photon.Pun;
@@ -7,6 +8,8 @@ using AnnulusGames.LucidTools.RandomKit;
 using Cysharp.Text;
 using ExitGames.Client.Photon;
 using Pxp.Data;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace Pxp
 {
@@ -74,20 +77,25 @@ namespace Pxp
         #endregion
 
         [SerializeField]
+        private DragUnit _dragUnit;
+
+        [SerializeField]
         private GameObject _bg;
 
         [SerializeField]
         private List<Transform> _waypoints0, _waypoints1;
 
         [SerializeField]
-        private List<Transform> _batch0, _batch1;
+        private List<Board> _batch0, _batch1;
 
         [SerializeField]
         private float spawnInterval = 5f;
 
+        [SerializeField] private LayerMask heroLayerMask;
+        [SerializeField] private LayerMask boardLyerMask;
         private List<GameObject> spawnedEnemy = new List<GameObject>();
-        private List<GameObject> spawnedHeroes = new List<GameObject>();
-        private bool _isGameStarted = false;
+        private Dictionary<int, List<HeroUnit>> spawnedHeroes = new Dictionary<int, List<HeroUnit>>();
+        public Enum_GameState CurrGameState = Enum_GameState.Ready;
 
         private Dictionary<int, InGameUserData> playerDataDict = new();
 
@@ -108,6 +116,12 @@ namespace Pxp
         private List<Vector2> Batch1 = new List<Vector2>();
 
         public InGameUserData MyInGameUserData => playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber];
+        private HeroUnit _selectedHero;
+
+        public InGameUserData GetPlayerData(int actorNumber)
+        {
+            return playerDataDict[actorNumber];
+        }
 
         private void Awake()
         {
@@ -131,12 +145,21 @@ namespace Pxp
 
             foreach (var batch in _batch0)
             {
-                Batch0.Add(batch.position);
+                Batch0.Add(batch.transform.position);
             }
 
             foreach (var batch in _batch1)
             {
-                Batch1.Add(batch.position);
+                Batch1.Add(batch.transform.position);
+            }
+
+            spawnedHeroes.Add(1, new List<HeroUnit>());
+            spawnedHeroes.Add(2, new List<HeroUnit>());
+
+            for (int i = 0; i < 15; i++)
+            {
+                spawnedHeroes[1].Add(null);
+                spawnedHeroes[2].Add(null);
             }
         }
 
@@ -155,6 +178,141 @@ namespace Pxp
         private void OnDestroy()
         {
             PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+        }
+
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0)) // 왼쪽 마우스 버튼 클릭
+            {
+                _selectedHero = GetClickedHeroUnit();
+                if (_selectedHero != null)
+                {
+                    _dragUnit.SetUnit(_selectedHero, GetMouseWorldPosition());
+                }
+            }
+            else if (Input.GetMouseButtonUp(0)) // 왼쪽 마우스 버튼 릴리즈
+            {
+                if (_selectedHero != null)
+                {
+                    var board = GetClickedUpBoard();
+                    if (board != null)
+                    {
+                        int fromIndex = _selectedHero.BoardIndex;
+                        int toIndex = board.BoardIndex;
+
+                        if (fromIndex != toIndex)
+                        {
+                            var pos = PhotonNetwork.LocalPlayer.ActorNumber == 1 ? Batch0[toIndex] : Batch1[toIndex];
+
+                            // RPC 호출로 이동 동기화 (스왑 포함)
+                            photonView.RPC(nameof(MoveHeroRpc), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, fromIndex, toIndex, pos);
+                        }
+                    }
+
+                    _selectedHero = null;
+                    _dragUnit.Dispose();
+                }
+            }
+            else if (Input.GetMouseButton(0)) // 왼쪽 마우스 버튼 누름
+            {
+                if (_selectedHero != null)
+                {
+                    _dragUnit.transform.position = GetMouseWorldPosition();
+                }
+            }
+        }
+
+        [PunRPC]
+        private void MoveHeroRpc(int actorNumber, int fromIndex, int toIndex, Vector2 newPosition)
+        {
+            if (spawnedHeroes.TryGetValue(actorNumber, out var heroList))
+            {
+                var movingHero = heroList[fromIndex];
+                var existingHero = heroList[toIndex];
+
+                if (movingHero != null)
+                {
+                    if (existingHero != null &&
+                        existingHero.HeroId == movingHero.HeroId &&
+                        existingHero.Grade == movingHero.Grade)
+                    {
+                        // 합성 로직
+                        existingHero.photonView.RPC("UpgradeHero", RpcTarget.All);
+
+                        // 이동하던 영웅 제거
+                        PhotonNetwork.Destroy(movingHero.gameObject);
+                        heroList[fromIndex] = null;
+
+                        // 플레이어 데이터 업데이트
+                        var playerData = playerDataDict[actorNumber];
+                        playerData.Units[fromIndex].HeroId = 0;
+                        playerData.Units[fromIndex].Grade = 0;
+                        playerData.Units[toIndex].Grade++;
+
+                        // 이벤트 발생 (UI 업데이트 등을 위해)
+                       // EventManager.Inst.OnEventHeroMerged(actorNumber, toIndex, existingHero.Grade);
+                    }
+                    else
+                    {
+                        // 기존의 스왑 로직
+                        heroList[fromIndex] = existingHero;
+                        heroList[toIndex] = movingHero;
+                        movingHero.MoveHero(toIndex, newPosition);
+
+                        if (existingHero != null)
+                        {
+                            var oldPosition = actorNumber == 1 ? Batch0[fromIndex] : Batch1[fromIndex];
+                            existingHero.MoveHero(fromIndex, oldPosition);
+                        }
+
+                        // 플레이어 데이터 업데이트
+                        var playerData = playerDataDict[actorNumber];
+                        var temp = playerData.Units[fromIndex];
+                        playerData.Units[fromIndex] = playerData.Units[toIndex];
+                        playerData.Units[toIndex] = temp;
+                    }
+
+                    // UI 업데이트 등 필요한 추가 작업
+                  //  EventManager.Inst.OnEventHeroMoved(actorNumber, fromIndex, toIndex);
+                }
+            }
+        }
+
+        private Vector3 GetMouseWorldPosition()
+        {
+            Vector3 mouseScreenPosition = Input.mousePosition;
+            mouseScreenPosition.z = -Camera.main.transform.position.z; // 카메라와 같은 z 위치 사용
+            return Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+        }
+
+        private HeroUnit GetClickedHeroUnit()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, heroLayerMask);
+
+            if (hit.collider != null)
+            {
+                var unit = hit.collider.GetComponent<HeroUnit>();
+                if (unit.Owner == PhotonNetwork.LocalPlayer.ActorNumber)
+                    return unit;
+            }
+
+            return null;
+        }
+
+        private Board GetClickedUpBoard()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, boardLyerMask);
+
+            if (hit.collider != null)
+            {
+                var board = hit.collider.GetComponent<Board>();
+                if (board.Actor == PhotonNetwork.LocalPlayer.ActorNumber)
+                    return board;
+            }
+
+            return null;
         }
 
         private void SendPlayerLoadedLevel()
@@ -191,8 +349,9 @@ namespace Pxp
                 for (int i = 0; i < _waves[Wave].monsterCount; i++)
                 {
                     SpawnMonster(data, WayPoint0);
+                    yield return new WaitForSeconds(SpawnInterval * 0.5f);
                     SpawnMonster(data, WayPoint1);
-                    yield return new WaitForSeconds(SpawnInterval);
+                    yield return new WaitForSeconds(SpawnInterval * 0.5f);
                 }
 
                 yield return new WaitUntil(() => Second == 0);
@@ -211,6 +370,22 @@ namespace Pxp
             {
                 yield return new WaitForSeconds(1);
                 Second--;
+            }
+        }
+
+        public void UpgradeHero(InGameHeroData data)
+        {
+            if (CurrGameState == Enum_GameState.Start)
+            {
+                int needCoin = LevelUp_Default + data.Upgrade * LevelUp_Increase;
+                if (MyInGameUserData.Coin >= needCoin)
+                {
+                    data.Upgrade++;
+                    MyInGameUserData.Coin -= needCoin;
+                    EventManager.Inst.OnEventGameCoin(MyInGameUserData.Coin);
+                    EventManager.Inst.OnEventGameHeroUpgrade(PhotonNetwork.LocalPlayer.ActorNumber, data.HeroId);
+                    SendHeroLevelUp(data.HeroId, data.Upgrade, MyInGameUserData.Coin);
+                }
             }
         }
 
@@ -267,11 +442,12 @@ namespace Pxp
                 heroId,
                 batchIndex,
                 actorNumber,
+                0,
             };
 
             var pos = actorNumber == 1 ? Batch0[batchIndex] : Batch1[batchIndex];
 
-            GameObject heroUnit = PhotonNetwork.InstantiateRoomObject(
+            GameObject obj = PhotonNetwork.InstantiateRoomObject(
                 ZString.Format("Hero/{0}", heroSpec.prefab_key),
                 pos,
                 Quaternion.identity,
@@ -279,7 +455,9 @@ namespace Pxp
                 instantiationData
             );
 
-            spawnedHeroes.Add(heroUnit);
+            var herUnit = obj.GetComponent<HeroUnit>();
+
+            spawnedHeroes[actorNumber][batchIndex] = herUnit;
             AudioController.Play("SFX_Spawn_Hero");
             // 생성 후 모든 클라이언트에 동기화
             photonView.RPC(nameof(SyncHeroSpawn), RpcTarget.All, actorNumber, batchIndex, heroId, needCoin);

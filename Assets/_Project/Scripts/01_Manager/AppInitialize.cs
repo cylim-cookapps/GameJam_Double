@@ -15,11 +15,18 @@ namespace Pxp
         [SerializeField]
         private GameObject _goLoading;
 
+        private void Awake()
+        {
+            const int width = 1080;
+            int height = Mathf.CeilToInt(width / Camera.main.aspect);
+            Screen.SetResolution(width, height, true);
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            Application.targetFrameRate = 60;
+        }
+
         public async void Start()
         {
             AppInitializeProcess().Forget();
-
-            //AudioController.PlayMusic("BGM_Title");
             AudioController.Play("VOX_Title");
         }
 
@@ -31,7 +38,7 @@ namespace Pxp
             await UserManager.Inst.OnInitialize();
             await UniTask.Delay(TimeSpan.FromSeconds(2));
             _goLoading.SetActive(true);
-            await SceneManager.LoadSceneAsync(1,LoadSceneMode.Additive);
+            await SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
             await UniTask.Delay(TimeSpan.FromSeconds(1));
 
             await SceneManager.UnloadSceneAsync(0);

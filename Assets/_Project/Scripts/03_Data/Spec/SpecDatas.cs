@@ -84,7 +84,7 @@ namespace Pxp.Data
         public int coinAmount;
         /// 획득 칩 수량
         public int chipAmount;
-        /// 획득 effect
+        /// 획득 effect=relic의 value_default와 동일
         public int effectId;
         /// 프리팹
         public string prefab_key;
@@ -103,7 +103,7 @@ namespace Pxp.Data
     }
 
     [GeneratorSpecData]
-    public partial class relic
+    public partial class Relic
     {
         [GeneratorId(nameof(id), typeof(int))]
         public int id;
@@ -132,12 +132,14 @@ namespace Pxp.Data
         public float attackSpeed;
         /// 공격 범위 반지름
         public float attackRange;
-        /// 아웃게임 성급에 따라 오르는 값
+        /// 인게임 성급에 따라 오르는 값
         public int attack_starUp;
-        /// 아웃게임 강화할때 오르는 값
+        /// 인게임 강화할때 오르는 값
         public int attack_levelUp;
         /// 영웅의 기본 기능과 관련된 스킬 아이디 호출
         public int skill_default;
+        /// (아웃게임) 골드로 영웅 강화할때 증가하는 공격력
+        public int goldLevelup;
         /// 성급up에 필요한 영웅 개수. 가장 첫번째는 해금에 필요한 개수
         public int[] starValue = global::System.Array.Empty<int>();
         /// 성급에 따라 획득하는 effect
@@ -161,5 +163,19 @@ namespace Pxp.Data
         public float skillValue_3;
         public float skillValue_4;
         public float skillValue_5;
+    }
+
+    [GeneratorSpecData]
+    public partial class Quest
+    {
+        [GeneratorId(nameof(id), typeof(int))]
+        public int id;
+        /// 게이지 보상 타입인지?
+        public bool isGagueReward;
+        public string questConditionTitle;
+        public int getPoint;
+        public int clearProgress;
+        public global::Pxp.Data.Enum_ItemType reward;
+        public long value;
     }
 }

@@ -95,7 +95,7 @@ namespace Pxp
             MonsterType = MonsterData.monsterType;
             _waypoints = new List<Vector2>((Vector2[]) instantiationData[3]);
             _isDead = false;
-            Hp = MaxHp = MonsterData.hp * 5;
+            Hp = MaxHp = MonsterData.hp;
 
             if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
             {

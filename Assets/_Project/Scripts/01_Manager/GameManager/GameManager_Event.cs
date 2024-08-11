@@ -13,9 +13,12 @@ namespace Pxp
         private const byte PLAYER_DATA_EVENT = 1;
         private const byte EVENT_START = 2;
         private const byte EVENT_END = 3;
+        private const byte HERO_LEVEL_UP = 100;
+        private const byte HERO_MOVE = 101;
 
         private void OnEvent(EventData photonEvent)
         {
+
             if (photonEvent.Code == PLAYER_LOADED_LEVEL)
             {
                 SendPlayerData();
@@ -28,20 +31,22 @@ namespace Pxp
 
                 if (playerDataDict.Count == LobbyManager.Inst.MaxPlayersPerRoom)
                 {
-                    if (PhotonNetwork.IsMasterClient && _isGameStarted == false)
+                    if (CurrGameState == Enum_GameState.Start)
+                        return;
+
+                    if (PhotonNetwork.IsMasterClient)
                     {
-                        Debug.Log("GameLoop");
                         StartCoroutine(GameLoop());
                     }
 
-                    _isGameStarted = true;
+                    CurrGameState = Enum_GameState.Start;
+                    EventManager.Inst.OnEventGameState(Enum_GameState.Start);
                 }
             }
             else if (photonEvent.Code == EVENT_START)
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    Debug.Log(PhotonNetwork.IsMasterClient);
                     StartCoroutine(GameLoop());
                 }
             }
@@ -50,10 +55,25 @@ namespace Pxp
                 if (PhotonNetwork.IsMasterClient)
                 {
                     StopAllCoroutines();
-                    _isGameStarted = false;
                 }
 
+                CurrGameState = Enum_GameState.End;
                 GameEnd();
+            }
+            else if (photonEvent.Code == HERO_LEVEL_UP)
+            {
+                Hashtable playerDataHash = (Hashtable) photonEvent.CustomData;
+                HeroLevelData userData = HeroLevelData.FromHashtable(playerDataHash);
+                playerDataDict[userData.Owner].Coin = userData.Coin;
+                playerDataDict[userData.Owner].Heroes.Find(x => x.HeroId == userData.HeroId).Upgrade = userData.Upgrade;
+                EventManager.Inst.OnEventGameHeroUpgrade(userData.Owner, userData.HeroId);
+            }
+            else if (photonEvent.Code == HERO_MOVE)
+            {
+                // Hashtable playerDataHash = (Hashtable) photonEvent.CustomData;
+                // HeroMoveData userData = HeroMoveData.FromHashtable(playerDataHash);
+                // playerDataDict[userData.Owner].Heroes.Find(x => x.HeroId == userData.HeroId).Position = userData.Position;
+                // EventManager.Inst.OnEventGameHeroMove(userData.Owner, userData.HeroId, userData.Position);
             }
         }
 
@@ -64,7 +84,7 @@ namespace Pxp
             for (int i = 0; i < 5; i++)
             {
                 var heroData = UserManager.Inst.Hero.GetEquippedHero(i);
-                myHeroes.Add(new InGameHeroData(heroData.Id, heroData.Level, heroData.Star, 0));
+                myHeroes.Add(new InGameHeroData(heroData.Id, heroData.Level, heroData.Star, 0, 0));
             }
 
             List<InGameUnitData> myUnits = new List<InGameUnitData>();
@@ -97,5 +117,19 @@ namespace Pxp
         {
             PhotonNetwork.RaiseEvent(EVENT_END, null, new RaiseEventOptions {Receivers = ReceiverGroup.All}, SendOptions.SendReliable);
         }
+
+        public void SendHeroLevelUp(int heroId, int upgrade, int coin)
+        {
+            HeroLevelData data = new HeroLevelData(PhotonNetwork.LocalPlayer.ActorNumber, heroId, upgrade, coin);
+
+            PhotonNetwork.RaiseEvent(HERO_LEVEL_UP, data.ToHashtable(), new RaiseEventOptions {Receivers = ReceiverGroup.Others}, SendOptions.SendReliable);
+        }
+    }
+
+    public enum Enum_GameState
+    {
+        Ready,
+        Start,
+        End
     }
 }

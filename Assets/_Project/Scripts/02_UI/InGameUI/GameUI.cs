@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Text;
+using Cysharp.Threading.Tasks;
 using Pxp.Data;
 using TMPro;
 using UnityEngine;
@@ -13,13 +14,16 @@ namespace Pxp
     public class GameUI : MonoSingleton<GameUI>
     {
         [SerializeField, GetComponentInChildrenName]
-        private TextMeshProUGUI _textWave, _textMonster, _textTimer, _textCoin, _textChip;
+        private TextMeshProUGUI _textWave, _textMonster, _textTimer, _textCoin, _textChip, _textSummonPrice;
 
         [SerializeField, GetComponentInChildrenName]
         private Slider _sliderMonster;
 
         [SerializeField, GetComponentInChildrenName]
         private Button _btnSummon;
+
+        [SerializeField, GetComponentInChildrenOnly]
+        private List<UIHeroUpgradeItem> _uiHeroUpgradeItems;
 
         [SerializeField] private GameObject hpBarPrefab;
         [SerializeField] private Transform hpBarParent;
@@ -30,11 +34,18 @@ namespace Pxp
         private ObjectPool<DamageText> damageTextPool;
         private int _index = 0;
 
+        private int Summon_Default = 50;
+        private int Summon_Increase = 10;
+
         private void Awake()
         {
+            Summon_Default = (int) SpecDataManager.Inst.Option.Get("Summon_Default")!.value;
+            Summon_Increase = (int) SpecDataManager.Inst.Option.Get("Summon_Increase")!.value;
+
             OnEventGameTimer(0);
             OnEventGameCoin((int) SpecDataManager.Inst.Option.Get("StartCoin").value);
             OnEventGameChip(0);
+            _textSummonPrice.SetText(Summon_Default);
             _sliderMonster.maxValue = 100;
             _btnSummon.AddListener(OnClickSummon);
 
@@ -45,6 +56,28 @@ namespace Pxp
             EventManager.Inst.EventGameChip.AddListener(OnEventGameChip);
 
             InitializePool();
+        }
+
+        private void Start()
+        {
+            AudioController.PlayMusic("BGM_Game");
+
+            for (int i = 0; i < UserManager.Inst.Hero.EquipHeroes.Count; i++)
+            {
+                _uiHeroUpgradeItems[i].Init(UserManager.Inst.Hero.EquipHeroes[i]);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            EventManager.Inst.EventGameTimer.RemoveListener(OnEventGameTimer);
+            EventManager.Inst.EventWave.RemoveListener(OnEventWave);
+            EventManager.Inst.EventMonsterCount.RemoveListener(OnEventMonsterCount);
+            EventManager.Inst.EventGameCoin.RemoveListener(OnEventGameCoin);
+            EventManager.Inst.EventGameChip.RemoveListener(OnEventGameChip);
+
+            hpBarPool.Dispose();
+            damageTextPool.Dispose();
         }
 
         #region Pool
@@ -127,23 +160,6 @@ namespace Pxp
         }
 
         #endregion
-
-        private void OnDestroy()
-        {
-            EventManager.Inst.EventGameTimer.RemoveListener(OnEventGameTimer);
-            EventManager.Inst.EventWave.RemoveListener(OnEventWave);
-            EventManager.Inst.EventMonsterCount.RemoveListener(OnEventMonsterCount);
-            EventManager.Inst.EventGameCoin.RemoveListener(OnEventGameCoin);
-            EventManager.Inst.EventGameChip.RemoveListener(OnEventGameChip);
-
-            hpBarPool.Dispose();
-            damageTextPool.Dispose();
-        }
-
-        private void Start()
-        {
-            AudioController.PlayMusic("BGM_Game");
-        }
 
         public HPBar GetHPBar()
         {

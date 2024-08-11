@@ -18,6 +18,7 @@ TagManager:
   - UI
   - Enemy
   - Hero
+  - HeroDrag
   - 
   - 
   - 
@@ -39,8 +40,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Board
   - Debug
   m_SortingLayers:
   - name: Default

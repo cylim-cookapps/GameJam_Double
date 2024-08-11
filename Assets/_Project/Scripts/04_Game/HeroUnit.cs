@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using CookApps.Inspector;
@@ -12,44 +13,50 @@ namespace Pxp
     public class HeroUnit : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback
     {
         [SerializeField, GetComponentInChildrenOnly]
+        private StarUI _starUI;
+
+        [SerializeField, GetComponentInChildrenOnly]
         private PhotonAnimatorView _photonAnimatorView;
 
         public int HeroId { get; private set; }
-        public int Index { get; private set; }
+        public int BoardIndex { get; private set; }
         public int Owner { get; private set; }
 
-        private int _grade;
-
-        public int Grade
-        {
-            get => _grade;
-            set
-            {
-                if (PhotonNetwork.IsMasterClient)
-                    photonView.RPC(nameof(SetGradeRpc), RpcTarget.All, value);
-            }
-        }
-
-        [PunRPC]
-        private void SetGradeRpc(int grade)
-        {
-            _grade = grade;
-        }
+        public int Grade { get; private set; }
+        public InGameHeroData InGameHeroData { get; private set; }
+        public Hero HeroData { get; private set; }
 
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             object[] instantiationData = info.photonView.InstantiationData;
             HeroId = (int) instantiationData[0];
-            Index = (int) instantiationData[1];
+            BoardIndex = (int) instantiationData[1];
             Owner = (int) instantiationData[2];
+            Grade = (int) instantiationData[3];
+            _starUI.SetGrade(Grade);
 
-            var heroData = SpecDataManager.Inst.Hero.Get(HeroId);
-            _attackRange = heroData.attackRange;
-            _attackCooldown = heroData.attackSpeed;
-            _attack = heroData.attack;
+            InGameHeroData = GameManager.Inst.GetPlayerData(Owner).Heroes.Find(x => x.HeroId == HeroId);
+            HeroData = SpecDataManager.Inst.Hero.Get(HeroId);
+            _attackRange = HeroData.attackRange;
+            _attackCooldown = HeroData.attackSpeed;
+            _attack = HeroData.attack + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
 
             SetInitialRotation();
             SetupPhotonAnimatorView();
+        }
+
+        [PunRPC]
+        public void UpgradeHero()
+        {
+            Grade++;
+            _attack = HeroData.attack + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
+            _starUI.SetGrade(Grade);
+        }
+
+        public void MoveHero(int index, Vector2 pos)
+        {
+            BoardIndex = index;
+            transform.position = pos;
         }
 
         private void SetInitialRotation()
@@ -89,6 +96,16 @@ namespace Pxp
         public float _attackCooldown = 1f;
 
         private float lastAttackTime;
+
+        private void Awake()
+        {
+            EventManager.Inst.EventGameHeroUpgrade.AddListener(OnEventGameHeroUpgrade);
+        }
+
+        private void OnDestroy()
+        {
+            EventManager.Inst.EventGameHeroUpgrade.RemoveListener(OnEventGameHeroUpgrade);
+        }
 
         private void Update()
         {
@@ -173,6 +190,18 @@ namespace Pxp
             }
 
             return nearest;
+        }
+
+        #endregion
+
+        #region EventHandler
+
+        private void OnEventGameHeroUpgrade(int actor, int heroId)
+        {
+            if (Owner == actor && heroId == HeroId)
+            {
+                _attack = HeroData.attack + HeroData.attack_levelUp * InGameHeroData.Upgrade;
+            }
         }
 
         #endregion
