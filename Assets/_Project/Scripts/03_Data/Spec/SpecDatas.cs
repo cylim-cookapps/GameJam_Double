@@ -149,10 +149,15 @@ namespace Pxp.Data
         /// 성급up에 필요한 영웅 개수. 가장 첫번째는 해금에 필요한 개수
         public int[] starValue = global::System.Array.Empty<int>();
         /// 성급에 따라 획득하는 effect
+        [GeneratorIdToData(nameof(skill_star_1), typeof(Hero_Skill))]
         public int skill_star_1;
+        [GeneratorIdToData(nameof(skill_star_2), typeof(Hero_Skill))]
         public int skill_star_2;
+        [GeneratorIdToData(nameof(skill_star_3), typeof(Hero_Skill))]
         public int skill_star_3;
+        [GeneratorIdToData(nameof(skill_star_4), typeof(Hero_Skill))]
         public int skill_star_4;
+        [GeneratorIdToData(nameof(skill_star_5), typeof(Hero_Skill))]
         public int skill_star_5;
     }
 

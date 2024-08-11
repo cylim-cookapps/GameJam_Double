@@ -10,6 +10,12 @@ namespace Pxp
         [SerializeField, GetComponentInChildrenOnly]
         private List<UIEquipHeroItem> _uiEquipHeroItems;
 
+        [SerializeField, GetComponentInChildrenName]
+        private Button _btnCancel;
+
+        [SerializeField]
+        private UIHeroItem _equipHero;
+
         [SerializeField]
         private UIUserHeroItem _prefab;
 
@@ -27,6 +33,7 @@ namespace Pxp
         public override void OnInitialize(MainUI parent)
         {
             base.OnInitialize(parent);
+            _btnCancel.AddListener(OnClickEquipCancel);
 
             for (int i = 0; i < _uiEquipHeroItems.Count; i++)
             {
@@ -73,6 +80,7 @@ namespace Pxp
             {
                 _goScroll.SetActive(false);
                 _goSelected.SetActive(true);
+                _equipHero.SetHero(_selectedHero);
                 _uiEquipHeroItems.ForEach(_ => _.SetEquipMode(true));
             }
             else

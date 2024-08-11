@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 7143269790710773617}
   - component: {fileID: 580727732438129883}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -541,8 +541,9 @@ GameObject:
   - component: {fileID: 3993811206854100400}
   - component: {fileID: 4819582940304585164}
   - component: {fileID: 8336020487099849591}
+  - component: {fileID: 1400997975355943797}
   m_Layer: 5
-  m_Name: UIItemHeroInfo
+  m_Name: UIHeroSkillInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -608,6 +609,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1400997975355943797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8087284642457774439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c0907a063540074a8122330afc363c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textStar: {fileID: 580727732438129883}
+  _textDesc: {fileID: 1313337187295349536}
+  _goLock: {fileID: 6945382455475741653}
 --- !u!1 &8771198529889288606
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,7 +636,7 @@ GameObject:
   - component: {fileID: 4161258748105163344}
   - component: {fileID: 1313337187295349536}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Desc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
