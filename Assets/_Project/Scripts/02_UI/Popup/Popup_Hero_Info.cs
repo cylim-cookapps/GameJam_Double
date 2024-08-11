@@ -36,15 +36,19 @@ namespace Pxp
         public void SetViewHero(UserHeroItem heroData)
         {
             _data = heroData;
-            _uiHeroItem.SetHero(_data);
-            _textTier.SetText(heroData.TierName);
-            _textName.SetText(heroData.Spec.hero_name);
-            _textAtk.SetText(heroData.Atk);
-            _textAtkSpeed.SetText(heroData.AtkSpeed);
-            _textCount.SetTextFormat("{0} / {1}", heroData.Count, 50);
-            _btnLevelUp.SetPrice(heroData.LevelUpGold, heroData.CheckLevelUp());
-
+            Refresh();
             Show();
+        }
+
+        private void Refresh()
+        {
+            _uiHeroItem.SetHero(_data);
+            _textTier.SetText(_data.TierName);
+            _textName.SetText(_data.Spec.hero_name);
+            _textAtk.SetText(_data.Atk);
+            _textAtkSpeed.SetText(_data.AtkSpeed);
+            _textCount.SetTextFormat("{0} / {1}", _data.Count, 50);
+            _btnLevelUp.SetPrice(_data.LevelUpGold, _data.CheckLevelUp());
         }
 
         #region Event
@@ -76,7 +80,7 @@ namespace Pxp
 
         private void OnEventHeroLevelUp(int heroId)
         {
-            SetViewHero(_data);
+            Refresh();
         }
 
         #endregion
