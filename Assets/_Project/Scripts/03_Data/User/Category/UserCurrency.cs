@@ -42,5 +42,17 @@ namespace Pxp
         {
             return _dicCurrency.GetValueOrDefault(type);
         }
+
+        public void AddCurrency(Enum_ItemType type, int count)
+        {
+            var currency = GetCurrency(type);
+            currency.Increase(count);
+        }
+
+        public void SubCurrency(Enum_ItemType type, int count)
+        {
+            var currency = GetCurrency(type);
+            currency.Decrease(count);
+        }
     }
 }

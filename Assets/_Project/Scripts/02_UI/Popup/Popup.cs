@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using PrimeTween;
 using UnityEngine;
 
 namespace Pxp
@@ -57,6 +58,9 @@ namespace Pxp
         [GetComponentInChildrenName]
         private RectTransform dim;
 
+        [SerializeField, GetComponentInChildrenName]
+        private Transform _root;
+
         [SerializeField]
         private POPUP_ANIMATION_TYPE _popupAnimationType = POPUP_ANIMATION_TYPE.SlideUpDown;
 
@@ -65,6 +69,7 @@ namespace Pxp
         public List<Button> closeButtons;
 
         protected bool isInit = false;
+        private Tween _tweenerMain;
 
         public virtual void Initialize()
         {
@@ -85,11 +90,22 @@ namespace Pxp
                 Initialize();
             }
 
+            if (_root != null)
+            {
+                _root.localScale = Vector3.zero;
+                _tweenerMain = Tween.Custom(0, 1f, 0.2f, (value) => { _root.localScale = Vector3.one * value; });
+            }
+
             PopupManager.Inst.PushUI(this);
         }
 
         public virtual void Hide()
         {
+            if (_tweenerMain.isAlive)
+            {
+                _tweenerMain.Stop();
+            }
+
             PopupManager.Inst.PopUI(this);
         }
     }

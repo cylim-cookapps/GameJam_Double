@@ -386,12 +386,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dim: {fileID: 3139878283272674329}
+  _root: {fileID: 626008424572261488}
   _popupAnimationType: 4
   isAnimation: 0
   closeButtons:
   - {fileID: 3411704983859651074}
   - {fileID: 2663268961064894071}
   canvas: {fileID: 6356735871215229025}
+  _uiHeroItem: {fileID: 5589252575108724239}
   _textTier: {fileID: 1586290275935717967}
   _textName: {fileID: 299951465841902561}
   _textAtk: {fileID: 6073304574515715201}
@@ -3994,6 +3996,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 369894449956503335, guid: 52a6ab38ae7f0da448f6c8c2c35ee16f, type: 3}
   m_PrefabInstance: {fileID: 3790117884088507655}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5589252575108724239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8721281945620294408, guid: 52a6ab38ae7f0da448f6c8c2c35ee16f, type: 3}
+  m_PrefabInstance: {fileID: 3790117884088507655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6e732894d600b14f8a683320cb34926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5614090169433011868
 PrefabInstance:
   m_ObjectHideFlags: 0

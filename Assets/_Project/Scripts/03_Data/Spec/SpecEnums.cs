@@ -14,7 +14,7 @@ namespace Pxp.Data
         NORMAL = 1,
         BOSS = 2,
         BONUS = 3,
-        THIEF = 4,
+        CAPTAIN = 4,
     }
 
     /// 아이템

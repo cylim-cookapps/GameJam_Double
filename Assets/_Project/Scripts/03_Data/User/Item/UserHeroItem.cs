@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 using CookApps.Obfuscator;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Pxp.Data;
 using Sigtrap.Relays;
@@ -47,12 +48,14 @@ namespace Pxp
             }
         }
 
-        public double Atk => Spec.attack;
+        public double Atk => Spec.attack + (Spec.goldLevelup * (Level - 1));
         public double AtkSpeed => Spec.attackSpeed;
         public double AtkRange => Spec.attackRange;
 
         public Hero Spec { get; private set; }
         public Relay EventUpdate { get; } = new();
+
+        public int LevelUpGold => Spec.goldLevelup_DefaultCost + (Spec.goldLevelup_IncreaseCost * (Level - 1));
 
         public UserHeroItem(int id)
         {
@@ -75,10 +78,23 @@ namespace Pxp
             Spec = SpecDataManager.Inst.Hero.Get(Id);
         }
 
-        public bool LevelUp()
+        public bool CheckLevelUp()
         {
+            return LevelUpGold <= UserManager.Inst.Currency.GetCurrency(Enum_ItemType.Gold).Count;
+        }
+
+        public void LevelUp()
+        {
+            if (CheckLevelUp() == false)
+                return;
+
+            UserManager.Inst.Currency.SubCurrency(Enum_ItemType.Gold, LevelUpGold);
+            Level++;
+
             UserManager.Inst.SaveCheck(Enum_UserData.Hero);
-            return false;
+            EventManager.Inst.OnEventHeroLevelUp(Id);
+            EventManager.Inst.OnEventToast($"{Spec.hero_name} 레벨업!!");
+            UserManager.Inst.Save().Forget();
         }
 
         public bool StarUp()
