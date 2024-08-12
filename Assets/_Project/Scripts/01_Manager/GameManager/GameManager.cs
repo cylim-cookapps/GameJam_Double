@@ -249,6 +249,8 @@ namespace Pxp
                         playerData.Units[fromIndex].Grade = 0;
                         playerData.Units[toIndex].Grade++;
 
+                        AudioController.Play("SFX_Hero_Merge");
+
                         // 이벤트 발생 (UI 업데이트 등을 위해)
                        // EventManager.Inst.OnEventHeroMerged(actorNumber, toIndex, existingHero.Grade);
                     }
@@ -385,6 +387,7 @@ namespace Pxp
                     EventManager.Inst.OnEventGameCoin(MyInGameUserData.Coin);
                     EventManager.Inst.OnEventGameHeroUpgrade(PhotonNetwork.LocalPlayer.ActorNumber, data.HeroId);
                     SendHeroLevelUp(data.HeroId, data.Upgrade, MyInGameUserData.Coin);
+                    AudioController.Play("SFX_Hero_Upgrade");
                 }
             }
         }

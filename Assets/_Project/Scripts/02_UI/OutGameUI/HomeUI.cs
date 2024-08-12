@@ -65,6 +65,7 @@ namespace Pxp
             if (UserManager.Inst.Hero.EnterBattle() == false)
                 return;
 
+            AudioController.Play("SFX_Click");
             LobbyManager.Inst.QuickMatch(false).Forget();
         }
 
@@ -73,6 +74,7 @@ namespace Pxp
             if (UserManager.Inst.Hero.EnterBattle() == false)
                 return;
 
+            AudioController.Play("SFX_Click");
             LobbyManager.Inst.QuickMatch(true).Forget();
         }
 
