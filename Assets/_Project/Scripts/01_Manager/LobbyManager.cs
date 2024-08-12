@@ -10,8 +10,8 @@ using Random = UnityEngine.Random;
 
 public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
 {
-    public int MaxPlayersPerRoom => _isSingleMode ? 1 : 2;
-    private bool _isSingleMode = false;
+    public int MaxPlayersPerRoom => IsSingleMode ? 1 : 2;
+    public bool IsSingleMode { get; private set; }
 
     private void Start()
     {
@@ -34,9 +34,12 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
     public async UniTaskVoid QuickMatch(bool isSingleMode)
     {
         MainUI.Inst.SetIndicator(true);
-        _isSingleMode = isSingleMode;
+        IsSingleMode = isSingleMode;
         await Connect();
-        PhotonNetwork.JoinRandomRoom();
+        if (isSingleMode)
+            CreatePrivateRoom();
+        else
+            PhotonNetwork.JoinRandomRoom();
     }
 
     public void CancelMatch()
@@ -57,12 +60,25 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
     {
         string roomName = "Room_" + Random.Range(0, 10000);
 
-        RoomOptions roomOptions = new RoomOptions
+        RoomOptions roomOptions = null;
+        if (IsSingleMode)
         {
-            MaxPlayers = MaxPlayersPerRoom,
-            IsVisible = true,
-            IsOpen = true
-        };
+            roomOptions = new RoomOptions
+            {
+                MaxPlayers = MaxPlayersPerRoom,
+                IsVisible = false,
+                IsOpen = false
+            };
+        }
+        else
+        {
+            roomOptions = new RoomOptions
+            {
+                MaxPlayers = MaxPlayersPerRoom,
+                IsVisible = true,
+                IsOpen = true
+            };
+        }
 
         PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
@@ -85,7 +101,7 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        Debug.Log("Failed to join random room. Creating a new one...");
+        Debug.Log($"OnJoinRandomFailed {message}");
         CreatePrivateRoom();
     }
 
@@ -106,6 +122,7 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == MaxPlayersPerRoom)
         {
+            CloseRoom();
             LoadGameScene();
         }
         else
@@ -127,6 +144,7 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount == MaxPlayersPerRoom)
         {
+            CloseRoom();
             LoadGameScene();
         }
     }
@@ -140,6 +158,15 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
         else
         {
             Debug.Log("Not in a room");
+        }
+    }
+
+    private void CloseRoom()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.CurrentRoom.IsVisible = false;
         }
     }
 }

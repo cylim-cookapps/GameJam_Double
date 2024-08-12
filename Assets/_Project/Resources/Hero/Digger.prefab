@@ -93,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _starUI: {fileID: 3900463482293993122}
   _photonAnimatorView: {fileID: 381486058858166552}
+  _sortingGroup: {fileID: 0}
   _projectilePrefab: {fileID: 0}
   _anim: {fileID: 6633083987620413926}
   _hitPrefab: {fileID: 7886632911983583814}

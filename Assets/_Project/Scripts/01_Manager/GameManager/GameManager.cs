@@ -91,8 +91,12 @@ namespace Pxp
         [SerializeField]
         private float spawnInterval = 5f;
 
-        [SerializeField] private LayerMask heroLayerMask;
-        [SerializeField] private LayerMask boardLyerMask;
+        [SerializeField]
+        private LayerMask heroLayerMask;
+
+        [SerializeField]
+        private LayerMask boardLyerMask;
+
         private List<GameObject> spawnedEnemy = new List<GameObject>();
         private Dictionary<int, List<HeroUnit>> spawnedHeroes = new Dictionary<int, List<HeroUnit>>();
         public Enum_GameState CurrGameState = Enum_GameState.Ready;
@@ -116,6 +120,7 @@ namespace Pxp
         private List<Vector2> Batch1 = new List<Vector2>();
 
         public InGameUserData MyInGameUserData => playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber];
+        public InGameUserData OtherInGameUserData => playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber == 1 ? 2 : 1];
         private HeroUnit _selectedHero;
 
         public InGameUserData GetPlayerData(int actorNumber)
@@ -184,17 +189,19 @@ namespace Pxp
         {
             if (Input.GetMouseButtonDown(0)) // 왼쪽 마우스 버튼 클릭
             {
-                _selectedHero = GetClickedHeroUnit();
+                var mousePos = GetMouseWorldPosition();
+
+                _selectedHero = GetClickedHeroUnit(mousePos);
                 if (_selectedHero != null)
                 {
-                    _dragUnit.SetUnit(_selectedHero, GetMouseWorldPosition());
+                    _dragUnit.SetUnit(_selectedHero, mousePos);
                 }
             }
             else if (Input.GetMouseButtonUp(0)) // 왼쪽 마우스 버튼 릴리즈
             {
                 if (_selectedHero != null)
                 {
-                    var board = GetClickedUpBoard();
+                    var board = GetClickedUpBoard(GetMouseWorldPosition());
                     if (board != null)
                     {
                         int fromIndex = _selectedHero.BoardIndex;
@@ -252,7 +259,7 @@ namespace Pxp
                         AudioController.Play("SFX_Hero_Merge");
 
                         // 이벤트 발생 (UI 업데이트 등을 위해)
-                       // EventManager.Inst.OnEventHeroMerged(actorNumber, toIndex, existingHero.Grade);
+                        //EventManager.Inst.OnEventHeroMerged(actorNumber, toIndex, existingHero.Grade);
                     }
                     else
                     {
@@ -275,43 +282,59 @@ namespace Pxp
                     }
 
                     // UI 업데이트 등 필요한 추가 작업
-                  //  EventManager.Inst.OnEventHeroMoved(actorNumber, fromIndex, toIndex);
+                    //EventManager.Inst.OnEventHeroMoved(actorNumber, fromIndex, toIndex);
                 }
             }
         }
 
         private Vector3 GetMouseWorldPosition()
         {
+            Debug.Log(Input.mousePosition);
             Vector3 mouseScreenPosition = Input.mousePosition;
-            mouseScreenPosition.z = -Camera.main.transform.position.z; // 카메라와 같은 z 위치 사용
-            return Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+            mouseScreenPosition.z = Mathf.Abs(Camera.main.transform.position.z);
+
+            // if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
+            // {
+            //     mouseScreenPosition.x = Screen.width - mouseScreenPosition.x;
+            //     mouseScreenPosition.y = Screen.height - mouseScreenPosition.y;
+            // }
+
+            // 스크린 좌표를 월드 좌표로 변환
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+
+            return worldPosition;
         }
 
-        private HeroUnit GetClickedHeroUnit()
+        // GetClickedHeroUnit와 GetClickedUpBoard 메서드도 수정이 필요할 수 있습니다.
+        private HeroUnit GetClickedHeroUnit(Vector3 worldPosition)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, heroLayerMask);
+            Vector2 raycastDirection = PhotonNetwork.LocalPlayer.ActorNumber == 2 ? Vector2.down : Vector2.up;
+            RaycastHit2D[] hits = Physics2D.RaycastAll(worldPosition, raycastDirection, float.MaxValue, heroLayerMask);
 
-            if (hit.collider != null)
+            foreach (var hit in hits)
             {
                 var unit = hit.collider.GetComponent<HeroUnit>();
-                if (unit.Owner == PhotonNetwork.LocalPlayer.ActorNumber)
+                if (unit != null && unit.Owner == PhotonNetwork.LocalPlayer.ActorNumber)
+                {
                     return unit;
+                }
             }
 
             return null;
         }
 
-        private Board GetClickedUpBoard()
+        private Board GetClickedUpBoard(Vector3 worldPosition)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, boardLyerMask);
+            Vector2 raycastDirection = PhotonNetwork.LocalPlayer.ActorNumber == 2 ? Vector2.down : Vector2.up;
+            RaycastHit2D[] hits = Physics2D.RaycastAll(worldPosition, raycastDirection, float.MaxValue, boardLyerMask);
 
-            if (hit.collider != null)
+            foreach (var hit in hits)
             {
                 var board = hit.collider.GetComponent<Board>();
-                if (board.Actor == PhotonNetwork.LocalPlayer.ActorNumber)
+                if (board != null && board.Actor == PhotonNetwork.LocalPlayer.ActorNumber)
+                {
                     return board;
+                }
             }
 
             return null;
@@ -361,6 +384,28 @@ namespace Pxp
             }
         }
 
+        private IEnumerator GameAI()
+        {
+            yield return new WaitForSeconds(1);
+            SpawnHero(true);
+            while (true)
+            {
+                yield return new WaitForSeconds(Random.Range(3, 5));
+                switch (Random.Range(0, 3))
+                {
+                    case 0:
+                        SpawnHero(true);
+                        break;
+                    case 1:
+                        UpgradeAI();
+                        break;
+                    case 2:
+                        MergeAI();
+                        break;
+                }
+            }
+        }
+
         private void GameEnd()
         {
             LobbyManager.Inst.EndGame().Forget();
@@ -392,14 +437,57 @@ namespace Pxp
             }
         }
 
-        public void SpawnHero()
+        public void UpgradeAI()
         {
-            var needCoin = Summon_Default + (Summon_Increase * MyInGameUserData.Summon);
+            var data = playerDataDict[2].Heroes.RandomElement();
+            int needCoin = LevelUp_Default + data.Upgrade * LevelUp_Increase;
 
-            if (MyInGameUserData.Coin < needCoin)
+            if (MyInGameUserData.Coin >= needCoin)
+            {
+                data.Upgrade++;
+                playerDataDict[2].Coin -= needCoin;
+            }
+        }
+
+        private void MergeAI()
+        {
+            if (!PhotonNetwork.IsMasterClient) return;
+
+            var heroList = spawnedHeroes[2];
+
+            for (int i = 0; i < heroList.Count; i++)
+            {
+                for (int j = i + 1; j < heroList.Count; j++)
+                {
+                    if (heroList[i] != null && heroList[j] != null &&
+                        heroList[i].HeroId == heroList[j].HeroId &&
+                        heroList[i].Grade == heroList[j].Grade)
+                    {
+                        // 합성 가능한 영웅 쌍을 찾았을 때
+                        Vector2 newPosition = heroList[i].transform.position;
+                        photonView.RPC(nameof(MoveHeroRpc), RpcTarget.All, 2, j, i, newPosition);
+                        return; // 한 번의 합성만 수행
+                    }
+                }
+            }
+        }
+
+        public void SpawnHero(bool isAI = false)
+        {
+            InGameUserData playerData;
+            if (isAI)
+            {
+                playerData = playerDataDict[2];
+            }
+            else
+            {
+                playerData = playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber];
+            }
+
+            var needCoin = Summon_Default + (Summon_Increase * playerData.Summon);
+
+            if (playerData.Coin < needCoin)
                 return;
-
-            var playerData = playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber];
 
             var indexList = new List<int>();
             for (int i = 0; i < playerData.Units.Count; i++)
@@ -418,12 +506,12 @@ namespace Pxp
 
             if (PhotonNetwork.IsMasterClient)
             {
-                SpawnHeroInternal(heroData.HeroId, batchIndex, PhotonNetwork.LocalPlayer.ActorNumber, needCoin);
+                SpawnHeroInternal(heroData.HeroId, batchIndex, playerData.Index, needCoin);
             }
             else
             {
                 // MasterClient에게 영웅 소환 요청
-                photonView.RPC(nameof(RequestSpawnHero), RpcTarget.MasterClient, heroData.HeroId, batchIndex, PhotonNetwork.LocalPlayer.ActorNumber, needCoin);
+                photonView.RPC(nameof(RequestSpawnHero), RpcTarget.MasterClient, heroData.HeroId, batchIndex, playerData.Index, needCoin);
             }
         }
 
@@ -550,6 +638,18 @@ namespace Pxp
             }
 
             EventManager.Inst.OnEventGameChip(MyInGameUserData.Chip);
+        }
+
+
+        private void OnDrawGizmos()
+        {
+            var pos=  GetMouseWorldPosition();
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(pos, 0.1f); // 반지름 0.1의 구체로 표시
+
+            // 십자가 모양으로 추가 표시
+            Gizmos.DrawLine(pos + Vector3.left * 0.1f, pos + Vector3.right * 0.1f);
+            Gizmos.DrawLine(pos + Vector3.up * 0.1f, pos + Vector3.down * 0.1f);
         }
     }
 }

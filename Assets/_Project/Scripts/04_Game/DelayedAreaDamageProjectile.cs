@@ -73,7 +73,7 @@ namespace Pxp
                     SetTarget(targetView.gameObject);
                 }
 
-                if (actor == 2)
+                if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
                 {
                     transform.localScale = new Vector3(1, -1, 1);
                 }

@@ -13,6 +13,9 @@ namespace Pxp
 {
     public class GameUI : MonoSingleton<GameUI>
     {
+        [SerializeField, GetComponentInChildrenOnly]
+        private List<UIProfileInGameItem> _uiProfileInGameItem;
+
         [SerializeField, GetComponentInChildrenName]
         private TextMeshProUGUI _textWave, _textMonster, _textTimer, _textCoin, _textChip, _textSummonPrice;
 
@@ -25,10 +28,14 @@ namespace Pxp
         [SerializeField, GetComponentInChildrenOnly]
         private List<UIHeroUpgradeItem> _uiHeroUpgradeItems;
 
-        [SerializeField] private GameObject hpBarPrefab;
-        [SerializeField] private Transform hpBarParent;
+        [SerializeField]
+        private GameObject hpBarPrefab;
 
-        [SerializeField] private GameObject damageTextPrefab;
+        [SerializeField]
+        private Transform hpBarParent;
+
+        [SerializeField]
+        private GameObject damageTextPrefab;
 
         private ObjectPool<HPBar> hpBarPool;
         private ObjectPool<DamageText> damageTextPool;
@@ -49,6 +56,7 @@ namespace Pxp
             _sliderMonster.maxValue = 100;
             _btnSummon.AddListener(OnClickSummon);
 
+            EventManager.Inst.EventGameState.AddListener(OnEventGameState);
             EventManager.Inst.EventGameTimer.AddListener(OnEventGameTimer);
             EventManager.Inst.EventWave.AddListener(OnEventWave);
             EventManager.Inst.EventMonsterCount.AddListener(OnEventMonsterCount);
@@ -70,6 +78,7 @@ namespace Pxp
 
         private void OnDestroy()
         {
+            EventManager.Inst.EventGameState.RemoveListener(OnEventGameState);
             EventManager.Inst.EventGameTimer.RemoveListener(OnEventGameTimer);
             EventManager.Inst.EventWave.RemoveListener(OnEventWave);
             EventManager.Inst.EventMonsterCount.RemoveListener(OnEventMonsterCount);
@@ -181,6 +190,15 @@ namespace Pxp
         #endregion
 
         #region EventHandler
+
+        private void OnEventGameState(Enum_GameState state)
+        {
+            if (state == Enum_GameState.Start)
+            {
+                _uiProfileInGameItem[0].SetProfile(GameManager.Inst.MyInGameUserData.Name, GameManager.Inst.MyInGameUserData.Level);
+                _uiProfileInGameItem[1].SetProfile(GameManager.Inst.OtherInGameUserData.Name, GameManager.Inst.OtherInGameUserData.Level);
+            }
+        }
 
         private void OnEventGameTimer(int sec)
         {

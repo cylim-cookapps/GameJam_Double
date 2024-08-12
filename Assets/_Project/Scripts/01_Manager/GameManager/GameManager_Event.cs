@@ -18,7 +18,6 @@ namespace Pxp
 
         private void OnEvent(EventData photonEvent)
         {
-
             if (photonEvent.Code == PLAYER_LOADED_LEVEL)
             {
                 SendPlayerData();
@@ -33,6 +32,14 @@ namespace Pxp
                 {
                     if (CurrGameState == Enum_GameState.Start)
                         return;
+
+                    if (LobbyManager.Inst.IsSingleMode)
+                    {
+                        InGameUserData ai = new InGameUserData();
+                        ai.InitAI();
+                        playerDataDict[ai.Index] = ai;
+                        StartCoroutine(GameAI());
+                    }
 
                     if (PhotonNetwork.IsMasterClient)
                     {
@@ -97,8 +104,8 @@ namespace Pxp
 
             InGameUserData myData = new InGameUserData(
                 PhotonNetwork.LocalPlayer.ActorNumber,
-                UserManager.Inst.NickName,
                 UserManager.Inst.PlayerId,
+                UserManager.Inst.NickName,
                 UserManager.Inst.Info.Level,
                 startCoin,
                 0,

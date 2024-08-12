@@ -39,6 +39,11 @@ namespace Pxp
                 var index = i;
                 _togglesTab[i].onValueChanged.AddListener(isOn => OnValueChangedTab(isOn, (Enum_OutGameTab) index));
             }
+
+            if (string.IsNullOrEmpty(UserManager.Inst.NickName))
+            {
+                PopupManager.Inst.GetPopup<Popup_Change_Name>().Show();
+            }
         }
 
         public void SetIndicator(bool isOn)

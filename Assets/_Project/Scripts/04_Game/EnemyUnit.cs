@@ -34,6 +34,8 @@ namespace Pxp
         [SerializeField]
         private int currentWaypointIndex = 0;
 
+        private Vector2 _lastPosition;
+
         private HPBar hpBar;
 
         private void RequestHPBar()
@@ -57,12 +59,61 @@ namespace Pxp
             }
         }
 
+        private void Start()
+        {
+            _lastPosition = transform.position;
+        }
+
+        private void UpdateDirection()
+        {
+            Vector2 currentPosition = transform.position;
+            Vector2 movementDirection = currentPosition - _lastPosition;
+
+            // if (movementDirection.x != 0)
+            // {
+            //     bool isMovingRight = movementDirection.x > 0;
+            //     transform.localScale = new Vector3(isMovingRight ? 1 : -1, 1, 1);
+            // }
+            // else
+            // {
+            //     transform.localScale = new Vector3(currentPosition.x < 0 ? 1 : -1, 1, 1);
+            // }
+            // if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+            // {
+            //     if (movementDirection.x != 0)
+            //     {
+            //         bool isMovingRight = movementDirection.x > 0;
+            //         transform.localScale = new Vector3(isMovingRight ? 1 : -1, 1, 1);
+            //     }
+            //     else
+            //     {
+            //         transform.localScale = new Vector3(currentPosition.x < 0 ? 1 : -1, 1, 1);
+            //     }
+            // }
+            // else
+            // {
+            //     if (movementDirection.x != 0)
+            //     {
+            //         bool isMovingRight = movementDirection.x > 0;
+            //         transform.localScale = new Vector3(isMovingRight ? -1 : 1, 1, 1);
+            //     }
+            //     else
+            //     {
+            //         transform.localScale = new Vector3(currentPosition.x < 0 ? -1 : 1, 1, 1);
+            //     }
+            // }
+
+            _lastPosition = currentPosition;
+        }
+
         private void Update()
         {
             if (PhotonNetwork.IsMasterClient)
             {
                 MoveToNextWaypoint();
             }
+
+            UpdateDirection();
         }
 
         private void MoveToNextWaypoint()

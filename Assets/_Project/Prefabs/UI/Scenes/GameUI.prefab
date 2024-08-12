@@ -1205,8 +1205,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6191212526901145776}
   - component: {fileID: 4873225964043861663}
+  - component: {fileID: 7894317566977260938}
   m_Layer: 5
-  m_Name: UIItemUserIngame
+  m_Name: UIProfileInGameItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1242,6 +1243,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1705578286601074956}
   m_CullTransparentMesh: 1
+--- !u!114 &7894317566977260938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705578286601074956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac16be3b403969a4084bd599c040e956, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textName: {fileID: 7478557125572536345}
+  _textLevel: {fileID: 4463114771404392527}
 --- !u!1 &1758166501868060544
 GameObject:
   m_ObjectHideFlags: 0
@@ -1254,7 +1269,7 @@ GameObject:
   - component: {fileID: 588254693145477491}
   - component: {fileID: 7478557125572536345}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3005,7 +3020,7 @@ GameObject:
   - component: {fileID: 4867336402637034438}
   - component: {fileID: 8736882056286434235}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Texts_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3652,7 +3667,7 @@ GameObject:
   - component: {fileID: 467670741833136481}
   - component: {fileID: 1195406622089751962}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3786,7 +3801,7 @@ GameObject:
   - component: {fileID: 8514546480706397950}
   - component: {fileID: 4463114771404392527}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6650,8 +6665,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3598614149359817806}
   - component: {fileID: 352706282103064916}
+  - component: {fileID: 5330615603801543091}
   m_Layer: 5
-  m_Name: UIItemUserIngame (1)
+  m_Name: UIProfileInGameItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6687,6 +6703,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8930447236227420648}
   m_CullTransparentMesh: 1
+--- !u!114 &5330615603801543091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8930447236227420648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac16be3b403969a4084bd599c040e956, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textName: {fileID: 1195406622089751962}
+  _textLevel: {fileID: 0}
 --- !u!1 &9038501324395926172
 GameObject:
   m_ObjectHideFlags: 0
@@ -6715,7 +6745,7 @@ RectTransform:
   m_GameObject: {fileID: 9038501324395926172}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6241239344585936034}
@@ -6779,6 +6809,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0338cb408dd32b4abcc77d454d6bdc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uiProfileInGameItem:
+  - {fileID: 7894317566977260938}
+  - {fileID: 5330615603801543091}
   _textWave: {fileID: 5742152013251126928}
   _textMonster: {fileID: 4056465856534789108}
   _textTimer: {fileID: 4505056656019062053}

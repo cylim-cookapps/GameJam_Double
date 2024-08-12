@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,12 +24,16 @@ namespace Pxp
         {
             if (_targetTransform != null)
             {
-                Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _targetTransform.position + Vector3.up);
+                Vector2 screenPoint;
+                if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+                    screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _targetTransform.position + Vector3.up);
+                else
+                    screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _targetTransform.position + Vector3.down);
                 rectTransform.position = screenPoint;
             }
             else
             {
-                Debug.Log(name);
+                GameUI.Inst.ReturnHPBar(this);
             }
         }
 
@@ -42,7 +47,11 @@ namespace Pxp
             _targetTransform = target;
             if (_targetTransform != null)
             {
-                Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _targetTransform.position + Vector3.up);
+                Vector2 screenPoint;
+                if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+                    screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _targetTransform.position + Vector3.up);
+                else
+                    screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, _targetTransform.position + Vector3.down);
                 rectTransform.position = screenPoint;
                 gameObject.SetActive(true);
             }

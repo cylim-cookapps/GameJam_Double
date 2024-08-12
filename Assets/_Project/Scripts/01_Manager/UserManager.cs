@@ -17,7 +17,7 @@ namespace Pxp
     public class UserManager : Singleton<UserManager>
     {
         internal string PlayerId { get; private set; }
-        internal string NickName { get; private set; }
+        internal string NickName { get; set; }
         internal bool IsNewUser { get; private set; }
 
         #region Field
@@ -58,18 +58,7 @@ namespace Pxp
             Load(ref _currency, userData, Enum_UserData.Currency);
             Load(ref _hero, userData, Enum_UserData.Hero);
 
-            if (IsNewUser)
-            {
-                NickName = $"Test {LucidRandom.Range(1000, 10000)}";
-                await NicknameManager.Inst.SetNickname(NickName);
-            }
-            else
-            {
-                var data = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string>() {"NickName"}, new LoadOptions(new PublicReadAccessClassOptions()));
-                if (data.TryGetValue("NickName", out var item))
-                    NickName = item.Value.GetAsString();
-            }
-
+            NickName = await NicknameManager.Inst.GetUserNickname();
             await Save(true);
         }
 

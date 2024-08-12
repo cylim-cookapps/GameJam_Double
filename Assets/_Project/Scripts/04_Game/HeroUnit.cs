@@ -6,6 +6,7 @@ using Cysharp.Text;
 using Photon.Pun;
 using Pxp.Data;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 namespace Pxp
@@ -17,6 +18,9 @@ namespace Pxp
 
         [SerializeField, GetComponentInChildrenOnly]
         private PhotonAnimatorView _photonAnimatorView;
+
+        [SerializeField, GetComponentInChildrenOnly]
+        private SortingGroup _sortingGroup;
 
         public int HeroId { get; private set; }
         public int BoardIndex { get; private set; }

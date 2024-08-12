@@ -30,6 +30,13 @@ namespace Pxp
         public void OnEventToast(string value) => EventToast.Dispatch(value);
         public readonly Relay<string> EventToast = new();
 
+        public void OnEventNickname(string value) => EventNickname.Dispatch(value);
+        public readonly Relay<string> EventNickname = new();
+
+
+
+
+
         public void OnEventMatch() => EventMatch.Dispatch();
         public readonly Relay EventMatch = new();
 

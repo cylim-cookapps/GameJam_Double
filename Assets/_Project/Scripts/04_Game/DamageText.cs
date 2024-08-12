@@ -1,16 +1,26 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using Photon.Pun;
 
 namespace Pxp
 {
     public class DamageText : MonoBehaviour
     {
-        [SerializeField] private GameObject critical;
-        [SerializeField] private TextMeshProUGUI textMesh;
-        [SerializeField] private float lifeTime = 1f;
-        [SerializeField] private float moveSpeed = 1f;
-        [SerializeField] private float fadeSpeed = 1f;
+        [SerializeField]
+        private GameObject critical;
+
+        [SerializeField]
+        private TextMeshProUGUI textMesh;
+
+        [SerializeField]
+        private float lifeTime = 1f;
+
+        [SerializeField]
+        private float moveSpeed = 1f;
+
+        [SerializeField]
+        private float fadeSpeed = 1f;
 
         private Vector3 offset = new Vector3(0, 0.5f, 0);
 
@@ -18,7 +28,11 @@ namespace Pxp
         {
             critical.SetActive(isCri);
             textMesh.SetText(damage.ToString("N0"));
-            Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, target.position + offset);
+            Vector2 screenPoint;
+            if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
+                screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, target.position + offset);
+            else
+                screenPoint = RectTransformUtility.WorldToScreenPoint(Camera.main, target.position - offset);
             transform.position = screenPoint;
             StartCoroutine(FadeAndMove());
         }

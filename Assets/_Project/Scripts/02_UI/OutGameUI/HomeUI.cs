@@ -45,6 +45,7 @@ namespace Pxp
             _textEnergy.SetTextFormat("{0}/{1}", energy.Count, energy.Spec.auto_max_count);
 
             EventManager.Inst.EventEquippedHero.AddListener(OnEventEquippedHero);
+            EventManager.Inst.EventNickname.AddListener(OnEventNickname);
             OnEventEquippedHero();
         }
 
@@ -132,6 +133,11 @@ namespace Pxp
                     _equippedHeroes[i].SetActive(false);
                 }
             }
+        }
+
+        private void OnEventNickname(string nickName)
+        {
+            _textNick.SetText(nickName);
         }
 
         #endregion

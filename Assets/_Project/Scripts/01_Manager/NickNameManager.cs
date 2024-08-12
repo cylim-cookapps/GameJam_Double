@@ -1,22 +1,18 @@
-using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Pxp;
 using Unity.Services.CloudSave.Models;
 using Unity.Services.CloudSave.Models.Data.Player;
+using Debug = UnityEngine.Debug;
 using SaveOptions = Unity.Services.CloudSave.Models.Data.Player.SaveOptions;
 
 public class NicknameManager : Singleton<NicknameManager>
 {
     private const string NicknameKey = "NickName";
-
-    private async void Start()
-    {
-        await UnityServices.InitializeAsync();
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
-    }
 
     public async Task<bool> IsNicknameAvailable(string nickname)
     {
@@ -43,12 +39,13 @@ public class NicknameManager : Singleton<NicknameManager>
         }
     }
 
-    public async Task<bool> SetNickname(string nickname)
+    public async Task<Enum_NickNameValid> SetNickname(string nickname)
     {
-        if (!AuthenticationService.Instance.IsSignedIn)
+        var state = LanguageManager.Inst.IsValidNickName(nickname);
+
+        if (state != Enum_NickNameValid.Valid)
         {
-            Debug.LogError("User is not signed in.");
-            return false;
+            return state;
         }
 
         if (await IsNicknameAvailable(nickname))
@@ -57,30 +54,30 @@ public class NicknameManager : Singleton<NicknameManager>
             {
                 var data = new Dictionary<string, object> {{NicknameKey, nickname}};
                 await CloudSaveService.Instance.Data.Player.SaveAsync(data, new SaveOptions(new PublicWriteAccessClassOptions()));
-                Debug.Log("Nickname set successfully.");
-                return true;
+                UserManager.Inst.NickName = nickname;
+                EventManager.Inst.OnEventNickname(nickname);
+                return Enum_NickNameValid.Valid;
             }
             catch (CloudSaveException e)
             {
                 Debug.LogError($"Failed to save nickname: {e.Message}");
-                return false;
+                return Enum_NickNameValid.Duplication;
             }
         }
         else
         {
-            Debug.Log("Nickname is already taken.");
-            return false;
+            return Enum_NickNameValid.Duplication;
         }
     }
 
-    public async Task<string> GetUserNickname()
+    public async UniTask<string> GetUserNickname()
     {
         try
         {
-            var results = await CloudSaveService.Instance.Data.LoadAsync(new HashSet<string> {NicknameKey});
+            var results = await CloudSaveService.Instance.Data.Player.LoadAsync(new HashSet<string> {NicknameKey}, new LoadOptions(new PublicReadAccessClassOptions()));
             if (results.TryGetValue(NicknameKey, out var nicknameObject))
             {
-                return nicknameObject as string;
+                return nicknameObject.Value.GetAsString();
             }
 
             return null;
