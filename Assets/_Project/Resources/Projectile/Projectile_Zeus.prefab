@@ -49,12 +49,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c3fcd5729eff144d812f8e44d862813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 64
   speed: 10
   damage: 5
   hitEffectTime: 1.4
+  isRotation: 0
   projectile: {fileID: 283608846517976249}
   effect: {fileID: 9159606784888316538}
   isFollow: 0
+  slowTime: 0
+  hitRange: 0
+  dotHit: 0
 --- !u!114 &-1831493589263351210
 MonoBehaviour:
   m_ObjectHideFlags: 0

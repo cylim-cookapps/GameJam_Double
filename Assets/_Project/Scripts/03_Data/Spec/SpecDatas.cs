@@ -22,6 +22,7 @@ namespace Pxp.Data
     {
         [GeneratorId(nameof(id), typeof(int))]
         public int id;
+        public global::Pxp.Data.Enum_ItemType item_type;
         /// 자동 획득 시간(분)
         public int auto_acquire_time;
         /// 자동 획득시 최대 한도
@@ -86,34 +87,10 @@ namespace Pxp.Data
         public int chipAmount;
         /// 획득 effect=relic의 value_default와 동일
         public int effectId;
-        /// 더블 코인 획득 찬스! 게이지 포인트
+        /// UI 하단에 쌓이는 코인 !
         public int bonusGaguePoint;
         /// 프리팹
         public string prefab_key;
-    }
-
-    [GeneratorSpecData]
-    public partial class BonusBox
-    {
-        /// 상자 레벨과 동일함 (=침략자 누적 처치수와 동일)
-        [GeneratorId(nameof(id), typeof(int))]
-        public int id;
-        /// 획득 코인 수량
-        public int coinAmount;
-        /// 획득 칩 수량
-        public int chipAmount;
-    }
-
-    [GeneratorSpecData]
-    public partial class Relic
-    {
-        [GeneratorId(nameof(id), typeof(int))]
-        public int id;
-        public string relicName;
-        /// 수치 값은 동적으로 안받아오고 깡 text로 쓸게요
-        public string relicDescription;
-        public float value_default;
-        public float value_increase;
     }
 
     [GeneratorSpecData]
@@ -121,6 +98,7 @@ namespace Pxp.Data
     {
         [GeneratorId(nameof(id), typeof(int))]
         public int id;
+        public global::Pxp.Data.Enum_ItemType item_type;
         /// 초기 영웅 설정
         public bool hero_unlock;
         public string hero_name;
@@ -174,5 +152,32 @@ namespace Pxp.Data
         public float skillValue_3;
         public float skillValue_4;
         public float skillValue_5;
+    }
+
+    [GeneratorSpecData]
+    public partial class Shop
+    {
+        [GeneratorId(nameof(id), typeof(string))]
+        public string id;
+        public string product_id;
+        /// #사용하지 않을 경우 -1
+        public int index;
+        /// 분류 기준
+        public global::Pxp.Data.Enum_ShopCategory shopCategory;
+        public global::Pxp.Data.Enum_PurchaseType purchaseType;
+        /// iap=원화 기준
+        public int price;
+        /// (구매 제한) : 어차피 다음날 버그 발견해도 상관없긴함
+        public int limit;
+        public global::Pxp.Data.Enum_ItemType item_1;
+        public int itemAmount_1;
+        public global::Pxp.Data.Enum_ItemType item_2;
+        public int itemAmount_2;
+        public global::Pxp.Data.Enum_ItemType item_3;
+        public int itemAmount_3;
+        public global::Pxp.Data.Enum_ItemType item_4;
+        public int itemAmount_4;
+        public global::Pxp.Data.Enum_ItemType item_5;
+        public int itemAmount_5;
     }
 }

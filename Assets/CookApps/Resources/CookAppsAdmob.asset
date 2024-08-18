@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: CookAppsAdmob
   m_EditorClassIdentifier: 
   _android:
-    AppId: 
+    AppId: ca-app-pub-1076272347919893~5148168980
     InterstitialAdUnitId: 
-    RewardedAdUnitId: 
+    RewardedAdUnitId: ca-app-pub-1076272347919893/6307802440
     Banner:
       BannerAdUnitId: 
-      Position: 0
+      Position: 1
     TestDeviceIds: []
   _ios:
     AppId: 

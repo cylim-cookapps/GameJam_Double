@@ -110,6 +110,9 @@ namespace Pxp
         private int Summon_Increase = 10;
         private int LevelUp_Default = 50;
         private int LevelUp_Increase = 100;
+        public List<int> Gamble = new List<int>();
+        public bool IsGambleEnd { get; private set; }
+        public bool IsFirstFail { get;  set; }
 
         private List<Wave> _waves = new();
 
@@ -524,7 +527,7 @@ namespace Pxp
             }
         }
 
-        private void SpawnHeroInternal(int heroId, int batchIndex, int actorNumber, int needCoin)
+        private void SpawnHeroInternal(int heroId, int batchIndex, int actorNumber, int needCoin, int star = 0)
         {
             var heroSpec = SpecDataManager.Inst.Hero.Get(heroId);
 
@@ -533,7 +536,7 @@ namespace Pxp
                 heroId,
                 batchIndex,
                 actorNumber,
-                0,
+                star,
             };
 
             var pos = actorNumber == 1 ? Batch0[batchIndex] : Batch1[batchIndex];
@@ -579,6 +582,7 @@ namespace Pxp
                 data.monsterIndex,
                 data.coinAmount,
                 data.chipAmount,
+                data.bonusGaguePoint,
                 waypoint.ToArray(), // List<Vector2>를 Vector2[]로 변환
             };
 
@@ -607,8 +611,33 @@ namespace Pxp
                 if (enemyUnit.Chip > 0)
                     photonView.RPC(nameof(AddChip), RpcTarget.All, enemyUnit.Chip);
 
+                if (enemyUnit.BonusCoin > 0)
+                    photonView.RPC(nameof(AddBonusCoin), RpcTarget.All, enemyUnit.BonusCoin);
+
                 DestroyedEnemy(enemyUnit.gameObject);
             }
+        }
+
+        private bool _isTryDoubleBonusCoin = false;
+
+        public void SetDoubleBonusCoin(bool isSuccess)
+        {
+            if (_isTryDoubleBonusCoin)
+                return;
+
+            _isTryDoubleBonusCoin = true;
+            photonView.RPC(nameof(SuccessBonusCoin), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, isSuccess);
+        }
+
+        public void ReceiveBonusCoin()
+        {
+            MyInGameUserData.Coin += MyInGameUserData.BonusCoin;
+            MyInGameUserData.BonusCoin = 0;
+
+            EventManager.Inst.OnEventGameCoin(MyInGameUserData.Coin);
+            EventManager.Inst.OnEventGameBonusCoin(MyInGameUserData.BonusCoin);
+
+            photonView.RPC(nameof(RpcReceiveBonusCoin), RpcTarget.Others, MyInGameUserData.Coin);
         }
 
         public void DestroyedEnemy(GameObject obj)
@@ -616,6 +645,135 @@ namespace Pxp
             spawnedEnemy.Remove(obj);
             PhotonNetwork.Destroy(obj);
             MonsterCount = spawnedEnemy.Count;
+        }
+
+        public void SetGamble(int chip)
+        {
+            if (Gamble.Count >= 5)
+                return;
+
+            if (MyInGameUserData.Chip < chip)
+                return;
+
+            int rate = 0;
+            switch (Gamble.Count)
+            {
+                case 0:
+                    rate = (int) SpecDataManager.Inst.Option.Get("Gamble_Unluck_Step_1").value;
+                    break;
+                case 1:
+                    rate = (int) SpecDataManager.Inst.Option.Get("Gamble_Unluck_Step_2").value;
+                    break;
+                case 2:
+                    rate = (int) SpecDataManager.Inst.Option.Get("Gamble_Unluck_Step_3").value;
+                    break;
+                case 3:
+                    rate = (int) SpecDataManager.Inst.Option.Get("Gamble_Unluck_Step_4").value;
+                    break;
+                case 4:
+                    rate = (int) SpecDataManager.Inst.Option.Get("Gamble_Unluck_Step_5").value;
+                    break;
+            }
+
+            MyInGameUserData.Chip -= chip;
+
+            if (Random.Range(0, 100) > rate)
+            {
+                if (Gamble.Count == 0)
+                {
+                    Gamble.Add(UserManager.Inst.Hero.EquipHeroes.RandomElement());
+                }
+                else
+                {
+                    Gamble.Add(Gamble[0]);
+                }
+
+                if (Gamble.Count == 5)
+                    IsGambleEnd = true;
+
+                EventManager.Inst.OnEventToast("도박 성공!!");
+            }
+            else
+            {
+                if (Gamble.Count > 0)
+                    IsGambleEnd = true;
+                else
+                    IsFirstFail = true;
+
+                EventManager.Inst.OnEventToast("도박 실패..");
+            }
+
+            photonView.RPC(nameof(RpcGambleChip), RpcTarget.Others, chip);
+        }
+
+        public bool ReceiveGamble()
+        {
+            if (Gamble.Count == 0)
+                return false;
+
+            var indexList = new List<int>();
+            for (int i = 0; i < MyInGameUserData.Units.Count; i++)
+            {
+                if (MyInGameUserData.Units[i].HeroId == 0)
+                {
+                    indexList.Add(i);
+                }
+            }
+
+            if (indexList.Count == 0)
+            {
+                EventManager.Inst.OnEventToast("소환 할 자리가 없습니다.");
+                return false;
+            }
+
+            int heroId = Gamble[0];
+            int grade = Gamble.Count - 1;
+            Gamble.Clear();
+            IsGambleEnd = false;
+
+            var batchIndex = indexList[Random.Range(0, indexList.Count)];
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                SpawnHeroInternal(heroId, batchIndex, MyInGameUserData.Index, 0, grade);
+            }
+            else
+            {
+                photonView.RPC(nameof(RequestSpawnHero), RpcTarget.MasterClient, heroId, batchIndex, MyInGameUserData.Index, 0, grade);
+            }
+
+            var spec = SpecDataManager.Inst.Hero.Get(heroId);
+            EventManager.Inst.OnEventToast($"{spec.hero_name}+{grade} 소환 성공");
+            return true;
+        }
+
+        [PunRPC]
+        public void RpcReceiveBonusCoin(int coin)
+        {
+            OtherInGameUserData.Coin = coin;
+            OtherInGameUserData.BonusCoin = 0;
+        }
+
+        [PunRPC]
+        public void RpcGambleChip(int chip)
+        {
+            OtherInGameUserData.Chip -= chip;
+        }
+
+        [PunRPC]
+        public void SuccessBonusCoin(int actor, bool isSuccess)
+        {
+            if (isSuccess)
+                playerDataDict[actor].BonusCoin *= 2;
+            else
+                playerDataDict[actor].BonusCoin = 0;
+
+            if (MyInGameUserData.Index == actor)
+            {
+                _isTryDoubleBonusCoin = false;
+                EventManager.Inst.OnEventGameBonusCoin(MyInGameUserData.BonusCoin);
+                EventManager.Inst.OnEventToast(isSuccess ? "보너스 더블 성공!!" : "보너스 더블 실패..");
+            }
         }
 
         [PunRPC]
@@ -640,10 +798,20 @@ namespace Pxp
             EventManager.Inst.OnEventGameChip(MyInGameUserData.Chip);
         }
 
+        [PunRPC]
+        public void AddBonusCoin(int bonusCoin)
+        {
+            foreach (var data in playerDataDict)
+            {
+                data.Value.BonusCoin += bonusCoin;
+            }
+
+            EventManager.Inst.OnEventGameBonusCoin(MyInGameUserData.BonusCoin);
+        }
 
         private void OnDrawGizmos()
         {
-            var pos=  GetMouseWorldPosition();
+            var pos = GetMouseWorldPosition();
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(pos, 0.1f); // 반지름 0.1의 구체로 표시
 

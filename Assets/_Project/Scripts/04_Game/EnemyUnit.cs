@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using Pxp.Data;
@@ -22,14 +23,17 @@ namespace Pxp
         }
 
         public int MaxHp { get; private set; }
-
         public int Coin { get; private set; }
         public int Chip { get; private set; }
+        public int BonusCoin { get; private set; }
         public Enum_monsterType MonsterType { get; private set; }
+
+        public bool IsSlow { get; private set; }
 
         public Monster MonsterData { get; private set; }
         private List<Vector2> _waypoints;
         private bool _isDead;
+        private float _moveSpeed;
 
         [SerializeField]
         private int currentWaypointIndex = 0;
@@ -69,39 +73,15 @@ namespace Pxp
             Vector2 currentPosition = transform.position;
             Vector2 movementDirection = currentPosition - _lastPosition;
 
-            // if (movementDirection.x != 0)
-            // {
-            //     bool isMovingRight = movementDirection.x > 0;
-            //     transform.localScale = new Vector3(isMovingRight ? 1 : -1, 1, 1);
-            // }
-            // else
-            // {
-            //     transform.localScale = new Vector3(currentPosition.x < 0 ? 1 : -1, 1, 1);
-            // }
-            // if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
-            // {
-            //     if (movementDirection.x != 0)
-            //     {
-            //         bool isMovingRight = movementDirection.x > 0;
-            //         transform.localScale = new Vector3(isMovingRight ? 1 : -1, 1, 1);
-            //     }
-            //     else
-            //     {
-            //         transform.localScale = new Vector3(currentPosition.x < 0 ? 1 : -1, 1, 1);
-            //     }
-            // }
-            // else
-            // {
-            //     if (movementDirection.x != 0)
-            //     {
-            //         bool isMovingRight = movementDirection.x > 0;
-            //         transform.localScale = new Vector3(isMovingRight ? -1 : 1, 1, 1);
-            //     }
-            //     else
-            //     {
-            //         transform.localScale = new Vector3(currentPosition.x < 0 ? -1 : 1, 1, 1);
-            //     }
-            // }
+            if (movementDirection.x != 0)
+            {
+                bool isMovingRight = movementDirection.x > 0;
+                transform.localScale = new Vector3(isMovingRight ? 1 : -1, 1, 1);
+            }
+            else
+            {
+                transform.localScale = new Vector3(currentPosition.x < 0 ? 1 : -1, 1, 1);
+            }
 
             _lastPosition = currentPosition;
         }
@@ -120,8 +100,9 @@ namespace Pxp
         {
             if (_waypoints == null || _waypoints.Count == 0) return;
 
+            var speed = IsSlow ? _moveSpeed * 0.7f : _moveSpeed;
             Vector2 targetPosition = _waypoints[currentWaypointIndex];
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, 1 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
             if ((Vector2) transform.position == targetPosition)
             {
@@ -143,9 +124,11 @@ namespace Pxp
             MonsterData = SpecDataManager.Inst.Monster.Get((int) instantiationData[0]);
             Coin = (int) instantiationData[1];
             Chip = (int) instantiationData[2];
+            BonusCoin = (int) instantiationData[3];
             MonsterType = MonsterData.monsterType;
-            _waypoints = new List<Vector2>((Vector2[]) instantiationData[3]);
+            _waypoints = new List<Vector2>((Vector2[]) instantiationData[4]);
             _isDead = false;
+            _moveSpeed = MonsterData.moveSpeed;
             Hp = MaxHp = MonsterData.hp;
 
             if (PhotonNetwork.LocalPlayer.ActorNumber == 2)
@@ -157,13 +140,18 @@ namespace Pxp
         }
 
         [PunRPC]
-        public void TakeDamage(int damage)
+        public void TakeDamage(int damage, float slowDuration = 0f)
         {
             if (_isDead) return;
 
             Hp -= damage;
             AudioController.Play("SFX_TakeDamage");
             if (Hp < 0) Hp = 0;
+            if (slowDuration > 0)
+            {
+                StopCoroutine(nameof(SlowEffect));
+                StartCoroutine(nameof(SlowEffect), slowDuration);
+            }
 
             GameUI.Inst.ShowDamageText(damage, false, transform);
 
@@ -172,6 +160,13 @@ namespace Pxp
                 DestroyEnemy();
                 _isDead = true;
             }
+        }
+
+        IEnumerator SlowEffect(float duration)
+        {
+            IsSlow = true;
+            yield return new WaitForSeconds(duration);
+            IsSlow = false;
         }
 
         private void DestroyEnemy()
@@ -190,9 +185,9 @@ namespace Pxp
             }
         }
 
-        public void ReceiveAttack(int damage)
+        public void ReceiveAttack(int damage, float slowDuration = 0f)
         {
-            photonView.RPC(nameof(TakeDamage), RpcTarget.All, damage);
+            photonView.RPC(nameof(TakeDamage), RpcTarget.All, damage, slowDuration);
         }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

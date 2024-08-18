@@ -49,10 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   hitRange: 0
   hitTime: 0.5
   destroyTime: 1.5
+  targetCount: 0
 --- !u!114 &-6254765134960518485
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -53,6 +53,7 @@ MonoBehaviour:
   hitRange: 1
   hitTime: 0.5
   destroyTime: 1.5
+  targetCount: 0
 --- !u!114 &150965082289555673
 MonoBehaviour:
   m_ObjectHideFlags: 0

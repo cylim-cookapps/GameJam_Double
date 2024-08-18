@@ -103,6 +103,11 @@ namespace Pxp
             return false;
         }
 
+        public void AddCard(int count)
+        {
+            Count += count;
+        }
+
         #region Editor
 
 #if UNITY_EDITOR || __DEV

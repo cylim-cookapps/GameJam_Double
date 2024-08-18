@@ -17,13 +17,13 @@ namespace Pxp
         private List<UIProfileInGameItem> _uiProfileInGameItem;
 
         [SerializeField, GetComponentInChildrenName]
-        private TextMeshProUGUI _textWave, _textMonster, _textTimer, _textCoin, _textChip, _textSummonPrice;
+        private TextMeshProUGUI _textWave, _textMonster, _textTimer, _textCoin, _textChip, _textSummonPrice,_textBonusCoin;
 
         [SerializeField, GetComponentInChildrenName]
         private Slider _sliderMonster;
 
         [SerializeField, GetComponentInChildrenName]
-        private Button _btnSummon;
+        private Button _btnSummon,_btnBonusCoin, _btnGamble;
 
         [SerializeField, GetComponentInChildrenOnly]
         private List<UIHeroUpgradeItem> _uiHeroUpgradeItems;
@@ -55,6 +55,9 @@ namespace Pxp
             _textSummonPrice.SetText(Summon_Default);
             _sliderMonster.maxValue = 100;
             _btnSummon.AddListener(OnClickSummon);
+            _btnBonusCoin.AddListener(OnClickBonusCoin);
+            _btnGamble.AddListener(OnClickGamble);
+            _btnBonusCoin.SetActive(false);
 
             EventManager.Inst.EventGameState.AddListener(OnEventGameState);
             EventManager.Inst.EventGameTimer.AddListener(OnEventGameTimer);
@@ -62,6 +65,7 @@ namespace Pxp
             EventManager.Inst.EventMonsterCount.AddListener(OnEventMonsterCount);
             EventManager.Inst.EventGameCoin.AddListener(OnEventGameCoin);
             EventManager.Inst.EventGameChip.AddListener(OnEventGameChip);
+            EventManager.Inst.EventGameBonusCoin.AddListener(OnEventGameBonusCoin);
 
             InitializePool();
         }
@@ -84,6 +88,7 @@ namespace Pxp
             EventManager.Inst.EventMonsterCount.RemoveListener(OnEventMonsterCount);
             EventManager.Inst.EventGameCoin.RemoveListener(OnEventGameCoin);
             EventManager.Inst.EventGameChip.RemoveListener(OnEventGameChip);
+            EventManager.Inst.EventGameBonusCoin.RemoveListener(OnEventGameBonusCoin);
 
             hpBarPool.Dispose();
             damageTextPool.Dispose();
@@ -187,6 +192,16 @@ namespace Pxp
             GameManager.Inst.SpawnHero();
         }
 
+        private void OnClickBonusCoin()
+        {
+            PopupManager.Inst.GetPopup<Popup_Double>().Show();
+        }
+
+        private void OnClickGamble()
+        {
+            PopupManager.Inst.GetPopup<Popup_Gamble>().Show();
+        }
+
         #endregion
 
         #region EventHandler
@@ -221,6 +236,19 @@ namespace Pxp
         private void OnEventGameChip(int chip)
         {
             _textChip.SetText(chip);
+        }
+
+        private void OnEventGameBonusCoin(int bonusCoin)
+        {
+            if (bonusCoin > 0)
+            {
+                _textBonusCoin.SetText(bonusCoin);
+                _btnBonusCoin.SetActive(true);
+            }
+            else
+            {
+                _btnBonusCoin.SetActive(false);
+            }
         }
 
         private void OnEventGameCoin(int coin)

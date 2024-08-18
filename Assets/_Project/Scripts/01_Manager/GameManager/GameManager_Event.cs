@@ -110,6 +110,7 @@ namespace Pxp
                 startCoin,
                 0,
                 0,
+                0,
                 myHeroes, myUnits
             );
 

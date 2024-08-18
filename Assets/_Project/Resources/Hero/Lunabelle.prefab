@@ -92,7 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _starUI: {fileID: 6732740823106961324}
   _photonAnimatorView: {fileID: 1724597262708741360}
-  _sortingGroup: {fileID: 0}
+  _sortingGroup: {fileID: 3638998613184326731}
   _projectilePrefab: {fileID: 6195095494390504457, guid: c22eef3dd6941fc4ea55de184e904b84, type: 3}
   _anim: {fileID: 8829928592846152091}
   _hitPrefab: {fileID: 0}
@@ -315,6 +315,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8c529c02e2c1b04e953a63b205855e3, type: 3}
+--- !u!210 &3638998613184326731 stripped
+SortingGroup:
+  m_CorrespondingSourceObject: {fileID: 6461518306188436847, guid: b8c529c02e2c1b04e953a63b205855e3, type: 3}
+  m_PrefabInstance: {fileID: 7722474203570899236}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6732740823106961324 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3910317738949195400, guid: b8c529c02e2c1b04e953a63b205855e3, type: 3}

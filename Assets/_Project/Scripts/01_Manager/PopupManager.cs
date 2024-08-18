@@ -92,12 +92,19 @@ namespace Pxp
             }
         }
 
-        public void AllClose()
+        public void AllDestroy()
         {
             while (popupStack.Count > 0)
             {
                 popupStack.Last().Hide();
             }
+
+            foreach (var popup in _dicPopup)
+            {
+                Destroy(popup.Value.gameObject);
+            }
+
+            _dicPopup.Clear();
         }
 
         #endregion

@@ -93,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _starUI: {fileID: 903136157771790905}
   _photonAnimatorView: {fileID: 260515674278529462}
+  _sortingGroup: {fileID: 7162768923564075486}
   _projectilePrefab: {fileID: 0}
   _anim: {fileID: 9008026457978672444}
   _hitPrefab: {fileID: 643140756923671081}
@@ -400,5 +401,10 @@ MonoBehaviour:
 --- !u!4 &4526364654424646938 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 296191265570597291, guid: b8c529c02e2c1b04e953a63b205855e3, type: 3}
+  m_PrefabInstance: {fileID: 4236946930274782385}
+  m_PrefabAsset: {fileID: 0}
+--- !u!210 &7162768923564075486 stripped
+SortingGroup:
+  m_CorrespondingSourceObject: {fileID: 6461518306188436847, guid: b8c529c02e2c1b04e953a63b205855e3, type: 3}
   m_PrefabInstance: {fileID: 4236946930274782385}
   m_PrefabAsset: {fileID: 0}

@@ -16,6 +16,7 @@ namespace Pxp
         public int Level;
         public int Coin;
         public int Chip;
+        public int BonusCoin;
         public int Summon;
         public List<InGameHeroData> Heroes;
         public List<InGameUnitData> Units;
@@ -25,7 +26,7 @@ namespace Pxp
 
         }
 
-        public InGameUserData(int index, string userId, string name, int level, int coin, int chip, int summon, List<InGameHeroData> heroes, List<InGameUnitData> units)
+        public InGameUserData(int index, string userId, string name, int level, int coin, int chip,int bonusCoin, int summon, List<InGameHeroData> heroes, List<InGameUnitData> units)
         {
             Index = index;
             UserId = userId;
@@ -33,6 +34,7 @@ namespace Pxp
             Level = level;
             Coin = coin;
             Chip = chip;
+            BonusCoin = bonusCoin;
             Summon = summon;
             Heroes = heroes;
             Units = units;
@@ -46,7 +48,9 @@ namespace Pxp
             Level = UnityEngine.Random.Range(1, 10);
             Coin = (int) SpecDataManager.Inst.Option.Get("StartCoin").value;
             Chip = 0;
+            BonusCoin = 0;
             Summon = 0;
+
             var list = SpecDataManager.Inst.Hero.All.ToList();
             list.Shuffle();
             Heroes = new List<InGameHeroData>();
@@ -74,6 +78,7 @@ namespace Pxp
                 {"Level", Level},
                 {"Coin", Coin},
                 {"Chip", Chip},
+                {"BonusCoin", BonusCoin},
                 {"Summon", Summon}
             };
 
@@ -138,6 +143,7 @@ namespace Pxp
                 (int) hash["Level"],
                 (int) hash["Coin"],
                 (int) hash["Chip"],
+                (int) hash["BonusCoin"],
                 (int) hash["Summon"],
                 heroes,
                 units

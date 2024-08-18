@@ -164,7 +164,7 @@ namespace Pxp
                 _hitPrefab.transform.position = target.transform.position;
                 _hitPrefab.gameObject.SetActive(false);
                 _hitPrefab.gameObject.SetActive(true);
-                target.TakeDamage(_attack);
+                target.ReceiveAttack(_attack);
             }
         }
 

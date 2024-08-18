@@ -4,6 +4,7 @@ using AnnulusGames.LucidTools.RandomKit;
 using Cysharp.Text;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Pxp.Data;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.CloudSave.Models;
@@ -103,6 +104,40 @@ namespace Pxp
             }
 
             await CloudSaveService.Instance.Data.Player.SaveAsync(dic);
+        }
+
+        public void AddItem(IEnumerable<ItemInfo> infos)
+        {
+            foreach (var info in infos)
+            {
+                AddItem(info);
+            }
+        }
+
+        public void AddItem(ItemInfo info)
+        {
+            if (info.ItemType == Enum_ItemType.None)
+                return;
+
+            var currency = Currency.GetCurrency(info.ItemType);
+            if (currency != null)
+            {
+                currency.Increase(info.Count);
+                return;
+            }
+
+            foreach (var hero in SpecDataManager.Inst.Hero.All)
+            {
+                if (hero.item_type == info.ItemType)
+                {
+                    var userHero = Hero.GetHero(hero.id);
+                    if (userHero != null)
+                    {
+                        userHero.AddCard(info.Count);
+                        return;
+                    }
+                }
+            }
         }
     }
 

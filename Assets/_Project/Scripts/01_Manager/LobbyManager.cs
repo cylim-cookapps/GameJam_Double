@@ -53,6 +53,7 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LeaveLobby();
         await UniTask.Delay(TimeSpan.FromSeconds(1));
+        PopupManager.Inst.AllDestroy();
         SceneManager.LoadScene("Lobby");
     }
 
@@ -136,6 +137,7 @@ public class LobbyManager : MonoPunDontDestroySingleton<LobbyManager>
         if (PhotonNetwork.IsMasterClient)
         {
             EventManager.Inst.OnEventMatch();
+            PopupManager.Inst.AllDestroy();
             PhotonNetwork.LoadLevel("Game");
         }
     }

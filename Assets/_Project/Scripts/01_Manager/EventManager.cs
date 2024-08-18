@@ -58,6 +58,9 @@ namespace Pxp
         public void OnEventGameChip(int chip) => EventGameChip.Dispatch(chip);
         public readonly Relay<int> EventGameChip = new();
 
+        public void OnEventGameBonusCoin(int bonusCoin) => EventGameBonusCoin.Dispatch(bonusCoin);
+        public readonly Relay<int> EventGameBonusCoin = new();
+
         public void OnEventGameHeroUpgrade(int actor, int heroId) => EventGameHeroUpgrade.Dispatch(actor, heroId);
         public readonly Relay<int, int> EventGameHeroUpgrade = new();
     }

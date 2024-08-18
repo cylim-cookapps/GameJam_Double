@@ -6,12 +6,17 @@ namespace Pxp
 {
     public class Projectile : MonoBehaviourPunCallbacks, IPunInstantiateMagicCallback, IPunObservable
     {
+        public LayerMask enemyLayer;
         public float speed = 10f;
         public int damage = 10;
         public float hitEffectTime = 1f;
+        public bool isRotation;
         public GameObject projectile;
         public GameObject effect;
         public bool isFollow;
+        public float slowTime = 0f;
+        public float hitRange = 0f;
+        public int dotHit = 0;
 
         private GameObject target;
         private bool isDestroyed = false;
@@ -69,8 +74,12 @@ namespace Pxp
 
             // 타겟 방향 갱신 및 즉시 회전
             Vector3 direction = (target.transform.position - transform.position).normalized;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            if (isRotation)
+            {
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+            }
 
             // 현재 바라보는 방향으로 이동
             transform.position += direction * speed * Time.deltaTime;
@@ -80,16 +89,42 @@ namespace Pxp
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    EnemyUnit monster = target.GetComponent<EnemyUnit>();
-                    if (monster != null)
-                    {
-                        monster.ReceiveAttack(damage);
-                    }
+                    if (hitRange > 0f)
+                        ApplySplashDamage();
+                    else
+                        ApplySingleTargetDamage();
 
                     photonView.RPC(nameof(EffectRPC), RpcTarget.All);
                     isDestroyed = true;
-                    StartCoroutine(DelayDestroy(hitEffectTime));
+                    if (dotHit > 0)
+                        StartCoroutine(DotDamage());
+                    else
+                        StartCoroutine(DelayDestroy(hitEffectTime));
                 }
+            }
+        }
+
+        private void ApplySplashDamage()
+        {
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, hitRange, enemyLayer);
+            foreach (Collider2D hitCollider in hitColliders)
+            {
+                EnemyUnit enemy = hitCollider.GetComponent<EnemyUnit>();
+                if (enemy != null)
+                {
+                    enemy.ReceiveAttack(damage);
+                }
+            }
+        }
+
+        private void ApplySingleTargetDamage()
+        {
+            if (target == null)
+                return;
+
+            if (target.TryGetComponent<EnemyUnit>(out var enemy))
+            {
+                enemy.ReceiveAttack(damage, slowTime);
             }
         }
 
@@ -101,6 +136,25 @@ namespace Pxp
             effect.SetActive(true);
         }
 
+        private IEnumerator DotDamage()
+        {
+            for (int i = 0; i < dotHit; i++)
+            {
+                yield return new WaitForSeconds(1f);
+                if (hitRange > 0f)
+                    ApplySplashDamage();
+                else
+                {
+                    if (target == null)
+                        break;
+
+                    ApplySingleTargetDamage();
+                }
+            }
+
+            PhotonNetwork.Destroy(gameObject);
+        }
+
         private IEnumerator DelayDestroy(float delay)
         {
             yield return new WaitForSeconds(delay);
@@ -109,6 +163,15 @@ namespace Pxp
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (hitRange > 0)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, hitRange);
+            }
         }
     }
 }
