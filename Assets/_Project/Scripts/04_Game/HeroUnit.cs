@@ -224,6 +224,15 @@ namespace Pxp
         }
 
         #endregion
+
+        private void OnDrawGizmos()
+        {
+            if (_attackRange > 0)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireSphere(transform.position, _attackRange);
+            }
+        }
     }
 
     public enum Enum_AttackType

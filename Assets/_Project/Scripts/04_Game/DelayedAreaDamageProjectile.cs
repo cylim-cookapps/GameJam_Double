@@ -18,6 +18,8 @@ namespace Pxp
         private GameObject target;
         protected int actor;
 
+        public int targetCount;
+
         IEnumerator CoHit()
         {
             yield return new WaitForSeconds(hitTime);

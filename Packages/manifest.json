@@ -2,7 +2,10 @@
   "dependencies": {
     "com.annulusgames.lucid-random": "https://github.com/AnnulusGames/LucidRandom.git?path=/Assets/LucidRandom",
     "com.coffee.ui-effect": "https://github.com/mob-sakai/UIEffect.git",
+    "com.cookapps.admob": "1.1.1",
+    "com.cookapps.analytics-lite": "1.2.4",
     "com.cookapps.bad-word-filter": "1.1.0",
+    "com.cookapps.facebook": "1.2.1",
     "com.cookapps.iap": "2.4.0",
     "com.cookapps.local.data": "5.0.0",
     "com.cookapps.obfuscator": "1.1.14",
@@ -12,6 +15,7 @@
     "com.cookapps.unitysettings": "2.1.1",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.cysharp.zstring": "https://github.com/Cysharp/ZString.git?path=src/ZString.Unity/Assets/Scripts/ZString",
+    "com.google.external-dependency-manager": "file:../Packages_tgz/com.google.external-dependency-manager-1.2.179.tgz",
     "com.kyrylokuzyk.primetween": "file:../Assets/Plugins/PrimeTween/internal/com.kyrylokuzyk.primetween.tgz",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
