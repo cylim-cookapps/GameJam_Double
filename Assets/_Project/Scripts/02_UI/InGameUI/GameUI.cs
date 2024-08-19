@@ -17,13 +17,13 @@ namespace Pxp
         private List<UIProfileInGameItem> _uiProfileInGameItem;
 
         [SerializeField, GetComponentInChildrenName]
-        private TextMeshProUGUI _textWave, _textMonster, _textTimer, _textCoin, _textChip, _textSummonPrice,_textBonusCoin;
+        private TextMeshProUGUI _textWave, _textMonster, _textTimer, _textCoin, _textChip, _textSummonPrice, _textBonusCoin;
 
         [SerializeField, GetComponentInChildrenName]
         private Slider _sliderMonster;
 
         [SerializeField, GetComponentInChildrenName]
-        private Button _btnSummon,_btnBonusCoin, _btnGamble;
+        private Button _btnSummon, _btnBonusCoin, _btnGamble;
 
         [SerializeField, GetComponentInChildrenOnly]
         private List<UIHeroUpgradeItem> _uiHeroUpgradeItems;

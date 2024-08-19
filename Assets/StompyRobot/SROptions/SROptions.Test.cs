@@ -34,5 +34,17 @@ public partial class SROptions
 #endif
         }
     }
+
+    [Category("[치트] 배경음"), DisplayName("배경음 On")]
+    public void 배경음_On()
+    {
+        AudioController.SetCategoryVolume("BGM",1f);
+    }
+
+    [Category("[치트] 배경음"), DisplayName("배경음 Off")]
+    public void 배경음_Off()
+    {
+        AudioController.SetCategoryVolume("BGM",0f);
+    }
 }
 #endif
