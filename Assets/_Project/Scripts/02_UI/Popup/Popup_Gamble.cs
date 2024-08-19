@@ -61,6 +61,7 @@ namespace Pxp
             if (isAnimation)
                 return;
 
+            GameManager.Inst.ReceiveGamble();
             base.Hide();
         }
 
