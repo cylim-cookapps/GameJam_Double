@@ -123,7 +123,7 @@ namespace Pxp
             {
                 StartCoroutine(CoLose(result.Item2));
             }
-            else
+            else if(result.Item1 ==1)
             {
                 StartCoroutine(CoWin(result.Item2));
             }

@@ -693,8 +693,6 @@ namespace Pxp
                     break;
             }
 
-            MyInGameUserData.Chip -= chip;
-
             int isResult = -1;
             int index = 0;
             if (Random.Range(0, 100) > rate)
