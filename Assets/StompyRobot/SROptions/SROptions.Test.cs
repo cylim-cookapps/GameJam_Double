@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Photon.Pun;
 using Pxp;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -46,5 +47,15 @@ public partial class SROptions
     {
         AudioController.SetCategoryVolume("BGM",0f);
     }
+
+    [Category("[치트] 인게임"), DisplayName("칩 추가")]
+    public void 칩_추가()
+    {
+        if (GameManager.IsCreated)
+        {
+            GameManager.Inst.photonView.RPC("AddChip", RpcTarget.All, 10);
+        }
+    }
+
 }
 #endif

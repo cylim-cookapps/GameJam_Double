@@ -647,13 +647,12 @@ namespace Pxp
             MonsterCount = spawnedEnemy.Count;
         }
 
-        public void SetGamble(int chip)
+        public (int,int) SetGamble(int chip)
         {
             if (Gamble.Count >= 5)
-                return;
-
+                return (0,-1);
             if (MyInGameUserData.Chip < chip)
-                return;
+                return (0,-1);
 
             int rate = 0;
             switch (Gamble.Count)
@@ -677,6 +676,8 @@ namespace Pxp
 
             MyInGameUserData.Chip -= chip;
 
+            int isResult = -1;
+            int index = 0;
             if (Random.Range(0, 100) > rate)
             {
                 if (Gamble.Count == 0)
@@ -686,12 +687,13 @@ namespace Pxp
                 else
                 {
                     Gamble.Add(Gamble[0]);
+                    index = Gamble.Count - 1;
                 }
 
                 if (Gamble.Count == 5)
                     IsGambleEnd = true;
 
-                EventManager.Inst.OnEventToast("도박 성공!!");
+                isResult = 1;
             }
             else
             {
@@ -700,10 +702,11 @@ namespace Pxp
                 else
                     IsFirstFail = true;
 
-                EventManager.Inst.OnEventToast("도박 실패..");
+                index = Gamble.Count;
             }
 
             photonView.RPC(nameof(RpcGambleChip), RpcTarget.Others, chip);
+            return (isResult, index);
         }
 
         public bool ReceiveGamble()

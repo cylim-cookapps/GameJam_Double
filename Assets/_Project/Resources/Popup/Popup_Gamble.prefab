@@ -7037,9 +7037,11 @@ MonoBehaviour:
   _imagesChar: []
   _imagesBefor: []
   _imagesFail: []
+  _animators: []
   _btnGamble: {fileID: 4346993446299588685}
   _btnReceive: {fileID: 5010934610084924983}
   _textPrice: {fileID: 729604882404228845}
+  _textChip: {fileID: 0}
 --- !u!223 &920834234820589244
 Canvas:
   m_ObjectHideFlags: 0
@@ -8394,7 +8396,7 @@ GameObject:
   - component: {fileID: 8588260048423495758}
   - component: {fileID: 8800752607688615415}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Chip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9694,9 +9696,16 @@ MonoBehaviour:
   - {fileID: 1029213720716787345}
   - {fileID: 5614319468950720039}
   - {fileID: 4800553624037625715}
+  _animators:
+  - {fileID: 2909054795002441967}
+  - {fileID: 8520612676073659400}
+  - {fileID: 7843090050967751810}
+  - {fileID: 8818977564790947803}
+  - {fileID: 3294662990326496267}
   _btnGamble: {fileID: 4346993446299588685}
   _btnReceive: {fileID: 5010934610084924983}
   _textPrice: {fileID: 729604882404228845}
+  _textChip: {fileID: 8800752607688615415}
 --- !u!223 &1585427920665756621
 Canvas:
   m_ObjectHideFlags: 0
