@@ -22,6 +22,9 @@ namespace Pxp
         [SerializeField, GetComponentInChildrenOnly]
         private SortingGroup _sortingGroup;
 
+        [SerializeField]
+        private GameObject _effectLevelUp, _effectMerge;
+
         public int HeroId { get; private set; }
         public int BoardIndex { get; private set; }
         public int Owner { get; private set; }
@@ -59,6 +62,8 @@ namespace Pxp
             _attackRange = HeroData.attackRange;
             _attackCooldown = HeroData.attackSpeed;
             _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
+            _effectLevelUp.SetActive(false);
+            _effectMerge.SetActive(false);
 
             SetInitialRotation();
             SetupPhotonAnimatorView();
@@ -70,6 +75,8 @@ namespace Pxp
             Grade++;
             _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
             _starUI.SetGrade(Grade);
+            _effectMerge.SetActive(false);
+            _effectMerge.SetActive(true);
         }
 
         public void MoveHero(int index, Vector2 pos)
@@ -220,6 +227,8 @@ namespace Pxp
             if (Owner == actor && heroId == HeroId)
             {
                 _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
+                _effectLevelUp.SetActive(false);
+                _effectLevelUp.SetActive(true);
             }
         }
 
