@@ -43,7 +43,7 @@ namespace Pxp
 
                     if (PhotonNetwork.IsMasterClient)
                     {
-                        StartCoroutine(GameLoop());
+                        StartCoroutine("GameLoop");
                     }
 
                     CurrGameState = Enum_GameState.Start;
@@ -54,7 +54,7 @@ namespace Pxp
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    StartCoroutine(GameLoop());
+                    StartCoroutine("GameLoop");
                 }
             }
             else if (photonEvent.Code == EVENT_END)

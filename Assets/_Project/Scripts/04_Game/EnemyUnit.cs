@@ -169,7 +169,7 @@ namespace Pxp
             IsSlow = false;
         }
 
-        private void DestroyEnemy()
+        public void DestroyEnemy()
         {
             if (hpBar != null)
             {

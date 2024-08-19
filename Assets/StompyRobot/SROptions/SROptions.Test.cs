@@ -56,6 +56,14 @@ public partial class SROptions
             GameManager.Inst.photonView.RPC("AddChip", RpcTarget.All, 10);
         }
     }
+    [Category("[치트] 인게임"), DisplayName("다음 웨이브")]
+    public void 다음_웨이브()
+    {
+        if (GameManager.IsCreated)
+        {
+            GameManager.Inst.Editor_NextWave();
+        }
+    }
 
 }
 #endif

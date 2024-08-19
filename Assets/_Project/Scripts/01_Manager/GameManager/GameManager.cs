@@ -354,7 +354,7 @@ namespace Pxp
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                StartCoroutine(GameLoop());
+                StartCoroutine("GameLoop");
             }
         }
 
@@ -385,6 +385,25 @@ namespace Pxp
                 yield return new WaitUntil(() => Second == 0);
                 Wave++;
             }
+        }
+
+        public void Editor_NextWave()
+        {
+            if (PhotonNetwork.IsMasterClient == false)
+                return;
+
+            StopCoroutine("GameLoop");
+            var list = new List<GameObject>(spawnedEnemy);
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].TryGetComponent<EnemyUnit>(out var value))
+                {
+                    value.DestroyEnemy();
+                }
+            }
+
+            Wave++;
+            StartCoroutine("GameLoop");
         }
 
         private IEnumerator GameAI()
