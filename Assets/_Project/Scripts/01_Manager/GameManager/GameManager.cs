@@ -705,6 +705,8 @@ namespace Pxp
                 index = Gamble.Count;
             }
 
+            MyInGameUserData.Chip -= chip;
+            EventManager.Inst.OnEventGameChip(MyInGameUserData.Chip);
             photonView.RPC(nameof(RpcGambleChip), RpcTarget.Others, chip);
             return (isResult, index);
         }
