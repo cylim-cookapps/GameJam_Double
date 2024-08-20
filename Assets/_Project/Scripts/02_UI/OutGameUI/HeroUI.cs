@@ -65,7 +65,7 @@ namespace Pxp
 
             _uiUserHeroItems.Clear();
 
-            foreach (var hero in UserManager.Inst.Hero.Heroes)
+            foreach (var hero in UserManager.Inst.Hero.SortHeroes)
             {
                 UIUserHeroItem item = PoolManager.Inst.Get(_prefab, hero.Unlock ? _trOwnedList : _trLockedList);
                 item.OnInitialize(hero);

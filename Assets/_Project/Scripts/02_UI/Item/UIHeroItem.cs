@@ -47,7 +47,7 @@ namespace Pxp
             Refresh();
         }
 
-        public void SetHero(InGameHeroData data)
+        public void SetHero(InGameHeroData data,InGameUnitData unitData)
         {
             var spec = SpecDataManager.Inst.Hero.Get(data.HeroId);
 
@@ -57,22 +57,22 @@ namespace Pxp
             }
 
             _inGameStars.ForEach(_ => _.SetActive(false));
-            if (data.Merge > 2)
+            if (unitData.Grade > 2)
             {
-                _inGameStars[3].SetActive(data.Merge > 2);
-                _inGameStars[4].SetActive(data.Merge > 3);
-                _inGameStars[5].SetActive(data.Merge > 4);
+                _inGameStars[3].SetActive(unitData.Grade > 2);
+                _inGameStars[4].SetActive(unitData.Grade > 3);
+                _inGameStars[5].SetActive(unitData.Grade > 4);
             }
             else
             {
-                _inGameStars[0].SetActive(data.Merge == 0);
-                _inGameStars[1].SetActive(data.Merge > 0);
-                _inGameStars[2].SetActive(data.Merge > 1);
+                _inGameStars[0].SetActive(unitData.Grade >= 0);
+                _inGameStars[1].SetActive(unitData.Grade > 0);
+                _inGameStars[2].SetActive(unitData.Grade > 1);
             }
 
             _stars.ForEach(_ => _.SetActive(false));
             _imgIcon.SetSprite(spec.icon_key);
-            _textLevel.SetTextFormat("Lv.{0}", data.Upgrade+1);
+            _textLevel.SetTextFormat("Lv.{0}", data.InGameLevel+1);
         }
 
         private void Refresh()

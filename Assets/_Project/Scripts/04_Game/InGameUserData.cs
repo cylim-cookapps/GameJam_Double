@@ -43,8 +43,7 @@ namespace Pxp
         public void InitAI()
         {
             Index = 2;
-            UserId = "AI";
-            Name = "AI";
+            UserId = Name = ExtendedRandomNicknameGenerator.GenerateNickname();
             Level = UnityEngine.Random.Range(1, 10);
             Coin = (int) SpecDataManager.Inst.Option.Get("StartCoin").value;
             Chip = 0;
@@ -57,7 +56,7 @@ namespace Pxp
 
             for (int i = 0; i < 5; i++)
             {
-                Heroes.Add(new InGameHeroData(list[i].id, 1, 1, 0, 0));
+                Heroes.Add(new InGameHeroData(list[i].id, 1, 1, 0));
             }
 
             Units = new List<InGameUnitData>();

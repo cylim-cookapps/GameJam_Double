@@ -16,7 +16,7 @@ namespace Pxp
 
         public void SetViewHeroUnit(HeroUnit unit)
         {
-            _uiHeroItem.SetHero(unit.InGameHeroData);
+            _uiHeroItem.SetHero(unit.InGameHeroData,unit.InGameUnitData);
             _textName.SetText(unit.HeroData.hero_name);
             _textTier.SetText(unit.HeroData.TierName);
             _textAtk.SetText(unit._attack);

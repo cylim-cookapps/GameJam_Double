@@ -21,7 +21,7 @@ namespace Pxp
         private Button _btnGamble, _btnReceive;
 
         [SerializeField, GetComponentInChildrenName]
-        private TextMeshProUGUI _textPrice,_textChip;
+        private TextMeshProUGUI _textPrice, _textChip;
 
         private int GambleChip;
         private bool isAnimation = false;
@@ -45,12 +45,11 @@ namespace Pxp
             EventManager.Inst.EventGameChip.RemoveListener(OnEventGameChip);
         }
 
-
         public override void Show()
         {
             base.Show();
 
-            _textChip.SetText(GameManager.Inst.MyInGameUserData.Chip);
+            _textPrice.SetText(GambleChip);
             GameManager.Inst.IsFirstFail = false;
 
             Refresh();
@@ -110,6 +109,8 @@ namespace Pxp
                 _btnReceive.SetActive(true);
             else
                 _btnReceive.SetActive(false);
+
+            _textPrice.SetText(GambleChip + GameManager.Inst.Gamble.Count);
         }
 
         #region Event
@@ -119,12 +120,19 @@ namespace Pxp
             if (isAnimation)
                 return;
 
-            var result = GameManager.Inst.SetGamble(GambleChip);
+            int chip = GambleChip + GameManager.Inst.Gamble.Count;
+            if (GameManager.Inst.MyInGameUserData.Chip < chip)
+            {
+                EventManager.Inst.OnEventToast("칩이 부족합니다.");
+                return;
+            }
+
+            var result = GameManager.Inst.SetGamble();
             if (result.Item1 == -1)
             {
                 StartCoroutine(CoLose(result.Item2));
             }
-            else if(result.Item1 ==1)
+            else if (result.Item1 == 1)
             {
                 StartCoroutine(CoWin(result.Item2));
             }
@@ -168,7 +176,6 @@ namespace Pxp
         }
 
         #endregion
-
 
         private void OnEventGameChip(int chip)
         {

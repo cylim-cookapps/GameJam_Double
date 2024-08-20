@@ -25,15 +25,14 @@ namespace Pxp
         [SerializeField]
         private GameObject _effectLevelUp, _effectMerge;
 
-        [SerializeField,GetComponentInChildrenName]
+        [SerializeField, GetComponentInChildrenName]
         private SpriteRenderer _rangeSprite;
-
 
         public int HeroId { get; private set; }
         public int BoardIndex { get; private set; }
         public int Owner { get; private set; }
-        public int Grade { get; private set; }
         public InGameHeroData InGameHeroData { get; private set; }
+        public InGameUnitData InGameUnitData { get; private set; }
         public Hero HeroData { get; private set; }
 
         private int originalAtk
@@ -60,18 +59,20 @@ namespace Pxp
             HeroId = (int) instantiationData[0];
             BoardIndex = (int) instantiationData[1];
             Owner = (int) instantiationData[2];
-            Grade = (int) instantiationData[3];
-            _starUI.SetGrade(Grade);
 
             InGameHeroData = GameManager.Inst.GetPlayerData(Owner).Heroes.Find(x => x.HeroId == HeroId);
+            InGameUnitData = GameManager.Inst.GetPlayerData(Owner).Units[BoardIndex];
+
             HeroData = SpecDataManager.Inst.Hero.Get(HeroId);
             _attackRange = HeroData.attackRange;
             _rangeSprite.transform.localScale = Vector3.one * _attackRange * 2f;
             _attackSpeed = HeroData.attackSpeed;
-            _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
+            _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.InGameLevel) + (HeroData.attack_starUp * InGameUnitData.Grade);
             _effectLevelUp.SetActive(false);
             _effectMerge.SetActive(false);
+            _starUI.SetGrade(InGameUnitData.Grade);
 
+            GameManager.Inst.spawnedHeroes[Owner][BoardIndex] = this;
             SetInitialRotation();
             SetupPhotonAnimatorView();
         }
@@ -79,9 +80,8 @@ namespace Pxp
         [PunRPC]
         public void UpgradeHero()
         {
-            Grade++;
-            _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
-            _starUI.SetGrade(Grade);
+            _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.InGameLevel) + (HeroData.attack_starUp * InGameUnitData.Grade);
+            _starUI.SetGrade(InGameUnitData.Grade);
             _effectMerge.SetActive(false);
             _effectMerge.SetActive(true);
         }
@@ -89,7 +89,8 @@ namespace Pxp
         public void MoveHero(int index, Vector2 pos)
         {
             BoardIndex = index;
-            transform.position = pos;
+            if (PhotonNetwork.IsMasterClient)
+                transform.position = pos;
         }
 
         private void SetInitialRotation()
@@ -126,6 +127,7 @@ namespace Pxp
 
         public int _attack;
         public float _attackRange = 5f;
+
         [FormerlySerializedAs("_attackCooldown")]
         public float _attackSpeed = 1f;
 
@@ -234,7 +236,7 @@ namespace Pxp
         {
             if (Owner == actor && heroId == HeroId)
             {
-                _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
+                _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.InGameLevel) + (HeroData.attack_starUp * InGameUnitData.Grade);
                 _effectLevelUp.SetActive(false);
                 _effectLevelUp.SetActive(true);
             }

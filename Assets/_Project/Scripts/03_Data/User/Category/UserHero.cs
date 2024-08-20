@@ -24,6 +24,15 @@ namespace Pxp
 
         public override Enum_UserData Category => Enum_UserData.Hero;
 
+        public List<UserHeroItem> SortHeroes { get; private set; }
+
+        private int Sort(UserHeroItem x, UserHeroItem y)
+        {
+            if(x.Spec.tier != y.Spec.tier)
+                return x.Spec.tier.CompareTo(y.Spec.tier);
+            return x.Id.CompareTo(y.Id);
+        }
+
         public override void CheckAndCreate()
         {
             Heroes ??= new();
@@ -45,6 +54,8 @@ namespace Pxp
             {
                 _dicHero[hero.Id] = hero;
             }
+
+            SortHeroes = Heroes.ToList();
         }
 
         public UserHeroItem GetHero(int id)

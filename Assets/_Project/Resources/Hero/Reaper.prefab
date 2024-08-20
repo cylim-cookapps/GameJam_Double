@@ -99,7 +99,7 @@ MonoBehaviour:
   _sortingGroup: {fileID: 3670108170423963452}
   _effectLevelUp: {fileID: 7960459619238595473}
   _effectMerge: {fileID: 3278178657620120619}
-  _rangeSprite: {fileID: 0}
+  _rangeSprite: {fileID: 6345663560560766830}
   _projectilePrefab: {fileID: 0}
   _anim: {fileID: 3541717265312531011}
   _hitPrefab: {fileID: 2368956386259906950}
@@ -211,6 +211,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 354ad2efcc8398142937b4c887b61580, type: 3}
+--- !u!212 &6345663560560766830 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7195671469332978521, guid: 354ad2efcc8398142937b4c887b61580, type: 3}
+  m_PrefabInstance: {fileID: 4308953567313278007}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7499867106373675092 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6041749415676746851, guid: 354ad2efcc8398142937b4c887b61580, type: 3}

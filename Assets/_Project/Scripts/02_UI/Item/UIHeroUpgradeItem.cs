@@ -76,7 +76,7 @@ namespace Pxp
         {
             if (GameManager.Inst.CurrGameState == Enum_GameState.Start)
             {
-                var needCoin = LevelUp_Default + LevelUp_Increase * _inGameHeroData.Upgrade;
+                var needCoin = LevelUp_Default + LevelUp_Increase * _inGameHeroData.InGameLevel;
                 _textPrice.SetText(needCoin);
                 if (needCoin > coin)
                     _textPrice.color = Color.red;
@@ -90,7 +90,7 @@ namespace Pxp
             if (state == Enum_GameState.Start)
             {
                 _inGameHeroData = GameManager.Inst.MyInGameUserData.Heroes.Find(x => x.HeroId == _heroData.id);
-                var needCoin = LevelUp_Default + LevelUp_Increase * _inGameHeroData.Upgrade;
+                var needCoin = LevelUp_Default + LevelUp_Increase * _inGameHeroData.InGameLevel;
                 _textPrice.SetText(needCoin);
 
                 if (needCoin > GameManager.Inst.MyInGameUserData.Coin)

@@ -72,7 +72,7 @@ namespace Pxp
                 Hashtable playerDataHash = (Hashtable) photonEvent.CustomData;
                 HeroLevelData userData = HeroLevelData.FromHashtable(playerDataHash);
                 playerDataDict[userData.Owner].Coin = userData.Coin;
-                playerDataDict[userData.Owner].Heroes.Find(x => x.HeroId == userData.HeroId).Upgrade = userData.Upgrade;
+                playerDataDict[userData.Owner].Heroes.Find(x => x.HeroId == userData.HeroId).InGameLevel = userData.Upgrade;
                 EventManager.Inst.OnEventGameHeroUpgrade(userData.Owner, userData.HeroId);
             }
             else if (photonEvent.Code == HERO_MOVE)
@@ -91,7 +91,7 @@ namespace Pxp
             for (int i = 0; i < 5; i++)
             {
                 var heroData = UserManager.Inst.Hero.GetEquippedHero(i);
-                myHeroes.Add(new InGameHeroData(heroData.Id, heroData.Level, heroData.Star, 0, 0));
+                myHeroes.Add(new InGameHeroData(heroData.Id, heroData.Level, heroData.Star, 0));
             }
 
             List<InGameUnitData> myUnits = new List<InGameUnitData>();

@@ -62,8 +62,8 @@ namespace Pxp.Data
         public int monsterCount;
         /// 보너스 몬스터 나올 확률
         public float bonusMonsterChance;
-        /// 침략자 전투 선택
-        public int thiefMonsterIndex;
+        /// 보너스 몬스터 인덱스
+        public int bonusMonsterIndex;
         /// 최종 보상 타입
         public global::Pxp.Data.Enum_ItemType[] rewardType = global::System.Array.Empty<global::Pxp.Data.Enum_ItemType>();
         /// 보상 타입별 수량
