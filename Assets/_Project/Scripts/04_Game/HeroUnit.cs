@@ -25,12 +25,13 @@ namespace Pxp
         [SerializeField]
         private GameObject _effectLevelUp, _effectMerge;
 
+        [SerializeField,GetComponentInChildrenName]
+        private SpriteRenderer _rangeSprite;
+
+
         public int HeroId { get; private set; }
         public int BoardIndex { get; private set; }
         public int Owner { get; private set; }
-
-        public int Star { get; private set; }
-
         public int Grade { get; private set; }
         public InGameHeroData InGameHeroData { get; private set; }
         public Hero HeroData { get; private set; }
@@ -48,6 +49,11 @@ namespace Pxp
             }
         }
 
+        public void SetViewAttackRange(bool isOn)
+        {
+            _rangeSprite.SetActive(isOn);
+        }
+
         public void OnPhotonInstantiate(PhotonMessageInfo info)
         {
             object[] instantiationData = info.photonView.InstantiationData;
@@ -60,7 +66,8 @@ namespace Pxp
             InGameHeroData = GameManager.Inst.GetPlayerData(Owner).Heroes.Find(x => x.HeroId == HeroId);
             HeroData = SpecDataManager.Inst.Hero.Get(HeroId);
             _attackRange = HeroData.attackRange;
-            _attackCooldown = HeroData.attackSpeed;
+            _rangeSprite.transform.localScale = Vector3.one * _attackRange * 2f;
+            _attackSpeed = HeroData.attackSpeed;
             _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.Upgrade) + (HeroData.attack_starUp * Grade);
             _effectLevelUp.SetActive(false);
             _effectMerge.SetActive(false);
@@ -119,7 +126,8 @@ namespace Pxp
 
         public int _attack;
         public float _attackRange = 5f;
-        public float _attackCooldown = 1f;
+        [FormerlySerializedAs("_attackCooldown")]
+        public float _attackSpeed = 1f;
 
         private float lastAttackTime;
 
@@ -137,7 +145,7 @@ namespace Pxp
         {
             if (!PhotonNetwork.IsMasterClient) return;
 
-            if (Time.time - lastAttackTime >= _attackCooldown)
+            if (Time.time - lastAttackTime >= _attackSpeed)
             {
                 lastAttackTime = Time.time;
                 EnemyUnit nearestMonster = FindNearestMonster();

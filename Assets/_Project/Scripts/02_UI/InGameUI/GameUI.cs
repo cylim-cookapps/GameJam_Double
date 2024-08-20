@@ -37,6 +37,11 @@ namespace Pxp
         [SerializeField]
         private GameObject damageTextPrefab;
 
+        [SerializeField]
+        private UIInGameHeroInfo _uiInGameHeroInfo;
+
+        public UIInGameHeroInfo UIInGameHeroInfo => _uiInGameHeroInfo;
+
         private ObjectPool<HPBar> hpBarPool;
         private ObjectPool<DamageText> damageTextPool;
         private int _index = 0;

@@ -22,4 +22,27 @@ namespace Pxp.Data
             return _list;
         }
     }
+
+    public partial class Hero
+    {
+        public string TierName
+        {
+            get
+            {
+                switch (tier)
+                {
+                    default:
+                    case Enum_TierType.Normal:
+                        return "노멀";
+                    case Enum_TierType.Rare:
+                        return "레어";
+                    case Enum_TierType.Epic:
+                        return "에픽";
+                    case Enum_TierType.Legend:
+                        return "레전드";
+                }
+            }
+        }
+
+    }
 }

@@ -8,6 +8,7 @@ using AnnulusGames.LucidTools.RandomKit;
 using Cysharp.Text;
 using ExitGames.Client.Photon;
 using Pxp.Data;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -112,7 +113,7 @@ namespace Pxp
         private int LevelUp_Increase = 100;
         public List<int> Gamble = new List<int>();
         public bool IsGambleEnd { get; private set; }
-        public bool IsFirstFail { get;  set; }
+        public bool IsFirstFail { get; set; }
 
         private List<Wave> _waves = new();
 
@@ -125,6 +126,7 @@ namespace Pxp
         public InGameUserData MyInGameUserData => playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber];
         public InGameUserData OtherInGameUserData => playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber == 1 ? 2 : 1];
         private HeroUnit _selectedHero;
+        private bool _isDrag = false;
 
         public InGameUserData GetPlayerData(int actorNumber)
         {
@@ -192,40 +194,57 @@ namespace Pxp
         {
             if (Input.GetMouseButtonDown(0)) // 왼쪽 마우스 버튼 클릭
             {
+                // UI 요소 위에 마우스가 있는지 확인
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    // UI 위에 마우스가 있으면 아무 작업도 수행하지 않음
+                    return;
+                }
+
                 var mousePos = GetMouseWorldPosition();
 
                 _selectedHero = GetClickedHeroUnit(mousePos);
                 if (_selectedHero != null)
                 {
-                    _dragUnit.SetUnit(_selectedHero, mousePos);
+                    _selectedHero.SetViewAttackRange(true);
+                    GameUI.Inst.UIInGameHeroInfo.SetViewHeroUnit(_selectedHero);
+
+                    if (_isDrag)
+                        _dragUnit.SetUnit(_selectedHero, mousePos);
                 }
             }
             else if (Input.GetMouseButtonUp(0)) // 왼쪽 마우스 버튼 릴리즈
             {
                 if (_selectedHero != null)
                 {
-                    var board = GetClickedUpBoard(GetMouseWorldPosition());
-                    if (board != null)
+                    if (_isDrag)
                     {
-                        int fromIndex = _selectedHero.BoardIndex;
-                        int toIndex = board.BoardIndex;
-
-                        if (fromIndex != toIndex)
+                        var board = GetClickedUpBoard(GetMouseWorldPosition());
+                        if (board != null)
                         {
-                            var pos = PhotonNetwork.LocalPlayer.ActorNumber == 1 ? Batch0[toIndex] : Batch1[toIndex];
+                            int fromIndex = _selectedHero.BoardIndex;
+                            int toIndex = board.BoardIndex;
 
-                            // RPC 호출로 이동 동기화 (스왑 포함)
-                            photonView.RPC(nameof(MoveHeroRpc), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, fromIndex, toIndex, pos);
+                            if (fromIndex != toIndex)
+                            {
+                                var pos = PhotonNetwork.LocalPlayer.ActorNumber == 1 ? Batch0[toIndex] : Batch1[toIndex];
+
+                                // RPC 호출로 이동 동기화 (스왑 포함)
+                                photonView.RPC(nameof(MoveHeroRpc), RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber, fromIndex, toIndex, pos);
+                            }
                         }
+
+                        _dragUnit.Dispose();
                     }
 
+                    _selectedHero.SetViewAttackRange(false);
                     _selectedHero = null;
-                    _dragUnit.Dispose();
+                    GameUI.Inst.UIInGameHeroInfo.Close();
                 }
             }
             else if (Input.GetMouseButton(0)) // 왼쪽 마우스 버튼 누름
             {
-                if (_selectedHero != null)
+                if (_selectedHero != null && _isDrag)
                 {
                     _dragUnit.transform.position = GetMouseWorldPosition();
                 }
@@ -311,14 +330,13 @@ namespace Pxp
         // GetClickedHeroUnit와 GetClickedUpBoard 메서드도 수정이 필요할 수 있습니다.
         private HeroUnit GetClickedHeroUnit(Vector3 worldPosition)
         {
-            Vector2 raycastDirection = PhotonNetwork.LocalPlayer.ActorNumber == 2 ? Vector2.down : Vector2.up;
-            RaycastHit2D[] hits = Physics2D.RaycastAll(worldPosition, raycastDirection, float.MaxValue, heroLayerMask);
+            RaycastHit2D hit = Physics2D.Raycast(worldPosition, Vector2.zero, float.MaxValue, heroLayerMask);
 
-            foreach (var hit in hits)
+            if (hit.collider != null)
             {
-                var unit = hit.collider.GetComponent<HeroUnit>();
-                if (unit != null && unit.Owner == PhotonNetwork.LocalPlayer.ActorNumber)
+                if (hit.collider.TryGetComponent<HeroUnit>(out var unit))
                 {
+                    _isDrag = unit.Owner == PhotonNetwork.LocalPlayer.ActorNumber;
                     return unit;
                 }
             }
@@ -328,15 +346,14 @@ namespace Pxp
 
         private Board GetClickedUpBoard(Vector3 worldPosition)
         {
-            Vector2 raycastDirection = PhotonNetwork.LocalPlayer.ActorNumber == 2 ? Vector2.down : Vector2.up;
-            RaycastHit2D[] hits = Physics2D.RaycastAll(worldPosition, raycastDirection, float.MaxValue, boardLyerMask);
+            RaycastHit2D hit = Physics2D.Raycast(worldPosition, Vector2.zero, float.MaxValue, boardLyerMask);
 
-            foreach (var hit in hits)
+            if (hit.collider != null)
             {
-                var board = hit.collider.GetComponent<Board>();
-                if (board != null && board.Actor == PhotonNetwork.LocalPlayer.ActorNumber)
+                if (hit.collider.TryGetComponent<Board>(out var board))
                 {
-                    return board;
+                    if (board.Actor == PhotonNetwork.LocalPlayer.ActorNumber)
+                        return board;
                 }
             }
 
@@ -666,12 +683,12 @@ namespace Pxp
             MonsterCount = spawnedEnemy.Count;
         }
 
-        public (int,int) SetGamble(int chip)
+        public (int, int) SetGamble(int chip)
         {
             if (Gamble.Count >= 5)
-                return (0,-1);
+                return (0, -1);
             if (MyInGameUserData.Chip < chip)
-                return (0,-1);
+                return (0, -1);
 
             int rate = 0;
             switch (Gamble.Count)

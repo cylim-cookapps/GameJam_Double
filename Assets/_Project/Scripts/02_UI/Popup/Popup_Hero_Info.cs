@@ -46,7 +46,7 @@ namespace Pxp
         private void Refresh()
         {
             _uiHeroItem.SetHero(_data);
-            _textTier.SetText(_data.TierName);
+            _textTier.SetText(_data.Spec.TierName);
             _textName.SetText(_data.Spec.hero_name);
             _textAtk.SetText(_data.Atk);
             _textAtkSpeed.SetText(_data.AtkSpeed);

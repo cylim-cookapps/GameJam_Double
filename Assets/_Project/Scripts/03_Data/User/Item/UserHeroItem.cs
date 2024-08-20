@@ -29,25 +29,6 @@ namespace Pxp
 
         public int Tier => (int) Spec.tier;
 
-        public string TierName
-        {
-            get
-            {
-                switch (Spec.tier)
-                {
-                    default:
-                    case Enum_TierType.Normal:
-                        return "노멀";
-                    case Enum_TierType.Rare:
-                        return "레어";
-                    case Enum_TierType.Epic:
-                        return "에픽";
-                    case Enum_TierType.Legend:
-                        return "레전드";
-                }
-            }
-        }
-
         public double Atk => Spec.attack + (Spec.goldLevelup * (Level - 1));
         public double AtkSpeed => Spec.attackSpeed;
         public double AtkRange => Spec.attackRange;

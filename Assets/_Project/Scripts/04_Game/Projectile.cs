@@ -56,6 +56,9 @@ namespace Pxp
                     if (target != null)
                     {
                         transform.position = target.transform.position;
+                    }
+                    else
+                    {
                         effect.SetActive(false);
                     }
                 }
