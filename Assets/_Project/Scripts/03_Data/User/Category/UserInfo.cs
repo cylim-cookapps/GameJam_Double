@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using CookApps.Obfuscator;
 using Newtonsoft.Json;
+using Pxp.Data;
 using UnityEngine;
 
 namespace Pxp
@@ -20,7 +21,17 @@ namespace Pxp
         [JsonProperty("exp")]
         public ObfuscatorInt Exp { get; private set; }
 
+        [JsonProperty("stage")]
+        public ObfuscatorInt Stage {get; private set; }
+
+        [JsonProperty("tryCount")]
+        public ObfuscatorInt TryCount { get; private set; }
+
+        [JsonProperty("killCount")]
+        public ObfuscatorInt KillCount { get; private set; }
+
         public override Enum_UserData Category => Enum_UserData.Info;
+        public UserLevel CurrentLevel => SpecDataManager.Inst.UserLevel.Get(Level);
 
         public override void CheckAndCreate()
         {

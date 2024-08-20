@@ -56,6 +56,7 @@ namespace Pxp
             }
 
             SortHeroes = Heroes.ToList();
+            SortHeroes.Sort(Sort);
         }
 
         public UserHeroItem GetHero(int id)

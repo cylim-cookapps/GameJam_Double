@@ -47,6 +47,15 @@ namespace Pxp.Data
     }
 
     [GeneratorSpecData]
+    public partial class UserLevel
+    {
+        [GeneratorId(nameof(id), typeof(int))]
+        public int id;
+        /// 자동 획득 시간(분)
+        public int exp;
+    }
+
+    [GeneratorSpecData]
     public partial class Wave
     {
         [GeneratorId(nameof(id), typeof(int))]

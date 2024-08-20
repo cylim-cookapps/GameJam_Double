@@ -20,7 +20,7 @@ namespace Pxp
         private Button _btnStart, _btnHell;
 
         [SerializeField, GetComponentInChildrenName]
-        private Button _btnPass, _btnPack, _btnVip, _btnBoxOpen, _btnQuest, _btnAttendance, _btnRanking;
+        private Button _btnProfile,_btnPass, _btnPack, _btnVip, _btnBoxOpen, _btnQuest, _btnAttendance, _btnRanking;
 
         public override MainUI Parent { get; protected set; }
 
@@ -28,6 +28,7 @@ namespace Pxp
         {
             base.OnInitialize(parent);
 
+            _btnProfile.AddListener(OnClickProfile);
             _btnPass.AddListener(OnClickPass);
             _btnPack.AddListener(OnClickPack);
             _btnVip.AddListener(OnClickVip);
@@ -77,6 +78,11 @@ namespace Pxp
 
             AudioController.Play("SFX_Click");
             LobbyManager.Inst.QuickMatch(true).Forget();
+        }
+
+        private void OnClickProfile()
+        {
+            PopupManager.Inst.GetPopup<Popup_Profile>().Show();
         }
 
         private void OnClickPass()

@@ -49,6 +49,7 @@ namespace Pxp
         {
             base.Show();
 
+            _textChip.SetText(GameManager.Inst.MyInGameUserData.Chip);
             _textPrice.SetText(GambleChip);
             GameManager.Inst.IsFirstFail = false;
 
