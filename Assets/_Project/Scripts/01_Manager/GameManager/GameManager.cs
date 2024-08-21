@@ -430,12 +430,16 @@ namespace Pxp
                 if (data.monsterType == Enum_monsterType.BOSS)
                 {
                     IsBossWave = true;
+                    AudioController.PlayMusic("BGM_Boss");
+
                     SpawnMonster(data, WayPoint0);
                     SpawnMonster(data, WayPoint1);
                 }
                 else
                 {
                     IsBossWave = false;
+                    AudioController.PlayMusic("BGM_Game");
+
                     for (int i = 0; i < _waves[Wave].monsterCount; i++)
                     {
                         SpawnMonster(data, WayPoint0);

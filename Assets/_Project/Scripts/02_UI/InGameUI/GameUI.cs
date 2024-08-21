@@ -85,8 +85,6 @@ namespace Pxp
 
         private void Start()
         {
-            AudioController.PlayMusic("BGM_Game");
-
             for (int i = 0; i < UserManager.Inst.Hero.EquipHeroes.Count; i++)
             {
                 _uiHeroUpgradeItems[i].Init(UserManager.Inst.Hero.EquipHeroes[i]);
@@ -214,6 +212,7 @@ namespace Pxp
         private void OnClickGamble()
         {
             PopupManager.Inst.GetPopup<Popup_Gamble>().Show();
+            AudioController.Play("VOX_Title");
         }
 
         #endregion
