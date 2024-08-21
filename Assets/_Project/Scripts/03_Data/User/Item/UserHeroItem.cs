@@ -91,6 +91,7 @@ namespace Pxp
             UserManager.Inst.SaveCheck(Enum_UserData.Hero);
             EventManager.Inst.OnEventHeroLevelUp(Id);
             EventManager.Inst.OnEventToast($"{Spec.hero_name} 레벨업!!");
+            AudioController.Play("SFX_Hero_Upgrade");
             UserManager.Inst.Save().Forget();
         }
 

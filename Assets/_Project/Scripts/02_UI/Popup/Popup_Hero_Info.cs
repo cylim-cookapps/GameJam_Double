@@ -91,6 +91,7 @@ namespace Pxp
         private void OnClickEquip()
         {
             MainUI.Inst.HeroUI.SetEquipMode(_data);
+            AudioController.Play("SFX_Click");
             Hide();
         }
 
@@ -99,6 +100,7 @@ namespace Pxp
             if (_data.SetUnlock())
             {
                 EventManager.Inst.OnEventToast($"{_data.Spec.hero_name}영웅이 해금되었습니다.");
+                AudioController.Play("SFX_Hero_Merge");
                 Refresh();
             }
         }
@@ -108,6 +110,7 @@ namespace Pxp
             if (_data.StarUp())
             {
                 EventManager.Inst.OnEventToast($"{_data.Spec.hero_name}영웅에 성급이 상승했습니다.");
+                AudioController.Play("SFX_Hero_Merge");
                 Refresh();
             }
         }
