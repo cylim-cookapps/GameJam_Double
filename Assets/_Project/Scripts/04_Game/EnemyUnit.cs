@@ -29,6 +29,7 @@ namespace Pxp
         public Enum_monsterType MonsterType { get; private set; }
 
         public bool IsSlow { get; private set; }
+        public bool IsStun { get; private set; }
 
         public Monster MonsterData { get; private set; }
         private List<Vector2> _waypoints;
@@ -38,6 +39,9 @@ namespace Pxp
 
         [SerializeField]
         private int currentWaypointIndex = 0;
+
+        [SerializeField]
+        private GameObject _effectStun;
 
         private Vector2 _lastPosition;
         private float _timer = 0f;
@@ -52,7 +56,7 @@ namespace Pxp
                 if (hpBar != null)
                 {
                     hpBar.SetTarget(MonsterType, transform);
-                    if(MonsterType == Enum_monsterType.CAPTAIN)
+                    if (MonsterType == Enum_monsterType.CAPTAIN)
                         StartCoroutine(nameof(UpdateTime));
                     UpdateHPBar();
                 }
@@ -70,7 +74,7 @@ namespace Pxp
         private IEnumerator UpdateTime()
         {
             _timer = MonsterData.limitTime;
-            while(_timer>0)
+            while (_timer > 0)
             {
                 hpBar.UpdateTimer(_timer);
                 _timer -= Time.deltaTime;
@@ -84,10 +88,10 @@ namespace Pxp
             }
         }
 
-
         private void Start()
         {
             _lastPosition = transform.position;
+            _effectStun.SetActive(false);
         }
 
         private void UpdateDirection()
@@ -121,6 +125,8 @@ namespace Pxp
         private void MoveToNextWaypoint()
         {
             if (_waypoints == null || _waypoints.Count == 0) return;
+            if (IsStun)
+                return;
 
             var speed = IsSlow ? _moveSpeed * 0.7f : _moveSpeed;
             Vector2 targetPosition = _waypoints[currentWaypointIndex];
@@ -162,7 +168,7 @@ namespace Pxp
         }
 
         [PunRPC]
-        public void TakeDamage(int damage, float slowDuration = 0f)
+        public void TakeDamage(int damage, float slowDuration = 0f, float stunDuration = 0f)
         {
             if (IsDead) return;
 
@@ -173,6 +179,12 @@ namespace Pxp
             {
                 StopCoroutine(nameof(SlowEffect));
                 StartCoroutine(nameof(SlowEffect), slowDuration);
+            }
+
+            if (stunDuration > 0)
+            {
+                StopCoroutine(nameof(StunEffect));
+                StartCoroutine(nameof(StunEffect), stunDuration);
             }
 
             GameUI.Inst.ShowDamageText(damage, false, transform);
@@ -192,6 +204,15 @@ namespace Pxp
             IsSlow = false;
         }
 
+        IEnumerator StunEffect(float duration)
+        {
+            IsStun = true;
+            _effectStun.SetActive(true);
+            yield return new WaitForSeconds(duration);
+            IsStun = false;
+            _effectStun.SetActive(false);
+        }
+
         public void DestroyEnemy()
         {
             if (hpBar != null)
@@ -208,9 +229,9 @@ namespace Pxp
             }
         }
 
-        public void ReceiveAttack(int damage, float slowDuration = 0f)
+        public void ReceiveAttack(int damage, float slowDuration = 0f, float stunDuration = 0f)
         {
-            photonView.RPC(nameof(TakeDamage), RpcTarget.All, damage, slowDuration);
+            photonView.RPC(nameof(TakeDamage), RpcTarget.All, damage, slowDuration, stunDuration);
         }
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

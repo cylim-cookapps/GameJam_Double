@@ -100,6 +100,8 @@ MonoBehaviour:
   _effectLevelUp: {fileID: 2530959162556529031}
   _effectMerge: {fileID: 1921405095839417548}
   _rangeSprite: {fileID: 9065423797685915874}
+  _sturnRate: 0
+  _sturnTime: 0
   _projectilePrefab: {fileID: 0}
   _anim: {fileID: 3157562084117693628}
   _hitPrefab: {fileID: 5309368473253444658}
@@ -343,6 +345,10 @@ PrefabInstance:
     - target: {fileID: 8717193651376390666, guid: ee79e711dfed04718a0d479fa1cb7cee, type: 3}
       propertyPath: m_Name
       value: FX_Hit_Hammer
+      objectReference: {fileID: 0}
+    - target: {fileID: 8717193651376390666, guid: ee79e711dfed04718a0d479fa1cb7cee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

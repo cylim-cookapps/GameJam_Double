@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AnnulusGames.LucidTools.RandomKit;
 using CookApps.Inspector;
 using Cysharp.Text;
 using Photon.Pun;
@@ -34,6 +35,8 @@ namespace Pxp
         public InGameHeroData InGameHeroData { get; private set; }
         public InGameUnitData InGameUnitData { get; private set; }
         public Hero HeroData { get; private set; }
+        public float _sturnRate;
+        public float _sturnTime;
 
         private int originalAtk
         {
@@ -182,7 +185,17 @@ namespace Pxp
                 _hitPrefab.transform.position = target.transform.position;
                 _hitPrefab.gameObject.SetActive(false);
                 _hitPrefab.gameObject.SetActive(true);
-                target.ReceiveAttack(_attack);
+                if (_sturnRate > 0f)
+                {
+                    if (LucidRandom.GetChance(_sturnRate))
+                    {
+                        target.ReceiveAttack(_attack, 0f, _sturnTime);
+                    }
+                }
+                else
+                {
+                    target.ReceiveAttack(_attack);
+                }
             }
         }
 
