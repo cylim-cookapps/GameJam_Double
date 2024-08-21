@@ -54,8 +54,8 @@ namespace Pxp
             _textName.SetText(_data.Spec.hero_name);
             _textAtk.SetText(_data.Atk);
             _textAtkSpeed.SetText(_data.AtkSpeed);
-            _sliderCard.value = _data.Count;
             _sliderCard.maxValue = _data.NeedCardCount;
+            _sliderCard.value = _data.Count;
 
             _textCount.SetTextFormat("{0} / {1}", _data.Count, _data.NeedCardCount);
             _btnLevelUp.SetPrice(_data.LevelUpGold, _data.CheckLevelUp());
@@ -71,6 +71,11 @@ namespace Pxp
                 _btnEquip.SetActive(_data.Unlock);
                 _btnStarUp.SetActive(!_data.IsMaxStar);
                 _btnLevelUp.SetActive(true);
+                if (_data.IsMaxStar)
+                {
+                    _sliderCard.maxValue = 1;
+                    _sliderCard.value = 1;
+                }
             }
             else
             {

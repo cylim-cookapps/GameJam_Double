@@ -122,11 +122,12 @@ namespace Pxp.Data
         /// 공격 범위 반지름
         public float attackRange;
         /// 인게임 성급에 따라 오르는 값
-        public int attack_starUp;
+        public int attack_GradeUp;
         /// 인게임 강화할때 오르는 값
         public int attack_levelUp;
         /// 영웅의 기본 기능과 관련된 스킬 아이디 호출
         public int skill_default;
+        public int starLevelUp;
         /// (아웃게임) 골드로 영웅 강화할때 증가하는 공격력
         public int goldLevelup;
         /// (아웃게임) 골드로 영웅 강화할때 비용

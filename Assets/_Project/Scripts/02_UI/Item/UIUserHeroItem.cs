@@ -49,6 +49,11 @@ namespace Pxp
             _sliderGauge.maxValue = _data.NeedCardCount;
             _sliderGauge.value = _data.Count;
             _textCount.SetTextFormat("{0}/{1}", _data.Count, _data.NeedCardCount);
+            if (_data.IsMaxStar)
+            {
+                _sliderGauge.maxValue = 1;
+                _sliderGauge.value = 1;
+            }
         }
 
         #region Event

@@ -29,7 +29,7 @@ namespace Pxp
 
         public int Tier => (int) Spec.tier;
 
-        public double Atk => Spec.attack + (Spec.goldLevelup * (Level - 1));
+        public double Atk => Spec.attack + (Spec.goldLevelup * (Level - 1)) + (Spec.starLevelUp * Star);
         public double AtkSpeed => Spec.attackSpeed;
         public double AtkRange => Spec.attackRange;
 
@@ -106,6 +106,7 @@ namespace Pxp
             Unlock = true;
             UserManager.Inst.SaveCheck(Enum_UserData.Hero);
             UserManager.Inst.Save().Forget();
+            EventManager.Inst.OnEventHeroStarUp(Id);
             return true;
         }
 

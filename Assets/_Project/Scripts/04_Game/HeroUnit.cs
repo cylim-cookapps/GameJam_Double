@@ -41,7 +41,7 @@ namespace Pxp
             {
                 if (HeroData != null)
                 {
-                    return HeroData.attack + (HeroData.goldLevelup * (InGameHeroData.Level - 1));
+                    return HeroData.attack + (HeroData.goldLevelup * (InGameHeroData.Level - 1)) + (HeroData.starLevelUp * InGameHeroData.Star);
                 }
 
                 return 0;
@@ -67,7 +67,8 @@ namespace Pxp
             _attackRange = HeroData.attackRange;
             _rangeSprite.transform.localScale = Vector3.one * _attackRange * 2f;
             _attackSpeed = HeroData.attackSpeed;
-            _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.InGameLevel) + (HeroData.attack_starUp * InGameUnitData.Grade);
+
+            _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.InGameLevel) + (HeroData.attack_GradeUp * InGameUnitData.Grade);
             _effectLevelUp.SetActive(false);
             _effectMerge.SetActive(false);
             _starUI.SetGrade(InGameUnitData.Grade);
@@ -80,7 +81,7 @@ namespace Pxp
         [PunRPC]
         public void UpgradeHero()
         {
-            _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.InGameLevel) + (HeroData.attack_starUp * InGameUnitData.Grade);
+            _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.InGameLevel) + (HeroData.attack_GradeUp * InGameUnitData.Grade);
             _starUI.SetGrade(InGameUnitData.Grade);
             _effectMerge.SetActive(false);
             _effectMerge.SetActive(true);
@@ -236,7 +237,7 @@ namespace Pxp
         {
             if (Owner == actor && heroId == HeroId)
             {
-                _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.InGameLevel) + (HeroData.attack_starUp * InGameUnitData.Grade);
+                _attack = originalAtk + (HeroData.attack_levelUp * InGameHeroData.InGameLevel) + (HeroData.attack_GradeUp * InGameUnitData.Grade);
                 _effectLevelUp.SetActive(false);
                 _effectLevelUp.SetActive(true);
             }
