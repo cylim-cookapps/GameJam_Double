@@ -175,7 +175,7 @@ namespace Pxp
         private void OnClickReceive()
         {
             if (GameManager.Inst.ReceiveGamble())
-                Hide();
+                base.Hide();
         }
 
         #endregion

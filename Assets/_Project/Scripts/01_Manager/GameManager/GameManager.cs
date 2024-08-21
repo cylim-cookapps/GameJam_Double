@@ -721,7 +721,7 @@ namespace Pxp
                         _bossDead++;
                         if (_bossDead == 2)
                         {
-                            Second = 5;
+                            Second = 3;
                             _bossDead = 0;
                             _isBossWave = false;
                         }

@@ -191,6 +191,10 @@ namespace Pxp
                     {
                         target.ReceiveAttack(_attack, 0f, _sturnTime);
                     }
+                    else
+                    {
+                        target.ReceiveAttack(_attack);
+                    }
                 }
                 else
                 {

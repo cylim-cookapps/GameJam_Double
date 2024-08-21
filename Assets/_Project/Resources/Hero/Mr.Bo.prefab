@@ -99,6 +99,8 @@ MonoBehaviour:
   _effectLevelUp: {fileID: 1902092323308063645}
   _effectMerge: {fileID: 452213834876827148}
   _rangeSprite: {fileID: 9008184616493626687}
+  _sturnRate: 0
+  _sturnTime: 0
   _projectilePrefab: {fileID: 8604741183345454186, guid: b397401d4f24dce4aa78961c1b7a028b, type: 3}
   _anim: {fileID: 4889128250155214283}
   _hitPrefab: {fileID: 0}

@@ -88,7 +88,7 @@ namespace Pxp
             transform.position += direction * speed * Time.deltaTime;
 
             // 타겟과의 충돌 체크
-            if (Vector3.Distance(transform.position, target.transform.position) < 0.1f)
+            if (Vector3.Distance(transform.position, target.transform.position) < 0.2f)
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
