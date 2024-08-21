@@ -16,13 +16,6 @@ using Debug = UnityEngine.Debug;
 /// </summary>
 public partial class SROptions
 {
-    [Category("[치트] 영웅"), DisplayName("영웅 전체 언락")]
-    public void 영웅_전체_언락()
-    {
-        UserManager.Inst.Hero?.Editor_AllUnlockHero();
-        UserManager.Inst.Save(true).Forget();
-    }
-
     [Category("[치트] 계정"), DisplayName("계정 삭제")]
     public void 계정_삭제()
     {
@@ -37,25 +30,83 @@ public partial class SROptions
         }
     }
 
+    [Category("[치트] 아웃게임"), DisplayName("영웅 전체 언락")]
+    public void 영웅_전체_언락()
+    {
+        UserManager.Inst.Hero?.Editor_AllUnlockHero();
+        UserManager.Inst.Save(true).Forget();
+    }
+
+    [Category("[치트] 아웃게임"), DisplayName("영웅 조각 추가 X5")]
+    public void 영웅_전체_조각_획득_X5()
+    {
+        if (UserManager.Inst.Hero != null)
+        {
+            foreach (var hero in UserManager.Inst.Hero.Heroes)
+            {
+                hero.AddCard(5);
+            }
+
+            UserManager.Inst.Save(true).Forget();
+        }
+    }
+
+    [Category("[치트] 아웃게임"), DisplayName("영웅 조각 추가 X10")]
+    public void 영웅_전체_조각_획득_X10()
+    {
+        if (UserManager.Inst.Hero != null)
+        {
+            foreach (var hero in UserManager.Inst.Hero.Heroes)
+            {
+                hero.AddCard(10);
+            }
+
+            UserManager.Inst.Save(true).Forget();
+        }
+    }
+
+    [Category("[치트] 아웃게임"), DisplayName("영웅 조각 추가 X100")]
+    public void 영웅_전체_조각_획득_X100()
+    {
+        if (UserManager.Inst.Hero != null)
+        {
+            foreach (var hero in UserManager.Inst.Hero.Heroes)
+            {
+                hero.AddCard(100);
+            }
+
+            UserManager.Inst.Save(true).Forget();
+        }
+    }
+
     [Category("[치트] 아웃게임"), DisplayName("골드 추가")]
     public void 골드_추가()
     {
         if (UserManager.Inst.Currency != null)
+        {
             UserManager.Inst.Currency.AddCurrency(Enum_ItemType.Gold, 10000);
+            UserManager.Inst.Save(true).Forget();
+        }
     }
 
     [Category("[치트] 아웃게임"), DisplayName("젬 추가")]
     public void 젬_추가()
     {
         if (UserManager.Inst.Currency != null)
+        {
             UserManager.Inst.Currency.AddCurrency(Enum_ItemType.Gem, 10000);
+            UserManager.Inst.Save(true).Forget();
+        }
     }
 
     [Category("[치트] 아웃게임"), DisplayName("상자 추가")]
     public void 상자_추가()
     {
         if (UserManager.Inst.Currency != null)
+        {
             UserManager.Inst.Currency.AddCurrency(Enum_ItemType.Ticket_NormalChest, 100);
+            UserManager.Inst.Save(true).Forget();
+        }
     }
 
     [Category("[치트] 배경음"), DisplayName("배경음 On")]

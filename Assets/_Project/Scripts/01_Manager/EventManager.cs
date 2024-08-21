@@ -27,13 +27,14 @@ namespace Pxp
         public void OnEventHeroLevelUp(int heroId) => EventHeroLevelUp.Dispatch(heroId);
         public readonly Relay<int> EventHeroLevelUp = new();
 
+        public void OnEventHeroStarUp(int heroId) => EventHeroStarUp.Dispatch(heroId);
+        public readonly Relay<int> EventHeroStarUp = new();
+
         public void OnEventToast(string value) => EventToast.Dispatch(value);
         public readonly Relay<string> EventToast = new();
 
         public void OnEventNickname(string value) => EventNickname.Dispatch(value);
         public readonly Relay<string> EventNickname = new();
-
-
 
 
 

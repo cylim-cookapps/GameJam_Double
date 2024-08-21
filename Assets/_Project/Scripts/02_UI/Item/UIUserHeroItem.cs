@@ -46,9 +46,9 @@ namespace Pxp
         private void Refresh()
         {
             _uiHeroItem.SetHero(_data);
-            _sliderGauge.maxValue = 50;
+            _sliderGauge.maxValue = _data.NeedCardCount;
             _sliderGauge.value = _data.Count;
-            _textCount.SetTextFormat("{0}/{1}", _data.Count, 50);
+            _textCount.SetTextFormat("{0}/{1}", _data.Count, _data.NeedCardCount);
         }
 
         #region Event

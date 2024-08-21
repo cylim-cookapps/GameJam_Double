@@ -28,7 +28,7 @@ namespace Pxp
 
         private int Sort(UserHeroItem x, UserHeroItem y)
         {
-            if(x.Spec.tier != y.Spec.tier)
+            if (x.Spec.tier != y.Spec.tier)
                 return x.Spec.tier.CompareTo(y.Spec.tier);
             return x.Id.CompareTo(y.Id);
         }
@@ -47,7 +47,16 @@ namespace Pxp
 
             if (EquipHeroes == null)
             {
-                EquipHeroes = new List<int>() {1, 2, 3, 4, 5};
+                EquipHeroes = new();
+                foreach (var hero in Heroes)
+                {
+                    if (hero.Unlock)
+                    {
+                        EquipHeroes.Add(hero.Id);
+                        if (EquipHeroes.Count == 5)
+                            break;
+                    }
+                }
             }
 
             foreach (var hero in Heroes)
@@ -79,18 +88,6 @@ namespace Pxp
                 (EquipHeroes[equipped], EquipHeroes[index]) = (EquipHeroes[index], EquipHeroes[equipped]);
             }
 
-            UserManager.Inst.SaveCheck(Enum_UserData.Hero);
-            UserManager.Inst.Save().Forget();
-            EventManager.Inst.OnEventEquippedHero();
-        }
-
-        public void SetUnEquipHero(UserHeroItem hero)
-        {
-            var index = EquipHeroes.IndexOf(hero.Id);
-            if (index == -1)
-                return;
-
-            EquipHeroes[index] = 0;
             UserManager.Inst.SaveCheck(Enum_UserData.Hero);
             UserManager.Inst.Save().Forget();
             EventManager.Inst.OnEventEquippedHero();

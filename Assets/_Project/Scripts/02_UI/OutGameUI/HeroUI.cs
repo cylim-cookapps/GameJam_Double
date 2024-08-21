@@ -44,6 +44,7 @@ namespace Pxp
             EventManager.Inst.EventUnlockHero.AddListener(OnEventUnlockHero);
             EventManager.Inst.EventEquippedHero.AddListener(OnEventEquippedHero);
             EventManager.Inst.EventHeroLevelUp.AddListener(OnEventHeroLevelUp);
+            EventManager.Inst.EventHeroStarUp.AddListener(OnEventHeroLevelUp);
         }
 
         private void OnDestroy()
@@ -51,6 +52,7 @@ namespace Pxp
             EventManager.Inst.EventUnlockHero.RemoveListener(OnEventUnlockHero);
             EventManager.Inst.EventEquippedHero.RemoveListener(OnEventEquippedHero);
             EventManager.Inst.EventHeroLevelUp.RemoveListener(OnEventHeroLevelUp);
+            EventManager.Inst.EventHeroStarUp.RemoveListener(OnEventHeroLevelUp);
         }
 
         public void Refresh()

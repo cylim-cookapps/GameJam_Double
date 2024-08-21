@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Pxp
 {
@@ -15,7 +16,10 @@ namespace Pxp
         private TextMeshProUGUI _textTier, _textName, _textAtk, _textAtkSpeed, _textCount;
 
         [SerializeField, GetComponentInChildrenName]
-        private Button _btnEquip, _btnStarUp, _btnUnEquip;
+        private Button _btnEquip, _btnStarUp, _btnUnlock;
+
+        [SerializeField, GetComponentInChildrenName]
+        private Slider _sliderCard;
 
         [SerializeField, GetComponentInChildrenName]
         private CurrencyButton _btnLevelUp;
@@ -29,7 +33,7 @@ namespace Pxp
         {
             base.Initialize();
             _btnEquip.AddListener(OnClickEquip);
-            _btnUnEquip.AddListener(OnClickUnEquip);
+            _btnUnlock.AddListener(OnClickUnlock);
             _btnStarUp.AddListener(OnClickStarUp);
             _btnLevelUp.SetOnClick(OnClickLevelUp);
 
@@ -50,13 +54,31 @@ namespace Pxp
             _textName.SetText(_data.Spec.hero_name);
             _textAtk.SetText(_data.Atk);
             _textAtkSpeed.SetText(_data.AtkSpeed);
-            _textCount.SetTextFormat("{0} / {1}", _data.Count, 50);
+            _sliderCard.value = _data.Count;
+            _sliderCard.maxValue = _data.NeedCardCount;
+
+            _textCount.SetTextFormat("{0} / {1}", _data.Count, _data.NeedCardCount);
             _btnLevelUp.SetPrice(_data.LevelUpGold, _data.CheckLevelUp());
-            _heroSkill[0].SetHeroSkill(_data,0, _data.Spec.skill_star_1ToData);
-            _heroSkill[1].SetHeroSkill(_data,1, _data.Spec.skill_star_2ToData);
-            _heroSkill[2].SetHeroSkill(_data,2, _data.Spec.skill_star_3ToData);
-            _heroSkill[3].SetHeroSkill(_data,3, _data.Spec.skill_star_4ToData);
-            _heroSkill[4].SetHeroSkill(_data,4, _data.Spec.skill_star_5ToData);
+            _heroSkill[0].SetHeroSkill(_data, 0, _data.Spec.skill_star_1ToData);
+            _heroSkill[1].SetHeroSkill(_data, 1, _data.Spec.skill_star_2ToData);
+            _heroSkill[2].SetHeroSkill(_data, 2, _data.Spec.skill_star_3ToData);
+            _heroSkill[3].SetHeroSkill(_data, 3, _data.Spec.skill_star_4ToData);
+            _heroSkill[4].SetHeroSkill(_data, 4, _data.Spec.skill_star_5ToData);
+
+            if (_data.Unlock)
+            {
+                _btnUnlock.SetActive(false);
+                _btnEquip.SetActive(_data.Unlock);
+                _btnStarUp.SetActive(!_data.IsMaxStar);
+                _btnLevelUp.SetActive(true);
+            }
+            else
+            {
+                _btnUnlock.SetActive(true);
+                _btnEquip.SetActive(false);
+                _btnStarUp.SetActive(false);
+                _btnLevelUp.SetActive(false);
+            }
         }
 
         #region Event
@@ -67,14 +89,22 @@ namespace Pxp
             Hide();
         }
 
-        private void OnClickUnEquip()
+        private void OnClickUnlock()
         {
-            UserManager.Inst.Hero.SetUnEquipHero(_data);
+            if (_data.SetUnlock())
+            {
+                EventManager.Inst.OnEventToast($"{_data.Spec.hero_name}영웅이 해금되었습니다.");
+                Refresh();
+            }
         }
 
         private void OnClickStarUp()
         {
-            _data.StarUp();
+            if (_data.StarUp())
+            {
+                EventManager.Inst.OnEventToast($"{_data.Spec.hero_name}영웅에 성급이 상승했습니다.");
+                Refresh();
+            }
         }
 
         private void OnClickLevelUp()

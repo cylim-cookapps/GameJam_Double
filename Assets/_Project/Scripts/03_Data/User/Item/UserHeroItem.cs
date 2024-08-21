@@ -33,6 +33,22 @@ namespace Pxp
         public double AtkSpeed => Spec.attackSpeed;
         public double AtkRange => Spec.attackRange;
 
+        public int NeedCardCount
+        {
+            get
+            {
+                if (Unlock == false)
+                    return Spec.starValue[0];
+
+                if (IsMaxStar)
+                    return 0;
+
+                return Spec.starValue[Star + 1];
+            }
+        }
+
+        public bool IsMaxStar => Star == 5;
+
         public Hero Spec { get; private set; }
         public Relay EventUpdate { get; } = new();
 
@@ -78,10 +94,36 @@ namespace Pxp
             UserManager.Inst.Save().Forget();
         }
 
+        public bool SetUnlock()
+        {
+            if (Unlock)
+                return false;
+
+            if(NeedCardCount > Count)
+                return false;
+
+            Count -= NeedCardCount;
+            Unlock = true;
+            UserManager.Inst.SaveCheck(Enum_UserData.Hero);
+            UserManager.Inst.Save().Forget();
+            return true;
+        }
+
         public bool StarUp()
         {
+            if (IsMaxStar)
+                return false;
+
+            if (NeedCardCount > Count)
+                return false;
+
+            Count -= NeedCardCount;
+            Star++;
+
             UserManager.Inst.SaveCheck(Enum_UserData.Hero);
-            return false;
+            UserManager.Inst.Save().Forget();
+            EventManager.Inst.OnEventHeroStarUp(Id);
+            return true;
         }
 
         public void AddCard(int count)
