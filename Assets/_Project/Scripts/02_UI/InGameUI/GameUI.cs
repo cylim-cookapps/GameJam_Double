@@ -41,6 +41,9 @@ namespace Pxp
         private GameObject damageTextPrefab;
 
         [SerializeField]
+        private GameObject _goClearBoss;
+
+        [SerializeField]
         private UIInGameHeroInfo _uiInGameHeroInfo;
 
         public UIInGameHeroInfo UIInGameHeroInfo => _uiInGameHeroInfo;

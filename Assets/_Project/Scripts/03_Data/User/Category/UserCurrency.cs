@@ -46,13 +46,13 @@ namespace Pxp
         public void AddCurrency(Enum_ItemType type, int count)
         {
             var currency = GetCurrency(type);
-            currency.Increase(count);
+            currency?.Increase(count);
         }
 
         public void SubCurrency(Enum_ItemType type, int count)
         {
             var currency = GetCurrency(type);
-            currency.Decrease(count);
+            currency?.Decrease(count);
         }
     }
 }

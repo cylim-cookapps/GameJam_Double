@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e82526658ca41124e93e720ef68509cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hpBar: {fileID: 1981936358089004792}
+  _hpBar: {fileID: 9200767465134436986}
   slider: {fileID: 858848456916389185}
   _textHp: {fileID: 8584450068520027169}
   _textTimer: {fileID: 3386473942091817538}
@@ -902,7 +902,7 @@ GameObject:
   - component: {fileID: 9200767465134436986}
   - component: {fileID: 858848456916389185}
   m_Layer: 5
-  m_Name: HpBar
+  m_Name: Hp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -21,8 +21,8 @@ namespace Pxp
         [JsonProperty("exp")]
         public ObfuscatorInt Exp { get; private set; }
 
-        [JsonProperty("stage")]
-        public ObfuscatorInt Stage {get; private set; }
+        [JsonProperty("wave")]
+        public ObfuscatorInt Wave { get; private set; }
 
         [JsonProperty("tryCount")]
         public ObfuscatorInt TryCount { get; private set; }
@@ -37,6 +37,19 @@ namespace Pxp
         {
             if (Level == 0)
                 Level = 1;
+            if (Wave == 0)
+                Wave = 1;
+        }
+
+        public void SetWave(int wave)
+        {
+            if (Wave < wave)
+            {
+                Wave = wave;
+                UserManager.Inst.SaveCheck(Enum_UserData.Info);
+            }
+
+            TryCount++;
         }
 
         public void LevelUp()

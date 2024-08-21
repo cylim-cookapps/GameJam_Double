@@ -2345,6 +2345,7 @@ MonoBehaviour:
   isAnimation: 0
   closeButtons:
   - {fileID: 1847194751008704890}
+  - {fileID: 7953071586731073357}
   canvas: {fileID: 2234973159673479529}
   _textName: {fileID: 4882219940043949987}
   _textLevel: {fileID: 9156153749697178177}

@@ -33,8 +33,9 @@ namespace Pxp
             _textLevel.SetText(UserManager.Inst.Info.Level);
             _sliderExp.value = UserManager.Inst.Info.Exp;
             _textUID.SetText(UserManager.Inst.PlayerId);
-            _textStage.SetText(UserManager.Inst.Info.Stage);
+            _textStage.SetText(UserManager.Inst.Info.Wave);
             _textTryCount.SetText(UserManager.Inst.Info.TryCount);
+            _textKillCount.SetText(UserManager.Inst.Info.KillCount);
 
             _textExp.SetTextFormat("{0}/{1}", _sliderExp.value, _sliderExp.maxValue);
         }

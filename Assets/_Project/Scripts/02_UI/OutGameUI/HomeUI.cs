@@ -11,7 +11,7 @@ namespace Pxp
     public class HomeUI : BoardBase<MainUI>
     {
         [SerializeField, GetComponentInChildrenName]
-        private TextMeshProUGUI _textNick, _textEnergy, _textLevel;
+        private TextMeshProUGUI _textNick, _textEnergy, _textLevel,_textWave;
 
         [SerializeField, GetComponentInChildrenOnly]
         private List<UIHeroItem> _equippedHeroes;
@@ -42,6 +42,7 @@ namespace Pxp
 
             _textNick.SetText(UserManager.Inst.NickName);
             _textLevel.SetText(UserManager.Inst.Info.Level);
+            _textWave.SetTextFormat("최고 기록 {0} Wave", UserManager.Inst.Info.Wave);
             var energy = UserManager.Inst.Currency.GetCurrency(Enum_ItemType.Energy);
             _textEnergy.SetTextFormat("{0}/{1}", energy.Count, energy.Spec.auto_max_count);
 

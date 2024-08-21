@@ -6,6 +6,7 @@ using Photon.Realtime;
 using System.Collections.Generic;
 using AnnulusGames.LucidTools.RandomKit;
 using Cysharp.Text;
+using Cysharp.Threading.Tasks;
 using ExitGames.Client.Photon;
 using Pxp.Data;
 using UnityEngine.EventSystems;
@@ -34,6 +35,12 @@ namespace Pxp
         private void SetWaveRpc(int wave)
         {
             _wave = wave;
+            var data = SpecDataManager.Inst.Wave.Get(_wave);
+            if (data.bonusMonsterIndexToData != null)
+            {
+                _bonusBoss.Add(data.bonusMonsterIndex);
+            }
+
             EventManager.Inst.OnEventWave(wave);
         }
 
@@ -152,6 +159,8 @@ namespace Pxp
         private HeroUnit _selectedHero;
         private bool _isDrag = false;
         private int _bossDead = 0;
+        private List<int> _bonusBoss = new();
+        public bool IsBonusBossAble => _bonusBoss.Count > 0;
 
         public InGameUserData GetPlayerData(int actorNumber)
         {
@@ -335,7 +344,6 @@ namespace Pxp
 
         private Vector3 GetMouseWorldPosition()
         {
-            Debug.Log(Input.mousePosition);
             Vector3 mouseScreenPosition = Input.mousePosition;
             mouseScreenPosition.z = Mathf.Abs(Camera.main.transform.position.z);
 
@@ -494,7 +502,18 @@ namespace Pxp
 
         private void GameEnd()
         {
+            var waveData= SpecDataManager.Inst.Wave.Get(Wave);
+
+            for (int i = 0; i < waveData.rewardType.Length; i++)
+            {
+                UserManager.Inst.Currency.AddCurrency(waveData.rewardType[i], waveData.rewardAmount[i]);
+            }
+
+            UserManager.Inst.Info.SetWave(waveData.wave);
+            UserManager.Inst.Save(true).Forget();
+
             LobbyManager.Inst.EndGame().Forget();
+            PopupManager.Inst.GetPopup<Popup_Result>().SetWave(Wave);
         }
 
         private IEnumerator GameTimer()

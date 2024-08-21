@@ -49,9 +49,10 @@ namespace Pxp.Data
     [GeneratorSpecData]
     public partial class UserLevel
     {
+        /// 레벨
         [GeneratorId(nameof(id), typeof(int))]
         public int id;
-        /// 자동 획득 시간(분)
+        /// 경허및
         public int exp;
     }
 
@@ -69,9 +70,8 @@ namespace Pxp.Data
         public int monsterIndex;
         /// 등장 몬스터 수
         public int monsterCount;
-        /// 보너스 몬스터 나올 확률
-        public float bonusMonsterChance;
         /// 보너스 몬스터 인덱스
+        [GeneratorIdToData(nameof(bonusMonsterIndex), typeof(Monster))]
         public int bonusMonsterIndex;
         /// 최종 보상 타입
         public global::Pxp.Data.Enum_ItemType[] rewardType = global::System.Array.Empty<global::Pxp.Data.Enum_ItemType>();

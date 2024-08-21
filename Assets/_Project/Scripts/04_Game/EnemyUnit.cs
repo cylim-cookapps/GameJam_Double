@@ -69,7 +69,7 @@ namespace Pxp
 
         private IEnumerator UpdateTime()
         {
-            _timer = 60;
+            _timer = MonsterData.limitTime;
             while(_timer>0)
             {
                 hpBar.UpdateTimer(_timer);
