@@ -27,7 +27,7 @@ MonoBehaviour:
         Version: 1.0.0
         UseAutoVersionCode: 1
         BaseVersionCode: 0
-        VersionCode: 212
+        VersionCode: 218
         Scenes:
         - Guid: 48d6f5fbe50773343a1109416f9ee2cf
         - Guid: bce09c72a3ac3fd4e8d1c6b32b2c97d1
@@ -51,8 +51,8 @@ MonoBehaviour:
           keyaliasName: double
           keyaliasPass: cookapps!123
         AppIcon: 492306afbeefec547a9d0960e4f84aa1
-        AppIconForeground: 
-        AppIconBackground: 
+        AppIconForeground: 492306afbeefec547a9d0960e4f84aa1
+        AppIconBackground: 492306afbeefec547a9d0960e4f84aa1
     - rid: 5650518213432442881
       type: {class: BuildPlatformAndroid, ns: CookApps.Build.Asset, asm: CookApps.Build.Editor}
       data:
@@ -62,7 +62,7 @@ MonoBehaviour:
         Version: 1.0.00
         UseAutoVersionCode: 1
         BaseVersionCode: 1
-        VersionCode: 213
+        VersionCode: 219
         Scenes:
         - Guid: 48d6f5fbe50773343a1109416f9ee2cf
         - Guid: bce09c72a3ac3fd4e8d1c6b32b2c97d1
@@ -87,5 +87,5 @@ MonoBehaviour:
           keyaliasName: double
           keyaliasPass: cookapps!123
         AppIcon: 492306afbeefec547a9d0960e4f84aa1
-        AppIconForeground: 
-        AppIconBackground: 
+        AppIconForeground: 492306afbeefec547a9d0960e4f84aa1
+        AppIconBackground: 492306afbeefec547a9d0960e4f84aa1
