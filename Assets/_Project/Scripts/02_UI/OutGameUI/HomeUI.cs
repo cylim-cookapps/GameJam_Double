@@ -113,6 +113,7 @@ namespace Pxp
 
         private void OnClickBoxOpen()
         {
+
             EventManager.Inst.OnEventToast("업데이트 준비중입니다.");
         }
 

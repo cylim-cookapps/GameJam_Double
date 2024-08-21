@@ -22,18 +22,12 @@ namespace Pxp
         [SerializeField]
         private bool _isAnimation = true;
 
-        private ObfuscatorDouble _lastValue;
         private Tween _tween;
         private UserCurrencyItem _userData;
 
         private void Awake()
         {
             _userData = UserManager.Inst.Currency.GetCurrency(itemType);
-        }
-
-        private void Update()
-        {
-            _lastValue.RegenerateEncryptionKey();
         }
 
         private void OnEnable()
@@ -50,35 +44,12 @@ namespace Pxp
 
         void Refresh()
         {
-            _lastValue = _userData.Count;
-            _textCount.SetText(_lastValue.Value.ToDoubleString());
+            _textCount.SetText(_userData.Count);
         }
 
-        private void OnEventUpdate(double value)
+        private void OnEventUpdate(int value)
         {
-            if (_isAnimation)
-            {
-                if (_tween.isAlive)
-                    _tween.Stop();
-
-                if (_lastValue > value)
-                {
-                    _lastValue = value;
-                    _textCount.SetText(_lastValue.Value.ToDoubleString());
-                    return;
-                }
-
-                _tween = Tween.Custom(_lastValue.Value, value, 0.2f, (f) =>
-                {
-                    _lastValue = f;
-                    _textCount.SetText(_lastValue.Value.ToDoubleString());
-                });
-            }
-            else
-            {
-                _lastValue = value;
-                _textCount.SetText(_lastValue.Value.ToDoubleString());
-            }
+            _textCount.SetText(value);
         }
 
         public void OnPointerClick(PointerEventData eventData)

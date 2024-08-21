@@ -20,7 +20,7 @@ namespace Pxp
         public Currency Spec { get; private set; }
         public Enum_ItemType Type => (Enum_ItemType) Id.Value;
 
-        public Relay<double> EventUpdate { get; } = new();
+        public Relay<int> EventUpdate { get; } = new();
 
         public UserCurrencyItem(int id)
         {
