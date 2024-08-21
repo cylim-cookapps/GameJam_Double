@@ -49,6 +49,9 @@ namespace Pxp
         public void OnEventGameTimer(int sec) => EventGameTimer.Dispatch(sec);
         public readonly Relay<int> EventGameTimer = new();
 
+        public void OnEventGameBossWave(bool isBossWave) => EventGameBossWave.Dispatch(isBossWave);
+        public readonly Relay<bool> EventGameBossWave = new();
+
         public void OnEventMonsterCount(int count) => EventMonsterCount.Dispatch(count);
         public readonly Relay<int> EventMonsterCount = new();
 

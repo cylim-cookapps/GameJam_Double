@@ -14,7 +14,6 @@ namespace Pxp
         private const byte EVENT_START = 2;
         private const byte EVENT_END = 3;
         private const byte HERO_LEVEL_UP = 100;
-        private const byte HERO_MOVE = 101;
 
         private void OnEvent(EventData photonEvent)
         {
@@ -74,13 +73,6 @@ namespace Pxp
                 playerDataDict[userData.Owner].Coin = userData.Coin;
                 playerDataDict[userData.Owner].Heroes.Find(x => x.HeroId == userData.HeroId).InGameLevel = userData.Upgrade;
                 EventManager.Inst.OnEventGameHeroUpgrade(userData.Owner, userData.HeroId);
-            }
-            else if (photonEvent.Code == HERO_MOVE)
-            {
-                // Hashtable playerDataHash = (Hashtable) photonEvent.CustomData;
-                // HeroMoveData userData = HeroMoveData.FromHashtable(playerDataHash);
-                // playerDataDict[userData.Owner].Heroes.Find(x => x.HeroId == userData.HeroId).Position = userData.Position;
-                // EventManager.Inst.OnEventGameHeroMove(userData.Owner, userData.HeroId, userData.Position);
             }
         }
 

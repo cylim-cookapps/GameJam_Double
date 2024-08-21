@@ -50,10 +50,29 @@ namespace Pxp
         }
 
         [PunRPC]
-        private void SetSecondRpc(int sec)
+        private void SetSecondRpc(int value)
         {
-            _second = sec;
+            _second = value;
             EventManager.Inst.OnEventGameTimer(_second);
+        }
+
+        private bool _isBossWave = false;
+
+        public bool IsBossWave
+        {
+            get => _isBossWave;
+            set
+            {
+                if (PhotonNetwork.IsMasterClient)
+                    photonView.RPC(nameof(SetBossWave), RpcTarget.All, value);
+            }
+        }
+
+        [PunRPC]
+        private void SetBossWave(bool value)
+        {
+            _isBossWave = value;
+            EventManager.Inst.OnEventGameBossWave(value);
         }
 
         private int _monsterCount = 0;
@@ -105,14 +124,17 @@ namespace Pxp
         private Dictionary<int, InGameUserData> playerDataDict = new();
 
         private float SpawnInterval = 0.3f;
+        private int BossWaveInterval = 60;
         private int DeathCount = 100;
         private int WaveInterval = 20;
         private int Summon_Default = 50;
         private int Summon_Increase = 10;
         private int LevelUp_Default = 50;
         private int LevelUp_Increase = 100;
+        private int Gamble_ChipValue_Increase = 100;
         public List<int> Gamble = new List<int>();
         private int _gambleChip;
+        private int _remainSpawnEnemyCount;
 
         public bool IsGambleEnd { get; private set; }
         public bool IsFirstFail { get; set; }
@@ -129,6 +151,7 @@ namespace Pxp
         public InGameUserData OtherInGameUserData => playerDataDict[PhotonNetwork.LocalPlayer.ActorNumber == 1 ? 2 : 1];
         private HeroUnit _selectedHero;
         private bool _isDrag = false;
+        private int _bossDead = 0;
 
         public InGameUserData GetPlayerData(int actorNumber)
         {
@@ -138,13 +161,15 @@ namespace Pxp
         private void Awake()
         {
             _gambleChip = (int) SpecDataManager.Inst.Option.Get("Gamble_ChipValue").value;
-            SpawnInterval = SpecDataManager.Inst.Option.Get("SpawnInterval")!.value;
-            DeathCount = (int) SpecDataManager.Inst.Option.Get("DeathCount")!.value;
-            WaveInterval = (int) SpecDataManager.Inst.Option.Get("WaveInterval")!.value;
-            Summon_Default = (int) SpecDataManager.Inst.Option.Get("Summon_Default")!.value;
-            Summon_Increase = (int) SpecDataManager.Inst.Option.Get("Summon_Increase")!.value;
-            LevelUp_Default = (int) SpecDataManager.Inst.Option.Get("LevelUp_Default")!.value;
-            LevelUp_Increase = (int) SpecDataManager.Inst.Option.Get("LevelUp_Increase")!.value;
+            SpawnInterval = SpecDataManager.Inst.Option.Get("SpawnInterval").value;
+            BossWaveInterval = (int) SpecDataManager.Inst.Option.Get("BossWaveInterval").value;
+            DeathCount = (int) SpecDataManager.Inst.Option.Get("DeathCount").value;
+            WaveInterval = (int) SpecDataManager.Inst.Option.Get("WaveInterval").value;
+            Summon_Default = (int) SpecDataManager.Inst.Option.Get("Summon_Default").value;
+            Summon_Increase = (int) SpecDataManager.Inst.Option.Get("Summon_Increase").value;
+            LevelUp_Default = (int) SpecDataManager.Inst.Option.Get("LevelUp_Default").value;
+            LevelUp_Increase = (int) SpecDataManager.Inst.Option.Get("LevelUp_Increase").value;
+            Gamble_ChipValue_Increase = (int) SpecDataManager.Inst.Option.Get("Gamble_ChipValue_Increase").value;
 
             foreach (var waypoint in _waypoints0)
             {
@@ -376,6 +401,7 @@ namespace Pxp
 
         private IEnumerator GameLoop()
         {
+            _waves.Clear();
             foreach (var wave in SpecDataManager.Inst.Wave.All)
             {
                 if (wave.mode == 0)
@@ -387,18 +413,38 @@ namespace Pxp
                 if (_waves.Count <= _wave)
                     break;
 
-                Second = WaveInterval;
-                StartCoroutine(GameTimer());
                 var data = _waves[Wave].monsterIndexToData;
-                for (int i = 0; i < _waves[Wave].monsterCount; i++)
+                _remainSpawnEnemyCount = _waves[Wave].monsterCount * 2;
+
+                Second = data.monsterType == Enum_monsterType.BOSS ? BossWaveInterval : WaveInterval;
+                StartCoroutine(nameof(GameTimer));
+
+                if (data.monsterType == Enum_monsterType.BOSS)
                 {
+                    IsBossWave = true;
                     SpawnMonster(data, WayPoint0);
-                    yield return new WaitForSeconds(SpawnInterval * 0.5f);
                     SpawnMonster(data, WayPoint1);
-                    yield return new WaitForSeconds(SpawnInterval * 0.5f);
+                }
+                else
+                {
+                    IsBossWave = false;
+                    for (int i = 0; i < _waves[Wave].monsterCount; i++)
+                    {
+                        SpawnMonster(data, WayPoint0);
+                        yield return new WaitForSeconds(SpawnInterval * 0.5f);
+                        SpawnMonster(data, WayPoint1);
+                        yield return new WaitForSeconds(SpawnInterval * 0.5f);
+                    }
                 }
 
                 yield return new WaitUntil(() => Second == 0);
+                if (_isBossWave)
+                {
+                    StopCoroutine(nameof(GameTimer));
+                    SendGameEnd();
+                    yield break;
+                }
+
                 Wave++;
             }
         }
@@ -409,6 +455,7 @@ namespace Pxp
                 return;
 
             StopCoroutine("GameLoop");
+            StopCoroutine("GameTimer");
             var list = new List<GameObject>(spawnedEnemy);
             for (int i = 0; i < list.Count; i++)
             {
@@ -418,6 +465,7 @@ namespace Pxp
                 }
             }
 
+            _isBossWave = false;
             Wave++;
             StartCoroutine("GameLoop");
         }
@@ -638,14 +686,28 @@ namespace Pxp
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                if (enemyUnit.Coin > 0)
-                    photonView.RPC(nameof(AddCoin), RpcTarget.All, enemyUnit.Coin);
+                if (enemyUnit.IsDead)
+                {
+                    if (enemyUnit.Coin > 0)
+                        photonView.RPC(nameof(AddCoin), RpcTarget.All, enemyUnit.Coin);
 
-                if (enemyUnit.Chip > 0)
-                    photonView.RPC(nameof(AddChip), RpcTarget.All, enemyUnit.Chip);
+                    if (enemyUnit.Chip > 0)
+                        photonView.RPC(nameof(AddChip), RpcTarget.All, enemyUnit.Chip);
 
-                if (enemyUnit.BonusCoin > 0)
-                    photonView.RPC(nameof(AddBonusCoin), RpcTarget.All, enemyUnit.BonusCoin);
+                    if (enemyUnit.BonusCoin > 0)
+                        photonView.RPC(nameof(AddBonusCoin), RpcTarget.All, enemyUnit.BonusCoin);
+
+                    if (enemyUnit.MonsterType == Enum_monsterType.BOSS)
+                    {
+                        _bossDead++;
+                        if (_bossDead == 2)
+                        {
+                            Second = 5;
+                            _bossDead = 0;
+                            _isBossWave = false;
+                        }
+                    }
+                }
 
                 DestroyedEnemy(enemyUnit.gameObject);
             }
@@ -682,7 +744,7 @@ namespace Pxp
 
         public (int, int) SetGamble()
         {
-            int chip = _gambleChip + Gamble.Count;
+            int chip = _gambleChip + (Gamble.Count * Gamble_ChipValue_Increase);
 
             if (Gamble.Count >= 5)
                 return (0, -1);

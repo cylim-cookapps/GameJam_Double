@@ -24,12 +24,14 @@ namespace Pxp
         private TextMeshProUGUI _textPrice, _textChip;
 
         private int GambleChip;
+        private int Gamble_ChipValue_Increase;
         private bool isAnimation = false;
 
         public override void Initialize()
         {
             base.Initialize();
             GambleChip = (int) SpecDataManager.Inst.Option.Get("Gamble_ChipValue").value;
+            Gamble_ChipValue_Increase = (int) SpecDataManager.Inst.Option.Get("Gamble_ChipValue_Increase").value;
             _textPrice.SetText(GambleChip);
             _imagesChar.ForEach(_ => _.gameObject.SetActive(false));
             _imagesBefor.ForEach(_ => _.gameObject.SetActive(false));
@@ -111,7 +113,7 @@ namespace Pxp
             else
                 _btnReceive.SetActive(false);
 
-            _textPrice.SetText(GambleChip + GameManager.Inst.Gamble.Count);
+            _textPrice.SetText(GambleChip + (GameManager.Inst.Gamble.Count * Gamble_ChipValue_Increase));
         }
 
         #region Event

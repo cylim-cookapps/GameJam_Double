@@ -17,7 +17,7 @@ namespace Pxp
         private List<UIProfileInGameItem> _uiProfileInGameItem;
 
         [SerializeField, GetComponentInChildrenName]
-        private TextMeshProUGUI _textWave, _textMonster, _textTimer, _textCoin, _textChip, _textSummonPrice, _textBonusCoin;
+        private TextMeshProUGUI _textWave, _textMonster, _textTimer, _textBossTimer, _textCoin, _textChip, _textSummonPrice, _textBonusCoin;
 
         [SerializeField, GetComponentInChildrenName]
         private Slider _sliderMonster;
@@ -27,6 +27,9 @@ namespace Pxp
 
         [SerializeField, GetComponentInChildrenOnly]
         private List<UIHeroUpgradeItem> _uiHeroUpgradeItems;
+
+        [SerializeField]
+        private GameObject _goBossTimer;
 
         [SerializeField]
         private GameObject hpBarPrefab;
@@ -63,9 +66,11 @@ namespace Pxp
             _btnBonusCoin.AddListener(OnClickBonusCoin);
             _btnGamble.AddListener(OnClickGamble);
             _btnBonusCoin.SetActive(false);
+            _goBossTimer.SetActive(false);
 
             EventManager.Inst.EventGameState.AddListener(OnEventGameState);
             EventManager.Inst.EventGameTimer.AddListener(OnEventGameTimer);
+            EventManager.Inst.EventGameBossWave.AddListener(OnEventGameBossWave);
             EventManager.Inst.EventWave.AddListener(OnEventWave);
             EventManager.Inst.EventMonsterCount.AddListener(OnEventMonsterCount);
             EventManager.Inst.EventGameCoin.AddListener(OnEventGameCoin);
@@ -89,6 +94,7 @@ namespace Pxp
         {
             EventManager.Inst.EventGameState.RemoveListener(OnEventGameState);
             EventManager.Inst.EventGameTimer.RemoveListener(OnEventGameTimer);
+            EventManager.Inst.EventGameBossWave.RemoveListener(OnEventGameBossWave);
             EventManager.Inst.EventWave.RemoveListener(OnEventWave);
             EventManager.Inst.EventMonsterCount.RemoveListener(OnEventMonsterCount);
             EventManager.Inst.EventGameCoin.RemoveListener(OnEventGameCoin);
@@ -225,6 +231,15 @@ namespace Pxp
             int minutes = Mathf.FloorToInt(sec / 60f);
             int seconds = Mathf.FloorToInt(sec % 60f);
             _textTimer.SetTextFormat("{0:00}:{1:00}", minutes, seconds);
+            _textBossTimer.SetTextFormat("{0:00}:{1:00}", minutes, seconds);
+        }
+
+        private void OnEventGameBossWave(bool value)
+        {
+            if (value)
+                EventManager.Inst.OnEventToast("보스 출현 !!");
+
+            _goBossTimer.SetActive(value);
         }
 
         private void OnEventWave(int wave)

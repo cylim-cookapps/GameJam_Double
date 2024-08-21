@@ -32,13 +32,15 @@ namespace Pxp
 
         public Monster MonsterData { get; private set; }
         private List<Vector2> _waypoints;
-        private bool _isDead;
+        public bool IsDead { get; private set; }
         private float _moveSpeed;
+        private bool isBoss = false;
 
         [SerializeField]
         private int currentWaypointIndex = 0;
 
         private Vector2 _lastPosition;
+        private float _timer = 0f;
 
         private HPBar hpBar;
 
@@ -49,7 +51,9 @@ namespace Pxp
                 hpBar = GameUI.Inst.GetHPBar();
                 if (hpBar != null)
                 {
-                    hpBar.SetTarget(transform);
+                    hpBar.SetTarget(MonsterType, transform);
+                    if(MonsterType == Enum_monsterType.CAPTAIN)
+                        StartCoroutine(nameof(UpdateTime));
                     UpdateHPBar();
                 }
             }
@@ -59,9 +63,27 @@ namespace Pxp
         {
             if (hpBar != null)
             {
-                hpBar.UpdateHP((float) Hp / MaxHp);
+                hpBar.UpdateHP(Hp, (float) Hp / MaxHp);
             }
         }
+
+        private IEnumerator UpdateTime()
+        {
+            _timer = 60;
+            while(_timer>0)
+            {
+                hpBar.UpdateTimer(_timer);
+                _timer -= Time.deltaTime;
+                yield return null;
+            }
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                if (IsDead == false)
+                    DestroyEnemy();
+            }
+        }
+
 
         private void Start()
         {
@@ -127,7 +149,7 @@ namespace Pxp
             BonusCoin = (int) instantiationData[3];
             MonsterType = MonsterData.monsterType;
             _waypoints = new List<Vector2>((Vector2[]) instantiationData[4]);
-            _isDead = false;
+            IsDead = false;
             _moveSpeed = MonsterData.moveSpeed;
             Hp = MaxHp = MonsterData.hp;
 
@@ -142,7 +164,7 @@ namespace Pxp
         [PunRPC]
         public void TakeDamage(int damage, float slowDuration = 0f)
         {
-            if (_isDead) return;
+            if (IsDead) return;
 
             Hp -= damage;
             AudioController.Play("SFX_TakeDamage");
@@ -157,8 +179,9 @@ namespace Pxp
 
             if (Hp <= 0)
             {
+                IsDead = true;
+                StopCoroutine(nameof(UpdateTime));
                 DestroyEnemy();
-                _isDead = true;
             }
         }
 
