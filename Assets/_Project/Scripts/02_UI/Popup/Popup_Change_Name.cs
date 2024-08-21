@@ -11,12 +11,13 @@ namespace Pxp
         private TMP_InputField _input;
 
         [SerializeField, GetComponentInChildrenName]
-        private Button _btnConfirm, _btnConfirmPaid;
+        private Button _btnConfirm, _btnConfirmPaid,_btnClose;
 
         public override void Initialize()
         {
             base.Initialize();
             _btnConfirm.AddListener(OnClick);
+            _btnClose.AddListener(OnClickClose);
         }
 
         public override void Show()
@@ -31,6 +32,14 @@ namespace Pxp
 
         #region Event
 
+        private void OnClickClose()
+        {
+            if (string.IsNullOrEmpty(UserManager.Inst.NickName))
+                return;
+
+            base.Hide();
+        }
+
         private async void OnClick()
         {
             if (string.IsNullOrEmpty(_input.text))
@@ -41,6 +50,14 @@ namespace Pxp
             if (state == Enum_NickNameValid.Valid)
             {
                 base.Hide();
+            }
+            else if (state == Enum_NickNameValid.Duplication)
+            {
+                EventManager.Inst.OnEventToast("중복된 닉네임입니다.");
+            }
+            else
+            {
+                EventManager.Inst.OnEventToast("올바르지 않은 닉네임입니다.");
             }
 
             MainUI.Inst.SetIndicator(false);

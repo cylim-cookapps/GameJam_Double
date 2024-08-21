@@ -27,6 +27,11 @@ namespace Pxp
 
         private UserHeroItem _heroData;
 
+        public void SetHero(Hero spec,int count)
+        {
+
+        }
+
         public void SetHero(UserHeroItem data)
         {
             _heroData?.EventUpdate.RemoveListener(OnEventUpdate);

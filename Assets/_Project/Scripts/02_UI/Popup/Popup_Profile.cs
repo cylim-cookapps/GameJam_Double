@@ -16,12 +16,13 @@ namespace Pxp
         private Slider _sliderExp;
 
         [SerializeField, GetComponentInChildrenName]
-        private Button _btnNickname;
+        private Button _btnNickname,_btnCopy;
 
         public override void Initialize()
         {
             base.Initialize();
             _btnNickname.AddListener(OnClickNickname);
+            _btnCopy.AddListener(OnClickCopy);
             EventManager.Inst.EventNickname.AddListener(OnEventNickname);
         }
 
@@ -33,7 +34,7 @@ namespace Pxp
             _textLevel.SetText(UserManager.Inst.Info.Level);
             _sliderExp.value = UserManager.Inst.Info.Exp;
             _textUID.SetText(UserManager.Inst.PlayerId);
-            _textStage.SetText(UserManager.Inst.Info.Wave);
+            _textStage.SetTextFormat("{0} 웨이브", UserManager.Inst.Info.Wave);
             _textTryCount.SetText(UserManager.Inst.Info.TryCount);
             _textKillCount.SetText(UserManager.Inst.Info.KillCount);
 
@@ -45,6 +46,12 @@ namespace Pxp
         private void OnClickNickname()
         {
             PopupManager.Inst.GetPopup<Popup_Change_Name>().Show();
+        }
+
+        private void OnClickCopy()
+        {
+            GUIUtility.systemCopyBuffer = UserManager.Inst.PlayerId;
+            EventManager.Inst.OnEventToast("클립보드에 복사되었습니다.");
         }
 
         #endregion
