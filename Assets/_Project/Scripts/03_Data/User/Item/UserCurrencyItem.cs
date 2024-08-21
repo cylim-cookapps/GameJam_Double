@@ -15,7 +15,7 @@ namespace Pxp
         public ObfuscatorInt Id { get; private set; }
 
         [JsonProperty("count")]
-        public ObfuscatorDouble Count { get; private set; }
+        public ObfuscatorInt Count { get; private set; }
 
         public Currency Spec { get; private set; }
         public Enum_ItemType Type => (Enum_ItemType) Id.Value;
@@ -43,14 +43,14 @@ namespace Pxp
             Spec = SpecDataManager.Inst.Currency.Get(Id);
         }
 
-        public void Increase(double value)
+        public void Increase(int value)
         {
             Count += value;
             EventUpdate.Dispatch(Count.Value);
             UserManager.Inst.SaveCheck(Enum_UserData.Currency);
         }
 
-        public void Decrease(double value)
+        public void Decrease(int value)
         {
             Count -= value;
             EventUpdate.Dispatch(Count.Value);

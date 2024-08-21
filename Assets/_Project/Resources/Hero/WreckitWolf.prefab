@@ -596,6 +596,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_Hit_Wolf
       objectReference: {fileID: 0}
+    - target: {fileID: 2268881864523692434, guid: 1840d4ef170224559b8efb125d04f114, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

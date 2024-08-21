@@ -384,6 +384,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FX_Hit_Reaper
       objectReference: {fileID: 0}
+    - target: {fileID: 7464168686618908878, guid: d218d6231c23348678581e3c3ad0796c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
