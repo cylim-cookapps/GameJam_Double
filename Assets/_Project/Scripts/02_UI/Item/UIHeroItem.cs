@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Text;
 using Pxp.Data;
 using TMPro;
@@ -27,9 +28,21 @@ namespace Pxp
 
         private UserHeroItem _heroData;
 
-        public void SetHero(Hero spec,int count)
+        public void SetView(Hero data, int count)
         {
+            if (data != null)
+            {
+                _imgIcon.SetSprite(data.icon_key);
+                _textLevel.SetTextFormat("x{0}",count);
 
+                for (int i = 0; i < _goTier.Count; i++)
+                {
+                    _goTier[i].SetActive(i == (int) data.tier - 1);
+                }
+
+                _stars.ForEach(_ => _.SetActive(false));
+                _inGameStars.ForEach(_ => _.SetActive(false));
+            }
         }
 
         public void SetHero(UserHeroItem data)
@@ -52,7 +65,7 @@ namespace Pxp
             Refresh();
         }
 
-        public void SetHero(InGameHeroData data,InGameUnitData unitData)
+        public void SetHero(InGameHeroData data, InGameUnitData unitData)
         {
             var spec = SpecDataManager.Inst.Hero.Get(data.HeroId);
 
@@ -77,7 +90,7 @@ namespace Pxp
 
             _stars.ForEach(_ => _.SetActive(false));
             _imgIcon.SetSprite(spec.icon_key);
-            _textLevel.SetTextFormat("Lv.{0}", data.InGameLevel+1);
+            _textLevel.SetTextFormat("Lv.{0}", data.InGameLevel + 1);
         }
 
         private void Refresh()

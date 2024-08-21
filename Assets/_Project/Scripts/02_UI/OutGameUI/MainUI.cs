@@ -44,6 +44,8 @@ namespace Pxp
             {
                 PopupManager.Inst.GetPopup<Popup_Change_Name>().Show();
             }
+
+            _homeUI.Show();
         }
 
         public void SetIndicator(bool isOn)

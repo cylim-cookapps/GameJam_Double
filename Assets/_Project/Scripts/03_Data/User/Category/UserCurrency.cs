@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CookApps.Obfuscator;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Pxp.Data;
 using UnityEngine;
@@ -53,6 +54,37 @@ namespace Pxp
         {
             var currency = GetCurrency(type);
             currency?.Decrease(count);
+        }
+
+        public List<ItemInfo> GetBox()
+        {
+            var count = GetCurrency(Enum_ItemType.Ticket_NormalChest).Count;
+            if (count >= 10)
+            {
+                SubCurrency(Enum_ItemType.Ticket_NormalChest, 10);
+                var list = SpecDataManager.Inst.GetRandomItemInfoList(10);
+                foreach (var item in list)
+                {
+                    var userItem = GetCurrency(item.ItemType);
+                    if (userItem != null)
+                        userItem.Increase(item.Count);
+                    else
+                    {
+                        foreach (var hero in UserManager.Inst.Hero.Heroes)
+                        {
+                            if (hero.Spec.item_type == item.ItemType)
+                            {
+                                hero.AddCard(item.Count);
+                            }
+                        }
+                    }
+                }
+
+                UserManager.Inst.Save(true).Forget();
+                return list;
+            }
+
+            return null;
         }
     }
 }

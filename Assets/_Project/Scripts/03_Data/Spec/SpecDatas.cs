@@ -190,4 +190,16 @@ namespace Pxp.Data
         public global::Pxp.Data.Enum_ItemType item_5;
         public int itemAmount_5;
     }
+
+    [GeneratorSpecData]
+    public partial class Gacha
+    {
+        [GeneratorId(nameof(id), typeof(int))]
+        public int id;
+        public global::Pxp.Data.Enum_GachaType gachaType;
+        public global::Pxp.Data.Enum_ItemType itemID;
+        public int value;
+        /// 가중치
+        public int weight;
+    }
 }

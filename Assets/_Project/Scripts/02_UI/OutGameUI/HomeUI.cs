@@ -113,8 +113,13 @@ namespace Pxp
 
         private void OnClickBoxOpen()
         {
-
-            EventManager.Inst.OnEventToast("업데이트 준비중입니다.");
+            var list=UserManager.Inst.Currency.GetBox();
+            if(list == null)
+                EventManager.Inst.OnEventToast("상자가 부족합니다.");
+            else
+            {
+                PopupManager.Inst.GetPopup<Popup_Reward>().SetView(list);
+            }
         }
 
         private void OnClickQuest()

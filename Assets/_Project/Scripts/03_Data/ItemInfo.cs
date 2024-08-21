@@ -15,7 +15,5 @@ namespace Pxp
             ItemType = type;
             Count = count;
         }
-
-
     }
 }

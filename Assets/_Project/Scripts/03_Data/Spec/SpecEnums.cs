@@ -91,10 +91,10 @@ namespace Pxp.Data
     }
 
     /// 가챠 타입
-    public enum Enum_gachaType
+    public enum Enum_GachaType
     {
         None = 0,
-        Chest_Normal = 1,
+        Gacha_Normal = 1,
         Chest_Shop_1 = 2,
         Chest_Shop_2 = 3,
         Chest_Relic = 4,

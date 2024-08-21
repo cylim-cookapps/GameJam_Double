@@ -130,6 +130,7 @@ namespace Pxp
         public void AddCard(int count)
         {
             Count += count;
+            UserManager.Inst.SaveCheck(Enum_UserData.Hero);
         }
 
         #region Editor
