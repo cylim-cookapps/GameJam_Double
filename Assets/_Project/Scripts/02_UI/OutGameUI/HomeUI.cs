@@ -118,6 +118,9 @@ namespace Pxp
                 EventManager.Inst.OnEventToast("상자가 부족합니다.");
             else
             {
+                var count = UserManager.Inst.Currency.GetCurrency(Enum_ItemType.Ticket_NormalChest).Count;
+                _textBox.SetTextFormat("{0}/{1}",count, 10);
+                _sliderBox.value = count;
                 PopupManager.Inst.GetPopup<Popup_Reward>().SetView(list);
             }
         }
