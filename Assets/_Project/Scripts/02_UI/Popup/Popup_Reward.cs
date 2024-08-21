@@ -40,6 +40,7 @@ namespace Pxp
             }
 
             _time = Time.time;
+            AudioController.Play("SFX_Reward");
             Show();
         }
 
