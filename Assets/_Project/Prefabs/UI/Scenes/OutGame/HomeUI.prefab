@@ -3751,7 +3751,7 @@ GameObject:
   - component: {fileID: 9060498544701101585}
   - component: {fileID: 4369553461530910577}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Text_Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6133,6 +6133,7 @@ MonoBehaviour:
   _textEnergy: {fileID: 71021331590966464}
   _textLevel: {fileID: 8508760844899777948}
   _textWave: {fileID: 5772058786026321318}
+  _textBox: {fileID: 4369553461530910577}
   _equippedHeroes:
   - {fileID: 8126426118903090426}
   - {fileID: 4618493377432332589}
@@ -6149,6 +6150,7 @@ MonoBehaviour:
   _btnQuest: {fileID: 7383080467431966491}
   _btnAttendance: {fileID: 5366616151232207980}
   _btnRanking: {fileID: 8460304435977571110}
+  _sliderBox: {fileID: 6872856392439316885}
 --- !u!1 &5376659228884439730
 GameObject:
   m_ObjectHideFlags: 0
@@ -8238,7 +8240,7 @@ GameObject:
   - component: {fileID: 7024774840398225382}
   - component: {fileID: 6872856392439316885}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: Slider_Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8284,7 +8286,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -8304,7 +8306,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 8078749582833304223}
   m_HandleRect: {fileID: 0}
