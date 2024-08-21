@@ -1,4 +1,4 @@
-﻿/*************************************************************
+/*************************************************************
  *       Unity Audio Toolkit (c) by ClockStone 2013          *
  * 
  * Provides useful features for playing audio files in Unity:
@@ -556,6 +556,8 @@ public class AudioController : SingletonMonoBehaviour<AudioController>, ISeriali
     //          public functions
     // **************************************************************************************************/
 
+    static public string currentMusic = null;  // 현재 재생 중인 음악의 ID를 저장할 변수
+
     /// <summary>
     /// Plays an audio item with the name <c>audioID</c> as music.
     /// </summary>
@@ -576,6 +578,16 @@ public class AudioController : SingletonMonoBehaviour<AudioController>, ISeriali
     /// </remarks>
     static public AudioObject PlayMusic( string audioID, float volume = 1, float delay = 0, float startTime = 0 )
     {
+        // 현재 재생 중인 음악과 새로운 음악이 동일한지 확인
+        if (currentMusic == audioID)
+        {
+            //Debug.Log("Same BGM is already playing: " + audioID);
+            return null; // 동일한 BGM이 이미 재생 중이므로 다시 재생하지 않음
+        }
+
+        // 새로운 BGM을 재생하기 전에 currentMusicID 업데이트
+        currentMusic = audioID;
+
         _isPlaylistPlaying = false;
         return Instance._PlayMusic( audioID, volume, delay, startTime );
     }
